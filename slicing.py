@@ -1,30 +1,42 @@
 import cv2
 import os
 
-video_path = "./video/WIN_20260904_15_52_39_Pro.mp4"
-output_dir = "frames"
 
-os.makedirs(output_dir, exist_ok=True)
+def cap_vdieo(video_path):  
+    output_dir = f"frames/{video_path}"
 
-cap = cv2.VideoCapture(video_path)
+    os.makedirs(output_dir, exist_ok=True)
 
-frame_idx = 0
+    cap = cv2.VideoCapture(video_path)
 
-while True:
-    ret, frame = cap.read()
+    frame_idx = 0
 
-    if not ret:
-        break
+    while True:
+        ret, frame = cap.read()
 
-    save_path = os.path.join(
-        output_dir,
-        f"frame_{frame_idx:06d}.jpg"
-    )
+        if not ret:
+            break
 
-    cv2.imwrite(save_path, frame)
+        save_path = os.path.join(
+            output_dir,
+            f"frame_{frame_idx:06d}.jpg"
+        )
 
-    frame_idx += 1
+        cv2.imwrite(save_path, frame)
 
-cap.release()
+        frame_idx += 1
 
-print(f"총 {frame_idx}장의 이미지 저장 완료")
+    cap.release()
+
+    print(f"총 {frame_idx}장의 이미지 저장 완료")
+    
+
+video_list=['WIN_20260904_15_52_39_Pro.mp4'
+            'WIN_20260904_15_53_32_Pro - 복사본.mp4'
+            'WIN_20260904_15_53_32_Pro.mp4'
+            'WIN_20260904_15_55_08_Pro - 복사본.mp4'
+            'WIN_20260904_15_55_08_Pro.mp4'
+            'WIN_20260904_18_49_13_Pro - 복사본.mp4'
+            'WIN_20260904_18_49_13_Pro.mp4'
+            ]
+for video in video_list: cap_vdieo(video)
