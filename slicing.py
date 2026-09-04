@@ -7,7 +7,8 @@ def cap_vdieo(video_path):
 
     os.makedirs(output_dir, exist_ok=True)
 
-    cap = cv2.VideoCapture(video_path)
+    total_path = os.path.join('./video', video_path)
+    cap = cv2.VideoCapture(total_path)
 
     frame_idx = 0
 
@@ -31,12 +32,5 @@ def cap_vdieo(video_path):
     print(f"총 {frame_idx}장의 이미지 저장 완료")
     
 
-video_list=['WIN_20260904_15_52_39_Pro.mp4'
-            'WIN_20260904_15_53_32_Pro - 복사본.mp4'
-            'WIN_20260904_15_53_32_Pro.mp4'
-            'WIN_20260904_15_55_08_Pro - 복사본.mp4'
-            'WIN_20260904_15_55_08_Pro.mp4'
-            'WIN_20260904_18_49_13_Pro - 복사본.mp4'
-            'WIN_20260904_18_49_13_Pro.mp4'
-            ]
+video_list = os.listdir('./video')
 for video in video_list: cap_vdieo(video)
