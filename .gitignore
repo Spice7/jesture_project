@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,windows,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,windows,jupyternotebooks
 
+## yolo data generation
+frames/
+video/
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
