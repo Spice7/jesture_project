@@ -1,0 +1,13 @@
+﻿filepath,participant_id,label,sample_id,num_frames,duration,detection_rate,handedness,created_at
+dataset/swipe_left/user00_swipe_left_0001.npz,user00,swipe_left,1,46,1.5043,100.0,Right,2026-09-04T17:50:58+09:00
+dataset/swipe_left/user00_swipe_left_0002.npz,user00,swipe_left,2,45,1.4623,100.0,Right,2026-09-04T17:51:01+09:00
+dataset/swipe_left/user00_swipe_left_0003.npz,user00,swipe_left,3,44,1.4238,100.0,Right,2026-09-04T17:51:04+09:00
+dataset/swipe_left/user00_swipe_left_0004.npz,user00,swipe_left,4,38,1.2801,100.0,Right,2026-09-04T17:51:08+09:00
+dataset/swipe_left/user00_swipe_left_0005.npz,user00,swipe_left,5,36,1.2479,100.0,Right,2026-09-04T17:51:11+09:00
+dataset/swipe_left/user00_swipe_left_0006.npz,user00,swipe_left,6,39,1.2477,100.0,Right,2026-09-04T17:51:17+09:00
+dataset/swipe_left/user00_swipe_left_0007.npz,user00,swipe_left,7,33,1.0559,100.0,Right,2026-09-04T17:51:20+09:00
+dataset/swipe_left/user00_swipe_left_0008.npz,user00,swipe_left,8,28,0.88,100.0,Right,2026-09-04T17:51:23+09:00
+dataset/swipe_left/user00_swipe_left_0009.npz,user00,swipe_left,9,34,1.0724,100.0,Right,2026-09-04T17:51:25+09:00
+dataset/swipe_left/user00_swipe_left_0010.npz,user00,swipe_left,10,35,1.1042,100.0,Right,2026-09-04T17:51:29+09:00
+dataset/swipe_left/user00_swipe_left_0011.npz,user00,swipe_left,11,41,1.3119,100.0,Right,2026-09-04T17:51:32+09:00
+dataset/swipe_left/user00_swipe_left_0012.npz,user00,swipe_left,12,40,1.2801,100.0,Right,2026-09-04T17:51:37+09:00
