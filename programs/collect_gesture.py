@@ -16,17 +16,31 @@ import numpy as np
 # Configuration
 # =========================================================
 
-DATASET_DIR = Path("dataset")
-MODEL_PATH = Path("models/hand_landmarker.task")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DATASET_DIR = PROJECT_ROOT / "dataset"
+MODEL_PATH = (
+    PROJECT_ROOT
+    / "models"
+    / "hand_landmarker.task"
+)
 
 CAMERA_INDEX = 0
 
-# 너무 짧은 동작 방지
-MINIMUM_FRAMES = 10
+# 명백한 불량 sequence 저장 방지
+MINIMUM_FRAMES = 20
+MINIMUM_DETECTION_RATE = 0.8
+MAX_CONSECUTIVE_MISSING_FRAMES = 5
+MINIMUM_DURATION_SECONDS = 0.6
+MAXIMUM_DURATION_SECONDS = 2.5
 
-# 한 손 gesture를 대상으로 하지만,
-# 화면에 두 손이 들어왔을 때 confidence가 높은 손을 선택하기 위해 2로 설정
-MAX_HANDS_TO_DETECT = 2
+# 이동량은 사용자마다 다를 수 있으므로 저장을 막지 않고 경고만 표시한다.
+# 손목 이동 거리를 손 크기로 나눈 값이 이 기준보다 작으면 확인을 권장한다.
+LOW_MOTION_WARNING_THRESHOLD = 0.5
+
+# 현재 데이터 수집 및 학습 범위는 오른손 한 손 gesture이다.
+# 두 손을 동시에 검출하면 sequence 중간에 선택된 손이 바뀔 수 있다.
+MAX_HANDS_TO_DETECT = 1
+EXPECTED_HANDEDNESS = "Right"
 
 MIN_HAND_DETECTION_CONFIDENCE = 0.5
 MIN_HAND_PRESENCE_CONFIDENCE = 0.5
@@ -78,6 +92,141 @@ def sanitize_name(value: str) -> str:
     return value
 
 
+def get_longest_missing_run(
+    detected_values: np.ndarray,
+) -> int:
+    """
+    연속으로 손을 검출하지 못한 최대 프레임 수를 반환한다.
+    """
+
+    longest_run = 0
+    current_run = 0
+
+    for detected in detected_values:
+
+        if bool(detected):
+            current_run = 0
+        else:
+            current_run += 1
+            longest_run = max(
+                longest_run,
+                current_run,
+            )
+
+    return longest_run
+
+
+def calculate_movement_metrics(
+    landmarks: np.ndarray,
+    detected: np.ndarray,
+) -> dict[str, float]:
+    """
+    손목의 이동량과 이동 경로 길이를 계산한다.
+
+    이동량은 gesture 유효성을 자동 판정하는 기준이 아니라 데이터 분석과
+    사용자 확인을 위한 메타데이터로만 사용한다.
+    """
+
+    finite_frames = np.isfinite(
+        landmarks
+    ).all(axis=(1, 2))
+
+    valid = (
+        detected.astype(bool)
+        & finite_frames
+    )
+
+    valid_indices = np.flatnonzero(valid)
+
+    empty_metrics = {
+        "wrist_dx": np.nan,
+        "wrist_dy": np.nan,
+        "net_displacement": np.nan,
+        "path_length": np.nan,
+        "hand_size": np.nan,
+        "normalized_displacement": np.nan,
+        "normalized_path_length": np.nan,
+    }
+
+    if len(valid_indices) < 2:
+        return empty_metrics
+
+    wrist_xy = landmarks[:, 0, :2]
+
+    first_index = int(valid_indices[0])
+    last_index = int(valid_indices[-1])
+
+    displacement_vector = (
+        wrist_xy[last_index]
+        - wrist_xy[first_index]
+    )
+
+    wrist_dx = float(displacement_vector[0])
+    wrist_dy = float(displacement_vector[1])
+    net_displacement = float(
+        np.linalg.norm(displacement_vector)
+    )
+
+    # 미검출 프레임은 제외하되, 검출에 성공한 손목 좌표끼리는 이어서
+    # 계산한다. 따라서 전체 경로 길이는 시작-종료 직선거리보다 작아지지
+    # 않는다. 추후 전처리에서 결측 프레임을 선형 보간하는 경우에도 같은
+    # 최소 이동 거리가 유지된다.
+    valid_wrist_xy = wrist_xy[valid]
+
+    wrist_steps = np.diff(
+        valid_wrist_xy,
+        axis=0,
+    )
+
+    path_length = float(
+        np.linalg.norm(
+            wrist_steps,
+            axis=1,
+        ).sum()
+    )
+
+    # 손목(0)과 중지 MCP(9) 사이의 거리를 손 크기 대리값으로 사용한다.
+    hand_sizes = np.linalg.norm(
+        landmarks[valid, 9, :2]
+        - landmarks[valid, 0, :2],
+        axis=1,
+    )
+
+    hand_sizes = hand_sizes[
+        np.isfinite(hand_sizes)
+        & (hand_sizes > 1e-6)
+    ]
+
+    if len(hand_sizes) == 0:
+        hand_size = np.nan
+        normalized_displacement = np.nan
+        normalized_path_length = np.nan
+    else:
+        hand_size = float(
+            np.median(hand_sizes)
+        )
+        normalized_displacement = (
+            net_displacement / hand_size
+        )
+        normalized_path_length = (
+            path_length / hand_size
+        )
+
+    return {
+        "wrist_dx": wrist_dx,
+        "wrist_dy": wrist_dy,
+        "net_displacement": net_displacement,
+        "path_length": path_length,
+        "hand_size": hand_size,
+        "normalized_displacement": float(
+            normalized_displacement
+        ),
+        "normalized_path_length": float(
+            normalized_path_length
+        ),
+    }
+
+
 # =========================================================
 # MediaPipe
 # =========================================================
@@ -103,7 +252,7 @@ def initialize_hand_detector():
         ),
         running_mode=mp.tasks.vision.RunningMode.VIDEO,
 
-        # 최종적으로 하나만 선택하지만 후보는 최대 2개 검출
+        # 오른손 한 손 gesture 수집 범위에 맞춰 한 손만 검출
         num_hands=MAX_HANDS_TO_DETECT,
 
         min_hand_detection_confidence=MIN_HAND_DETECTION_CONFIDENCE,
@@ -318,8 +467,16 @@ def update_index_csv(
         "created_at",
     ]
 
+    try:
+        stored_filepath = filepath.resolve().relative_to(
+            PROJECT_ROOT
+        ).as_posix()
+    except ValueError:
+        # 테스트 또는 외부 데이터 경로에서는 절대 경로를 그대로 사용한다.
+        stored_filepath = filepath.as_posix()
+
     row = {
-        "filepath": filepath.as_posix(),
+        "filepath": stored_filepath,
         "participant_id": participant_id,
         "label": label,
         "sample_id": sample_id,
@@ -373,6 +530,25 @@ def save_sequence(
 
     num_frames = len(landmarks_buffer)
 
+    buffer_lengths = {
+        "landmarks": len(landmarks_buffer),
+        "world_landmarks": len(
+            world_landmarks_buffer
+        ),
+        "timestamps": len(timestamps_buffer),
+        "detected": len(detected_buffer),
+        "handedness": len(handedness_buffer),
+        "handedness_confidence": len(
+            handedness_confidence_buffer
+        ),
+    }
+
+    if len(set(buffer_lengths.values())) != 1:
+        raise ValueError(
+            "Sequence buffer lengths do not match: "
+            f"{buffer_lengths}"
+        )
+
     # -----------------------------------------------------
     # 너무 짧은 sequence는 저장하지 않음
     # -----------------------------------------------------
@@ -424,6 +600,35 @@ def save_sequence(
             f"Invalid landmark shape: {landmarks.shape}"
         )
 
+    if world_landmarks.shape != (num_frames, 21, 3):
+        raise ValueError(
+            "Invalid world landmark shape: "
+            f"{world_landmarks.shape}"
+        )
+
+    if timestamps.shape != (num_frames,):
+        raise ValueError(
+            f"Invalid timestamp shape: {timestamps.shape}"
+        )
+
+    if detected.shape != (num_frames,):
+        raise ValueError(
+            f"Invalid detected shape: {detected.shape}"
+        )
+
+    if not np.isfinite(timestamps).all():
+        raise ValueError(
+            "Timestamps contain a non-finite value."
+        )
+
+    if (
+        num_frames > 1
+        and not (np.diff(timestamps) > 0).all()
+    ):
+        raise ValueError(
+            "Timestamps must increase strictly."
+        )
+
     # -----------------------------------------------------
     # Duration
     # -----------------------------------------------------
@@ -439,13 +644,110 @@ def save_sequence(
     # Detection Rate
     # -----------------------------------------------------
 
+    detection_rate_ratio = float(
+        detected.mean()
+    )
+
     detection_rate = float(
-        detected.mean() * 100.0
+        detection_rate_ratio * 100.0
+    )
+
+    valid_frames = int(
+        detected.sum()
+    )
+
+    longest_missing_run = get_longest_missing_run(
+        detected
     )
 
     dominant_handedness = get_dominant_handedness(
         handedness_buffer
     )
+
+    # -----------------------------------------------------
+    # 명백한 불량 sequence 저장 방지
+    # -----------------------------------------------------
+
+    rejection_reasons = []
+
+    if detection_rate_ratio < MINIMUM_DETECTION_RATE:
+        rejection_reasons.append(
+            "detection rate is too low "
+            f"({detection_rate_ratio:.1%} < "
+            f"{MINIMUM_DETECTION_RATE:.1%})"
+        )
+
+    if (
+        longest_missing_run
+        > MAX_CONSECUTIVE_MISSING_FRAMES
+    ):
+        rejection_reasons.append(
+            "too many consecutive missing frames "
+            f"({longest_missing_run} > "
+            f"{MAX_CONSECUTIVE_MISSING_FRAMES})"
+        )
+
+    if duration < MINIMUM_DURATION_SECONDS:
+        rejection_reasons.append(
+            "duration is too short "
+            f"({duration:.2f} < "
+            f"{MINIMUM_DURATION_SECONDS:.2f} sec)"
+        )
+
+    if duration > MAXIMUM_DURATION_SECONDS:
+        rejection_reasons.append(
+            "duration is too long "
+            f"({duration:.2f} > "
+            f"{MAXIMUM_DURATION_SECONDS:.2f} sec)"
+        )
+
+    if dominant_handedness != EXPECTED_HANDEDNESS:
+        rejection_reasons.append(
+            "unexpected handedness "
+            f"({dominant_handedness} != "
+            f"{EXPECTED_HANDEDNESS})"
+        )
+
+    if rejection_reasons:
+        print()
+        print("Sequence quality check failed. Discarded.")
+
+        for reason in rejection_reasons:
+            print(f"- {reason}")
+
+        print()
+        return False, None
+
+    movement_metrics = calculate_movement_metrics(
+        landmarks,
+        detected,
+    )
+
+    normalized_displacement = movement_metrics[
+        "normalized_displacement"
+    ]
+
+    low_motion_warning = bool(
+        np.isfinite(normalized_displacement)
+        and normalized_displacement
+        < LOW_MOTION_WARNING_THRESHOLD
+    )
+
+    if low_motion_warning:
+        print()
+        print(
+            "[WARNING] 손목의 시작-종료 이동량이 "
+            "상대적으로 작습니다."
+        )
+        print(
+            "의도한 짧은 gesture라면 그대로 사용하고, "
+            "녹화 실수라면 다시 수집하세요."
+        )
+        print(
+            "Normalized displacement: "
+            f"{normalized_displacement:.3f}"
+        )
+        print()
 
     # -----------------------------------------------------
     # 저장 경로
@@ -502,6 +804,62 @@ def save_sequence(
             detection_rate,
             dtype=np.float32,
         ),
+        detection_rate_ratio=np.array(
+            detection_rate_ratio,
+            dtype=np.float32,
+        ),
+        valid_frames=np.array(
+            valid_frames,
+            dtype=np.int32,
+        ),
+        longest_missing_run=np.array(
+            longest_missing_run,
+            dtype=np.int32,
+        ),
+
+        # 이동량은 저장 차단이 아닌 분석 및 경고용 메타데이터
+        wrist_dx=np.array(
+            movement_metrics["wrist_dx"],
+            dtype=np.float32,
+        ),
+        wrist_dy=np.array(
+            movement_metrics["wrist_dy"],
+            dtype=np.float32,
+        ),
+        net_displacement=np.array(
+            movement_metrics["net_displacement"],
+            dtype=np.float32,
+        ),
+        path_length=np.array(
+            movement_metrics["path_length"],
+            dtype=np.float32,
+        ),
+        hand_size=np.array(
+            movement_metrics["hand_size"],
+            dtype=np.float32,
+        ),
+        normalized_displacement=np.array(
+            normalized_displacement,
+            dtype=np.float32,
+        ),
+        normalized_path_length=np.array(
+            movement_metrics[
+                "normalized_path_length"
+            ],
+            dtype=np.float32,
+        ),
+        low_motion_warning=np.array(
+            low_motion_warning,
+            dtype=np.bool_,
+        ),
+        mirrored=np.array(
+            False,
+            dtype=np.bool_,
+        ),
+        collection_schema_version=np.array(
+            2,
+            dtype=np.int32,
+        ),
     )
 
     # -----------------------------------------------------
@@ -528,6 +886,28 @@ def save_sequence(
     print(f"Frames         : {num_frames}")
     print(f"Duration       : {duration:.2f} sec")
     print(f"Detection rate : {detection_rate:.1f}%")
+    print(f"Valid frames   : {valid_frames}")
+    print(
+        "Missing run   : "
+        f"{longest_missing_run} frames"
+    )
+    print(
+        "Wrist dx / dy : "
+        f"{movement_metrics['wrist_dx']:.3f} / "
+        f"{movement_metrics['wrist_dy']:.3f}"
+    )
+    print(
+        "Net movement  : "
+        f"{movement_metrics['net_displacement']:.3f} "
+        "(normalized: "
+        f"{normalized_displacement:.3f})"
+    )
+    print(
+        "Path length   : "
+        f"{movement_metrics['path_length']:.3f} "
+        "(normalized: "
+        f"{movement_metrics['normalized_path_length']:.3f})"
+    )
     print(f"Handedness     : {dominant_handedness}")
     print("=" * 55)
     print()

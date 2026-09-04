@@ -232,3 +232,5 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,windows,jupyternotebooks
 
 data/
+
+.codex_doc_review/
