@@ -234,3 +234,7 @@ $RECYCLE.BIN/
 data/
 
 .codex_doc_review/
+
+# 학습 산출물 (용량 큼). 비교표(reports/*.md, *.csv) 는 커밋한다.
+models/*.keras
+models/*.h5
