@@ -105,15 +105,11 @@ Jester에는 사람 ID가 없다. 같은 사람의 영상이 학습과 시험에
 - 우리 데이터로 학습한 모델이 새로운 사람에게 유독 약할 때
 - MediaPipe가 아니라 영상을 직접 넣는 3D CNN 계열로 바꿀 때 (그때는 화질 문제가 덜하다)
 
-## 6. 지웠던 코드 되살리기
+## 6. 만들었다가 폐기한 코드
 
-Jester 처리 스크립트 3개와 클래스 목록은 git 히스토리에 남아 있다.
+Jester 를 쓰려고 아래 스크립트 3개를 만들었으나, 위 이유로 방향을 바꾸면서 저장소에서 제거했다.
+다시 필요해지면 이 문서를 보고 같은 구조로 다시 만들면 된다. 각각 100줄 안팎이었다.
 
-```bash
-# 커밋 5fab0fc 시점의 파일을 다시 꺼낸다
-git checkout 5fab0fc -- scripts/jester_stream_extract.py scripts/jester_pilot_landmarks.py scripts/jester_to_recordings.py data/jester
-```
-
-- `jester_stream_extract.py`: 22GB 분할 tar를 풀지 않고 필요한 클래스만 꺼내기
-- `jester_pilot_landmarks.py`: 업스케일 배율별 MediaPipe 검출률 측정 (3-1 검증용)
-- `jester_to_recordings.py`: 프레임 → 좌표 → 우리 npz 규약 변환 (좌우반전 포함)
+- 22GB 분할 tar 를 풀지 않고 스트리밍으로 읽어 필요한 클래스 영상만 꺼내기
+- 업스케일 배율별 MediaPipe 손 검출률 측정 (3-1 검증용 파일럿)
+- 프레임 폴더 → MediaPipe 좌표 → 우리 npz 규약 변환 (좌우반전 포함, 12fps 타임스탬프)
