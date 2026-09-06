@@ -4,6 +4,9 @@
 ## yolo data generation
 frames/
 video/
+dataset/test/
+dataset/train/
+dataset/valid/
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks

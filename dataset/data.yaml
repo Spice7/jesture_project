@@ -1,0 +1,13 @@
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 3
+names: ['cancle', 'start', 'stop']
+
+roboflow:
+  workspace: dfgh4400-naver-com
+  project: start-stop-cancle
+  version: 1
+  license: Private
+  url: https://app.roboflow.com/dfgh4400-naver-com/start-stop-cancle/1
