@@ -128,6 +128,31 @@ def split_by_person(samples: list[Sample], val_persons=None, test_persons=None, 
     return train, val, test
 
 
+REVERSE_SETS = {"none": (), "fist": ("make_fist",), "both": ("make_fist", "swipe_left")}
+
+
+def reversed_negatives(samples: list[Sample], labels=("make_fist",), fraction: float = 0.5,
+                       seed=config.RANDOM_SEED) -> list[Sample]:
+    """명령 클립을 시간 역재생해 no_gesture 학습 샘플로 만든다 (학습 세트에만 쓸 것).
+
+    make_fist 되감기 = "쥔 손 → 편 손"(펴기), swipe_left 되감기 = "오른쪽으로 되돌리기"(복귀).
+    둘 다 실제로 자주 일어나지만 녹화 데이터에 거의 없어(4명 합쳐 펴기 6개, 복귀 0개) 모델이 명령으로 오인하던 동작.
+    09-06 23시 도입. fraction 으로 비율을 제한해 no_gesture 가 과대 클래스가 되지 않게 한다."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for lab in labels:
+        pool = [s for s in samples if s.label == lab]
+        k = int(round(len(pool) * fraction))
+        for i in rng.permutation(len(pool))[:k]:
+            s = pool[i]
+            lm = s.landmarks[::-1].copy()
+            ts = (s.timestamps_ms[-1] - s.timestamps_ms[::-1]).astype(s.timestamps_ms.dtype)
+            meta = dict(s.meta) if isinstance(s.meta, dict) else {}
+            meta["reversed_from"] = lab
+            out.append(Sample(s.path.with_name(s.path.stem + f"_rev.npz"), s.person, "no_gesture", lm, ts, meta))
+    return out
+
+
 def build_arrays(samples: list[Sample], augment_times: int = 0, seed=config.RANDOM_SEED):
     """→ X (N, SEQ_LEN, FEATURE_DIM), y (N,) int, dropped(list[path])
     좌우반전 증강은 하지 않는다: swipe_left 를 뒤집으면 존재하지 않는 swipe_right 가 된다."""

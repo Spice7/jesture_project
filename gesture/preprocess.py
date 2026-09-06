@@ -29,12 +29,18 @@ def longest_gap(mask: np.ndarray) -> int:
     return best
 
 
-def interpolate_missing(seq: np.ndarray) -> np.ndarray | None:
-    """(T,21,3) with NaN rows → 보간된 (T,21,3). 품질 기준 미달이면 None."""
+def interpolate_missing(seq: np.ndarray, min_ratio: float | None = None,
+                        max_gap: int | None = None) -> np.ndarray | None:
+    """(T,21,3) with NaN rows → 보간된 (T,21,3). 품질 기준 미달이면 None.
+
+    기본 기준은 수집기 규약(검출률 ≥0.8, 연속 미검출 ≤5) = 학습 데이터 기준.
+    실시간 경로는 빠른 동작에서 추적이 0.2~0.3초 끊기는 일이 흔해 더 느슨한 값을 넘긴다 (09-06 실측)."""
+    min_ratio = config.MIN_DETECTION_RATIO if min_ratio is None else min_ratio
+    max_gap = config.MAX_GAP_FRAMES if max_gap is None else max_gap
     mask = detection_mask(seq)
-    if mask.sum() < 2 or mask.mean() < config.MIN_DETECTION_RATIO:
+    if mask.sum() < 2 or mask.mean() < min_ratio:
         return None
-    if longest_gap(mask) > config.MAX_GAP_FRAMES:
+    if longest_gap(mask) > max_gap:
         return None
     t = np.arange(len(seq))
     out = seq.astype(np.float32).copy()
@@ -71,9 +77,10 @@ def to_features(seq: np.ndarray) -> np.ndarray:
     return seq.reshape(len(seq), -1).astype(np.float32)
 
 
-def sample_to_features(landmarks: np.ndarray, timestamps_ms: np.ndarray) -> np.ndarray | None:
-    """녹화 원본 → (SEQ_LEN, FEATURE_DIM). 품질 미달이면 None."""
-    seq = interpolate_missing(landmarks)
+def sample_to_features(landmarks: np.ndarray, timestamps_ms: np.ndarray,
+                       min_ratio: float | None = None, max_gap: int | None = None) -> np.ndarray | None:
+    """녹화 원본 → (SEQ_LEN, FEATURE_DIM). 품질 미달이면 None. min_ratio/max_gap 은 interpolate_missing 참고."""
+    seq = interpolate_missing(landmarks, min_ratio=min_ratio, max_gap=max_gap)
     if seq is None:
         return None
     seq = resample(seq, timestamps_ms)

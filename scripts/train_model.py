@@ -1,5 +1,5 @@
 """dataset/ 의 수집 데이터로 GRU(기본) 또는 LSTM 학습 + baseline 비교 + 평가 리포트.
-저장: models/<arch>_gesture.keras + .json
+저장: models/<arch>_gesture.pt + .json (PyTorch)
 
   uv run python scripts/train_model.py                                   # GRU, 자동 분할
   uv run python scripts/train_model.py --test-persons p003 --val-persons p002
@@ -32,8 +32,11 @@ def main():
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--seed", type=int, default=config.RANDOM_SEED)
     ap.add_argument("--augment", type=int, default=3, help="샘플당 증강 복제 수")
-    ap.add_argument("--init-weights", default=None, help="기존 가중치(.keras)로 초기화")
-    ap.add_argument("--out", default=None, help="저장 경로 (기본 models/<arch>_gesture.keras)")
+    ap.add_argument("--reverse-neg", choices=list(dataset.REVERSE_SETS), default="none",
+                    help="명령 클립을 되감아 no_gesture 학습 샘플로 추가: fist(펴기) | both(펴기+스와이프 복귀)")
+    ap.add_argument("--reverse-frac", type=float, default=0.5, help="되감을 클립 비율")
+    ap.add_argument("--init-weights", default=None, help="기존 가중치(.pt)로 초기화")
+    ap.add_argument("--out", default=None, help="저장 경로 (기본 models/<arch>_gesture.pt)")
     args = ap.parse_args()
 
     samples = []
@@ -50,6 +53,10 @@ def main():
     print(f"\nsplit: train={len(train)} val={len(val)} test={len(test)}  "
           f"(val: {sorted({s.person for s in val})}, test: {sorted({s.person for s in test})})")
 
+    if args.reverse_neg != "none":
+        rev = dataset.reversed_negatives(train, dataset.REVERSE_SETS[args.reverse_neg], args.reverse_frac, seed=args.seed)
+        train = train + rev
+        print(f"되감기 no_gesture 추가: {len(rev)}개 ({args.reverse_neg}, 비율 {args.reverse_frac}) → train={len(train)}")
     Xtr, ytr, drop_tr = dataset.build_arrays(train, augment_times=args.augment, seed=args.seed)
     Xva, yva, drop_va = dataset.build_arrays(val)
     Xte, yte, drop_te = dataset.build_arrays(test)
@@ -74,7 +81,7 @@ def main():
     out = Path(args.out) if args.out else model_path(args.arch)
     out.parent.mkdir(parents=True, exist_ok=True)
     model.save(out)
-    save_meta(out.with_suffix(".json"), arch=args.arch, seed=args.seed, n_train=int(len(Xtr)),
+    save_meta(out.with_suffix(".json"), arch=args.arch, seed=args.seed, n_train=int(len(Xtr)), reverse_neg=args.reverse_neg,
               persons=sorted({s.person for s in samples}),
               val_persons=sorted({s.person for s in val}), test_persons=sorted({s.person for s in test}))
     print(f"\n저장: {out}")

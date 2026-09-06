@@ -1,0 +1,9 @@
+{
+  "min_confidence": 0.8,
+  "cooldown_sec": 0.5,
+  "actions": {
+    "swipe_left": {"keys": ["alt", "tab"], "label": "Next window (Alt+Tab)", "cooldown_sec": 0.5},
+    "make_fist": {"keys": ["win", "tab"], "label": "Task view (Win+Tab)", "cooldown_sec": 0.8},
+    "no_gesture": null
+  }
+}

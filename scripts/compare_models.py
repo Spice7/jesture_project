@@ -94,6 +94,9 @@ def main():
     ap.add_argument("--epochs", type=int, default=80)
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--augment", type=int, default=3)
+    ap.add_argument("--reverse-neg", choices=list(dataset.REVERSE_SETS), default="none",
+                    help="명령 클립을 되감아 no_gesture 학습 샘플로 추가: fist(펴기) | both(펴기+스와이프 복귀)")
+    ap.add_argument("--reverse-frac", type=float, default=0.5, help="되감을 클립 비율")
     ap.add_argument("--out-dir", default=str(config.REPORTS_DIR))
     args = ap.parse_args()
     seeds = args.seed_list if args.seed_list else list(range(args.seeds))
@@ -110,6 +113,10 @@ def main():
     train, val, test = dataset.split_by_person(samples, args.val_persons, args.test_persons)
     print(f"\nsplit: train={len(train)} val={len(val)} test={len(test)}  "
           f"(val: {sorted({s.person for s in val})}, test: {sorted({s.person for s in test})})")
+    if args.reverse_neg != "none":
+        rev = dataset.reversed_negatives(train, dataset.REVERSE_SETS[args.reverse_neg], args.reverse_frac)
+        train = train + rev
+        print(f"되감기 no_gesture 추가: {len(rev)}개 ({args.reverse_neg}, 비율 {args.reverse_frac}) → train={len(train)}")
     Xtr, ytr, _ = dataset.build_arrays(train, augment_times=args.augment)
     Xva, yva, _ = dataset.build_arrays(val)
     Xte, yte, _ = dataset.build_arrays(test)
@@ -143,7 +150,7 @@ def main():
     summary = summarize(rows, base_val, base_test)
     header = (f"# 모델 비교\n\n샘플 {len(samples)}개, 참가자 {sorted({s.person for s in samples})}, "
               f"val={sorted({s.person for s in val})}, test={sorted({s.person for s in test})}, "
-              f"시드 {seeds}, 증강 x{args.augment}\n\n")
+              f"시드 {seeds}, 증강 x{args.augment}, 되감기 no_gesture={args.reverse_neg}({args.reverse_frac})\n\n")
     md_path = out_dir / "compare_models_summary.md"
     md_path.write_text(header + summary, encoding="utf-8")
     print("\n" + header + summary)

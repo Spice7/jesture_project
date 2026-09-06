@@ -238,3 +238,9 @@ data/
 # 학습 산출물 (용량 큼). 비교표(reports/*.md, *.csv) 는 커밋한다.
 models/*.keras
 models/*.h5
+
+# 실시간 데모 세션 로그 (개인 기록)
+reports/realtime/
+
+# PyTorch 모델 (09-06 이식)
+models/*.pt
