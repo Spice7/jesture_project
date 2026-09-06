@@ -40,6 +40,24 @@ validation:
   iou: 0.6
   plots: true
 
+# Final evaluation used only with: python model_yolo/yolo.py --mode test
+# Run this once after the model and all hyperparameters have been finalized.
+test:
+  enabled: true
+  name: test
+  imgsz: 640
+  batch: 16
+  device: 0
+  conf: 0.001               # low value retained for Ultralytics PR/F1/mAP curves
+  iou: 0.60                 # NMS IoU threshold
+  metric_conf: 0.70         # threshold for custom precision/recall/F1/accuracy
+  match_iou: 0.50           # predicted/GT box IoU required for a true positive
+  roc_min_conf: 0.001       # minimum score collected for image-level ROC-AUC
+  max_det: 10
+  plots: true
+  save_json: false            # custom YAML/JSON/CSV metric reports are saved separately
+  exist_ok: true
+
 # Actual detection settings used only with: python model_yolo/yolo.py --mode predict --source ...
 # If every detection score is below conf, the frame is handled as "no detection".
 inference:

@@ -8,6 +8,16 @@
 ## model_yolo
 ### yolo.py
 - 모델 코드
+    - test mode
+        - 실행
+        ```
+        uv run python model_yolo/yolo.py --mode test
+        ```
+    - trian mode
+        - 실행
+        ```
+        uv run python model_yolo/yolo.py --mode test
+        ```
 ### yolo_param.yaml
 - 모델 하이퍼파라미터
     - 파라미터 튜닝용
