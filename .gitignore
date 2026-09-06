@@ -244,3 +244,4 @@ reports/realtime/
 
 # PyTorch 모델 (09-06 이식)
 models/*.pt
+models/*.json

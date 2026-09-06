@@ -12,5 +12,17 @@ dependencies = [
     "scikit-learn>=1.9.0",
     "tensorflow>=2.21.0",
     "torch>=2.14.0",
+    "torchvision>=0.29.0",
     "ultralytics>=8.4.138",
 ]
+
+# Windows 에서는 torch/torchvision 을 PyTorch 의 CUDA 12.6 저장소에서 받는다 (RTX 4060 시연 노트북, 드라이버 566 = CUDA 12.7 지원).
+# 다른 OS 는 PyPI 기본 휠 그대로. GPU 가 없는 Windows 에서도 CUDA 휠은 CPU 로 정상 동작한다.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'win32'" }]
+torchvision = [{ index = "pytorch-cu126", marker = "sys_platform == 'win32'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
