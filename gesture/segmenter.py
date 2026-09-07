@@ -81,6 +81,12 @@ class MotionSegmenter:
         # 안 그러면 쥐었다 폈다를 반복하는 동작이 닫힐 때마다 새 구간으로 잡혀 매번 주먹으로 실행된다.
         self._need_rest = False
         self._rest_count = 0
+        # ── 스냅 조기 판정 (09-07) ──────────────────────────────────────────
+        # 엄지·중지가 붙어 있다가 떨어진 상태가 early_snap_frames 프레임 이어지면 바로 닫는다 (주먹과 같은 구조).
+        # 튕긴 뒤 손이 멈추길 0.27초 기다리던 지연을 없앤다. 스냅 라벨이 없는 설정에서는 꺼진다.
+        self.early_snap = "finger_snap" in config.LABELS
+        self.early_snap_frames = 4          # 09-07 스냅 50개 실측: 3f 는 46/50, 4f 부터 49/50(조기판정 없을 때와 동일), 판정 -293ms
+        self._released_count = 0
         n = int(buffer_sec * fps_hint) + 10
         self._ts = deque(maxlen=n)
         self._lm = deque(maxlen=n)
@@ -201,6 +207,20 @@ class MotionSegmenter:
                     return self._finish()
             else:
                 self._closed_count = 0
+        if self.early_snap:
+            from . import sanity
+            s = self._rel(self._start_idx)
+            window = np.stack(list(self._lm)[s:], axis=0)
+            if sanity.snap_released_now(window):
+                self._released_count += 1
+                if self._released_count >= self.early_snap_frames:
+                    self._released_count = 0
+                    self.last_early = True
+                    self._need_rest = True
+                    self._rest_count = 0
+                    return self._finish()
+            else:
+                self._released_count = 0
         if e < self.off_level:
             self._off_count += 1
             if self._off_count >= self.off_frames:
@@ -219,6 +239,7 @@ class MotionSegmenter:
         self.state = "IDLE"
         self._on_count = self._off_count = 0
         self._closed_count = 0
+        self._released_count = 0
         self._start_idx = None
 
     def _finish(self) -> Segment | None:

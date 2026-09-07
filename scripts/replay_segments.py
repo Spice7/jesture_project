@@ -49,9 +49,10 @@ def main():
                     help="명령 클립의 가장 빠른 지점에 이 프레임 수만큼 미검출 구멍을 냄 (빠른 동작에서 추적 끊김 흉내). 예 7")
     ap.add_argument("--min-det", type=float, default=0.5, help="실시간 품질 기준: 검출률 (realtime_demo 와 동일)")
     ap.add_argument("--max-gap", type=int, default=12, help="실시간 품질 기준: 연속 미검출 (realtime_demo 와 동일)")
-    ap.add_argument("--fist-lower", action="store_true",
-                    help="make_fist 클립 뒤에 '주먹 쥔 채 손 내리기' 0.5초를 합성해 붙임 (3차 실측의 오작동 재현)")
+    ap.add_argument("--fist-lower", "--lower", dest="fist_lower", action="store_true",
+                    help="make_fist·finger_snap 클립 뒤에 '명령 자세 그대로 손 내리기' 0.5초를 합성해 붙임 (내리기 오인 재현. 09-07 스냅 포함)")
     ap.add_argument("--no-guard", action="store_true", help="상식 검사(sanity) 끄기 (효과 비교용)")
+    ap.add_argument("--model", default=None, help="시험할 모델 .pt (기본 models/gru_gesture.pt). 새 모델을 시연 모델과 바꾸기 전 검증용")
     ap.add_argument("--noise-rel", type=float, default=0.0,
                     help="모든 프레임에 손바닥 크기 × 이 값의 좌표 잡음을 더함 (먼 거리 손의 떨림 흉내). 예 0.02")
     args = ap.parse_args()
@@ -70,7 +71,8 @@ def main():
     rng.shuffle(picked)
     print(f"클립 {len(picked)}개로 스트림 구성 (참가자 {sorted({s.person for s in picked})})")
 
-    clf = GestureClassifier()
+    clf = GestureClassifier(model_file=args.model) if args.model else GestureClassifier()
+    print(f"모델: {args.model or '(기본) models/gru_gesture.pt'} | 라벨 {clf.labels}")
     mapper = ActionMapper(dry_run=True)
     seg = MotionSegmenter(fps_hint=args.fps)
     dt = 1000.0 / args.fps
@@ -128,7 +130,7 @@ def main():
             if out is not None:
                 hits.append(out)
         last = lm_seq[~np.isnan(lm_seq[:, 0, 0])][-1]
-        if args.fist_lower and s.label == "make_fist":
+        if args.fist_lower and s.label in ("make_fist", "finger_snap"):
             # 주먹 쥔 뒤 0.3초 멈춤 → 0.5초 동안 아래로(+y) 내리며 살짝 옆으로(+x) → 정지
             for f in idle_frames(last, int(args.fps * 0.3), rng):
                 out = feed(f)
@@ -197,7 +199,7 @@ def main():
     print(f"  감지기가 버린 구간(DROP): {dict(drops) or 0}")
 
     print("\n=== 판정 정확도 (감지된 명령 클립 기준) ===")
-    for lab in ("swipe_left", "make_fist"):
+    for lab in [l for l in config.LABELS if l != "no_gesture"]:
         d = detected[lab]
         print(f"  {lab:12s} {correct[lab]:3d}/{d:3d}" + (f"  ({correct[lab]/d:.0%})" if d else ""))
 

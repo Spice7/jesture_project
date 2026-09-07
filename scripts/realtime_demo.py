@@ -28,7 +28,8 @@ from gesture.landmarks import HandTracker, draw_landmarks  # noqa: E402
 from gesture.model import GestureClassifier  # noqa: E402
 from gesture.segmenter import MotionSegmenter  # noqa: E402
 
-COLORS = {"swipe_left": (0, 200, 255), "make_fist": (255, 120, 0), "no_gesture": (160, 160, 160)}
+COLORS = {"swipe_left": (0, 200, 255), "make_fist": (255, 120, 0), "no_gesture": (160, 160, 160),
+          "finger_snap": (80, 220, 80)}
 
 # 실시간 품질 기준 (학습 데이터 기준 0.8 / 5 보다 느슨). 09-06 2차 실측: 빠른 스와이프에서 추적이 7~8프레임
 # 끊기는 일이 매번 있어 38개 구간이 버려졌다. 0.25초 구멍은 직선 보간으로 충분히 메워지고, 확신도 문턱이 뒤를 막는다.

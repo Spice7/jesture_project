@@ -10,6 +10,7 @@ gestures.json 예:
   "actions": {
     "swipe_left": {"keys": ["alt", "tab"], "label": "Next window (Alt+Tab)"},
     "make_fist":  {"keys": ["win", "tab"], "label": "Task view (Win+Tab)"},
+    "finger_snap": {"keys": ["media_play_pause"], "label": "Play/Pause"},
     "no_gesture": null
   }
 }

@@ -11,7 +11,7 @@ REPORTS_DIR = ROOT / "reports"
 HAND_MODEL_PATH = MODELS_DIR / "hand_landmarker.task"   # JIN 에 커밋되어 있음
 
 # ── 라벨 (수집기와 동일. 순서 = 모델 출력 인덱스. 추가는 맨 뒤에만) ─────────
-LABELS = ["swipe_left", "make_fist", "no_gesture"]
+LABELS = ["swipe_left", "make_fist", "no_gesture", "finger_snap"]   # 09-07 finger_snap 추가(엄지+중지 튕기기)
 LABEL_TO_IDX = {name: i for i, name in enumerate(LABELS)}
 
 # ── 좌표 규약 ─────────────────────────────────────────────────────────

@@ -128,7 +128,8 @@ def split_by_person(samples: list[Sample], val_persons=None, test_persons=None, 
     return train, val, test
 
 
-REVERSE_SETS = {"none": (), "fist": ("make_fist",), "both": ("make_fist", "swipe_left")}
+REVERSE_SETS = {"none": (), "fist": ("make_fist",), "both": ("make_fist", "swipe_left"),
+                "all": ("make_fist", "swipe_left", "finger_snap")}   # all: 스냅 되감기(중지가 엄지로 돌아감)도 no_gesture
 
 
 def reversed_negatives(samples: list[Sample], labels=("make_fist",), fraction: float = 0.5,
@@ -150,6 +151,51 @@ def reversed_negatives(samples: list[Sample], labels=("make_fist",), fraction: f
             meta = dict(s.meta) if isinstance(s.meta, dict) else {}
             meta["reversed_from"] = lab
             out.append(Sample(s.path.with_name(s.path.stem + f"_rev.npz"), s.person, "no_gesture", lm, ts, meta))
+    return out
+
+
+LOWER_LABELS = ("make_fist", "finger_snap")
+
+
+def lowering_negatives(samples: list[Sample], labels=LOWER_LABELS, fraction: float = 0.5,
+                       fps: float = 30.0, seed=config.RANDOM_SEED) -> list[Sample]:
+    """명령이 끝난 손 모양(주먹, 튕긴 손) 그대로 손을 내리는 동작을 합성해 no_gesture 학습 샘플로 만든다 (학습 세트에만).
+
+    09-07 웹캠 실측: 스냅·주먹 실행 뒤 손을 내리는 구간을 모델이 같은 명령으로 1.00 확신 → 상식검사가 아슬아슬하게 막음.
+    학습 데이터에 "명령 자세로 내리기"가 없어서다. 클립 끝 자세를 0.2~0.4초 유지한 뒤 0.4~0.7초 동안 아래(±40°)로
+    손바닥 3~5개만큼 내리며, 손가락은 시작 자세 쪽으로 0~30% 풀어준다(실제로 내리면서 손이 느슨해지는 것을 흉내)."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for lab in labels:
+        pool = [s for s in samples if s.label == lab]
+        k = int(round(len(pool) * fraction))
+        for i in rng.permutation(len(pool))[:k]:
+            s = pool[i]
+            det = ~np.isnan(s.landmarks[:, 0, 0])
+            if det.sum() < 2:
+                continue
+            first, last = s.landmarks[det][0], s.landmarks[det][-1]
+            palm = float(np.linalg.norm(last[9, :2] - last[0, :2]))
+            n_hold = int(fps * rng.uniform(0.2, 0.4))
+            n_move = int(fps * rng.uniform(0.4, 0.7))
+            total = palm * rng.uniform(3.0, 5.0)                      # 총 이동량 (손바닥 단위)
+            ang = np.deg2rad(90 + rng.uniform(-40, 40))               # 아래 방향 ±40°
+            step = np.array([np.cos(ang), np.sin(ang)], np.float32) * (total / max(n_move, 1))
+            relax = rng.uniform(0.0, 0.3)                             # 손가락 풀림 비율
+            frames = [last + rng.normal(0, 0.0005, last.shape).astype(np.float32) for _ in range(n_hold)]
+            cur = last.copy()
+            for j in range(n_move):
+                cur = cur.copy()
+                cur[:, :2] += step
+                t = (j + 1) / n_move
+                shape = last * (1 - relax * t) + first * (relax * t)   # 손 모양만 서서히 풀림
+                cur = shape + (cur[0] - shape[0])                      # 손목 위치는 이동 경로 유지
+                frames.append(cur + rng.normal(0, 0.0005, cur.shape).astype(np.float32))
+            lm = np.stack(frames).astype(np.float32)
+            ts = (np.arange(len(lm)) * 1000.0 / fps).astype(np.int64)
+            meta = dict(s.meta) if isinstance(s.meta, dict) else {}
+            meta["lowered_from"] = lab
+            out.append(Sample(s.path.with_name(s.path.stem + "_low.npz"), s.person, "no_gesture", lm, ts, meta))
     return out
 
 
