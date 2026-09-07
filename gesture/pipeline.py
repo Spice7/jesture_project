@@ -3,8 +3,15 @@
 scripts/realtime_demo.py 의 루프에서 화면 그리기를 뺀 것. 시연 UI(scripts/gesture_app.py)가 쓴다.
 realtime_demo.py 는 검증된 그대로 두었고, 판정 규칙·기준값은 여기서도 동일하다.
 
-게이트(YOLO 정적 포즈 ON/OFF)는 아직 연결 전이다. YOLO 팀 코드가 오면 `Pipeline.set_gate(True/False)` 만 불러 주면
-된다. 게이트가 닫혀 있으면 판정은 기록만 하고 키는 누르지 않는다.
+YOLO 정적 포즈 게이트 (09-07 오후 연결, gesture/gate.py + 팀 코드 gesture_model/):
+  손바닥 3초 → 게이트 열림(동적 제스처 실행 시작) / 주먹 3초 → 닫힘 / 세 번째 포즈 3초 → "cancel" 에 매핑된 키.
+  게이트가 닫혀 있으면 동적 제스처는 판정·기록만 하고 키는 누르지 않는다.
+  gestures.json 의 "gate" 로 켜고 끈다. 모델 파일이 없으면 게이트 없이(항상 열림) 돈다.
+
+주먹 명령 vs 주먹 3초(게이트 닫기) 충돌:
+  게이트가 연결돼 있으면 make_fist 실행을 FIST_DEFER_SEC 만큼 미룬다. 그때까지 손이 계속 주먹이면
+  "게이트를 닫으려는 주먹" 으로 보고 버리고, 손을 내렸거나 폈으면 실행한다.
+  → 주먹 명령 습관: 쥐고 0.3초 멈춘 뒤 바로 내리기 (0.8초 안).
 """
 from __future__ import annotations
 
@@ -26,6 +33,8 @@ REALTIME_MIN_DET = 0.5
 REALTIME_MAX_GAP = 12
 TRACK_CONF = 0.3
 PRESENCE_CONF = 0.4
+FIST_DEFER_SEC = 0.8        # 게이트 연결 시 주먹 명령 유예
+FIST_STILL_CLOSED_EXT = 1.1  # 손가락 펴짐 평균이 이 아래면 아직 주먹 (편 손 1.6~2.4, 주먹 0.6~0.9)
 
 
 class SessionLog:
@@ -50,14 +59,14 @@ class SessionLog:
 
 @dataclass
 class Event:
-    """구간 하나가 끝났을 때의 결과 (UI 표시용)."""
+    """구간 하나가 끝났을 때(또는 게이트 포즈가 확정됐을 때)의 결과 (UI 표시용)."""
     time: float                      # perf_counter
-    label: str                       # 판정 라벨 ("skipped" 면 품질 미달)
+    label: str                       # 판정 라벨. "skipped"=품질 미달, "gate_open"/"gate_close"=게이트, "cancel"=정적 명령
     confidence: float
     duration_sec: float
     probs: np.ndarray | None
     executed: bool                   # 키를 실제로 눌렀거나(LIVE) 누를 뻔했나(DRY)
-    message: str                     # 사람이 읽는 한 줄 (GUARD/cooldown/ignored/[DRY]/[FIRE]/GATE)
+    message: str                     # 사람이 읽는 한 줄 (GUARD/cooldown/ignored/[DRY]/[FIRE]/GATE/PENDING)
     early: bool = False
 
 
@@ -77,6 +86,15 @@ class FrameState:
     last_event: Event | None = None
     n_executed: int = 0
     events: list[Event] = field(default_factory=list)
+    # 게이트 (YOLO)
+    gate_connected: bool = False
+    gate_open: bool = True
+    gate_error: str = ""
+    pose: str | None = None          # 지금 보이는 정적 포즈 (start/stop/cancel)
+    pose_hold: float = 0.0
+    pose_needed: float = 3.0
+    pose_conf: float = 0.0
+    pending_label: str | None = None  # 유예 중인 명령 (make_fist)
 
 
 def gap_runs(det: np.ndarray) -> list[tuple[int, int]]:
@@ -91,11 +109,19 @@ def gap_runs(det: np.ndarray) -> list[tuple[int, int]]:
     return runs
 
 
+def finger_extension(lm: np.ndarray) -> float:
+    """한 프레임의 손가락 펴짐(네 손끝-손목 평균 / 손바닥). 주먹 0.6~0.9, 편 손 1.6~2.4."""
+    palm = float(np.linalg.norm(lm[9, :2] - lm[0, :2]))
+    if palm < 1e-4:
+        return 0.0
+    return float(np.linalg.norm(lm[[8, 12, 16, 20], :2] - lm[0, :2], axis=1).mean() / palm)
+
+
 class Pipeline:
     """한 프레임씩 `step(frame)` 을 부르면 된다. 스레드 안전: `state` 는 lock 으로 복사해 읽는다."""
 
     def __init__(self, model_file: Path | None = None, gestures_path: Path | None = None,
-                 dry_run: bool = True, log_echo: bool = False):
+                 dry_run: bool = True, log_echo: bool = False, gate=None, use_gate: bool | None = None):
         self.clf = GestureClassifier(model_file=model_file) if model_file else GestureClassifier()
         self.mapper = ActionMapper(gestures_path) if gestures_path else ActionMapper()
         self.mapper.dry_run = dry_run
@@ -104,17 +130,38 @@ class Pipeline:
         self.tracker = HandTracker(track_conf=TRACK_CONF, presence_conf=PRESENCE_CONF)
         self._lock = threading.Lock()
         self.state = FrameState()
-        self.gate_open = True            # YOLO 게이트 자리. 연결 전에는 항상 열림.
-        self.gate_connected = False      # YOLO 팀 코드가 set_gate 를 부르기 시작하면 True
         self._t0 = time.perf_counter()
         self._fps_n, self._fps_t = 0, self._t0
+        self._pending = None            # (label, conf, seg_start, deadline)
+        self._last_lm = None
+
+        # ── 게이트 ──
+        self.gate = gate                # StaticGate / FakeGate / None
+        self.gate_error = ""
+        cfg = self.mapper.gate
+        if self.gate is None and (cfg.get("enabled", True) if use_gate is None else use_gate):
+            try:
+                from .gate import StaticGate
+                self.gate = StaticGate(cfg.get("model"), confidence=float(cfg.get("confidence", 0.7)),
+                                       hold_seconds=float(cfg.get("hold_seconds", 3.0)))
+            except Exception as e:      # 모델 파일 없음, ultralytics 문제 등 → 게이트 없이 진행
+                self.gate_error = f"{type(e).__name__}: {e}"
+                self.gate = None
+        self.gate_connected = self.gate is not None
+        self.gate_open = not self.gate_connected    # 게이트가 있으면 손바닥 3초로 열어야 시작
+
         self.log.write(f"모델 {self.clf.arch} | 라벨 {self.clf.labels} | 매핑: "
-                       + ", ".join(f"{k}->{self.mapper.describe(k)}" for k in self.clf.labels))
+                       + ", ".join(f"{k}->{self.mapper.describe(k)}" for k in list(self.clf.labels) + ["cancel"]))
         s = self.seg
         self.log.write(f"segmenter on=max({s.on_thresh},{s.on_over_floor}*floor) off=max({s.off_thresh},{s.off_over_floor}*floor) "
                        f"on_frames={s.on_frames} off_frames={s.off_frames} min_sec={s.min_sec} "
                        f"| quality det>={REALTIME_MIN_DET} gap<={REALTIME_MAX_GAP} | track_conf={TRACK_CONF} presence={PRESENCE_CONF} "
                        f"| min_conf={self.mapper.min_confidence} | mode={'DRY' if self.mapper.dry_run else 'LIVE'}")
+        if self.gate is not None:
+            self.log.write(f"GATE  YOLO {getattr(self.gate, 'path', '?')} hold={self.gate.hold_seconds}s "
+                           f"{'GPU' if getattr(self.gate, 'on_gpu', False) else 'CPU'} | 시작=닫힘(손바닥 {self.gate.hold_seconds:.0f}초로 열기)")
+        else:
+            self.log.write(f"GATE  없음(항상 열림){' | ' + self.gate_error if self.gate_error else ''}")
 
     # ── 외부에서 바꾸는 것 ──
     @property
@@ -128,14 +175,24 @@ class Pipeline:
         self.log.write("MODE  " + ("DRY RUN (연습)" if dry else "LIVE (실제 키 입력)"))
 
     def set_gate(self, is_open: bool, source: str = "yolo"):
-        """YOLO 게이트 연결 지점. 닫히면 명령을 실행하지 않는다."""
-        self.gate_connected = self.gate_connected or source == "yolo"
+        """게이트 열기/닫기. YOLO 가 부르거나(source='yolo') UI 수동 테스트(source='manual')."""
         if is_open != self.gate_open:
             self.gate_open = is_open
             self.log.write(f"GATE  {'OPEN' if is_open else 'CLOSED'} ({source})")
+        if not is_open:
+            self._pending = None
+            self.seg.reset()
+
+    def set_gate_hold(self, sec: float):
+        if self.gate is not None:
+            self.gate.set_hold_seconds(sec)
+        self.mapper.gate["hold_seconds"] = float(sec)
 
     def reset(self):
         self.seg.reset()
+        self._pending = None
+        if self.gate is not None:
+            self.gate.reset()
         self.log.write("RESET")
 
     def reload_mapping(self):
@@ -147,14 +204,33 @@ class Pipeline:
         now = time.perf_counter()
         ts_ms = (now - self._t0) * 1000.0
         lm, hand = self.tracker.process(frame_bgr, int(ts_ms))
+        self._last_lm = lm
         seg = self.seg
+        events: list[Event] = []
+
+        # 1) 정적 포즈 게이트
+        gs = None
+        if self.gate is not None:
+            try:
+                gs = self.gate.process(frame_bgr)
+            except Exception as e:
+                self.gate_error = f"{type(e).__name__}: {e}"
+                self.log.write(f"GATE  error {self.gate_error} → 게이트 끔")
+                self.gate = None; self.gate_connected = False; self.gate_open = True
+            if gs is not None and gs.confirmed:
+                events.append(self._on_pose(gs.confirmed, gs.confidence, now))
+
+        # 2) 동적 제스처
         segment = seg.push(lm, ts_ms, hand)
-        event = None
         if seg.last_drop:
             self.log.write(f"DROP  {seg.last_drop}")
             seg.last_drop = None
         if segment is not None:
-            event = self._judge(segment, now)
+            events.append(self._judge(segment, now))
+
+        # 3) 유예 중인 주먹 명령
+        if self._pending is not None and now >= self._pending[3]:
+            events.append(self._resolve_pending(now))
 
         self._fps_n += 1
         if now - self._fps_t >= 1.0:
@@ -173,13 +249,19 @@ class Pipeline:
             if fps is not None:
                 st.fps = fps
             st.in_cooldown = self.mapper.in_cooldown(now)
-            if event is not None:
+            st.gate_connected, st.gate_open, st.gate_error = self.gate_connected, self.gate_open, self.gate_error
+            if gs is not None:
+                st.pose, st.pose_hold, st.pose_needed, st.pose_conf = gs.pose, gs.hold, gs.hold_needed, gs.confidence
+            else:
+                st.pose, st.pose_hold, st.pose_conf = None, 0.0, 0.0
+            st.pending_label = self._pending[0] if self._pending else None
+            for event in events:
                 st.last_event = event
                 st.events.append(event)
                 if event.executed:
                     st.n_executed += 1
-                if len(st.events) > 500:
-                    del st.events[:250]
+            if len(st.events) > 500:
+                del st.events[:250]
         return st
 
     def snapshot(self) -> FrameState:
@@ -188,8 +270,45 @@ class Pipeline:
             copy = FrameState(landmarks=st.landmarks, hand=st.hand, seg_state=st.seg_state, active_sec=st.active_sec,
                               energy=st.energy, on_level=st.on_level, off_level=st.off_level, floor=st.floor,
                               fps=st.fps, in_cooldown=st.in_cooldown, last_event=st.last_event,
-                              n_executed=st.n_executed, events=list(st.events))
+                              n_executed=st.n_executed, events=list(st.events),
+                              gate_connected=st.gate_connected, gate_open=st.gate_open, gate_error=st.gate_error,
+                              pose=st.pose, pose_hold=st.pose_hold, pose_needed=st.pose_needed, pose_conf=st.pose_conf,
+                              pending_label=st.pending_label)
         return copy
+
+    # ── 내부 ──
+    def _on_pose(self, pose: str, conf: float, now: float) -> Event:
+        """YOLO 포즈가 3초 유지되어 확정됐을 때."""
+        if pose == "start":
+            self.set_gate(True, "yolo")
+            self.log.write(f"POSE  start {conf:.2f} -> 게이트 열림")
+            return Event(now, "gate_open", conf, 0.0, None, False, f"손바닥 {self.gate.hold_seconds:.0f}초 → 인식 시작")
+        if pose == "stop":
+            self.set_gate(False, "yolo")
+            self.log.write(f"POSE  stop {conf:.2f} -> 게이트 닫힘")
+            return Event(now, "gate_close", conf, 0.0, None, False, f"주먹 {self.gate.hold_seconds:.0f}초 → 인식 끝")
+        # cancel = 정적 명령
+        if not self.gate_open:
+            msg = "GATE closed -> cancel ignored"
+        else:
+            msg = self.mapper.handle("cancel", conf, now)
+        executed = msg.startswith("[DRY]") or msg.startswith("[FIRE]")
+        self.log.write(f"POSE  cancel {conf:.2f} -> {msg}")
+        return Event(now, "cancel", conf, 0.0, None, executed, msg)
+
+    def _resolve_pending(self, now: float) -> Event:
+        label, conf, seg_start, _deadline = self._pending
+        self._pending = None
+        lm = self._last_lm
+        still_fist = lm is not None and finger_extension(lm) < FIST_STILL_CLOSED_EXT
+        if still_fist:
+            msg = f"held fist {FIST_DEFER_SEC}s -> treated as gate-stop intent, ignored"
+            executed = False
+        else:
+            msg = self.mapper.handle(label, conf, now, start=seg_start)
+            executed = msg.startswith("[DRY]") or msg.startswith("[FIRE]")
+        self.log.write(f"DEFER {label} -> {msg}")
+        return Event(now, label, conf, 0.0, None, executed, msg)
 
     def _judge(self, segment, now: float) -> Event:
         feats = preprocess.sample_to_features(segment.landmarks, segment.timestamps_ms,
@@ -217,6 +336,11 @@ class Pipeline:
             msg = f"GUARD {reason} -> ignored"
         elif label != "no_gesture" and not self.gate_open:
             msg = f"GATE closed -> {label} ignored"
+        elif (label == "make_fist" and self.gate_connected and conf >= self.mapper.min_confidence
+              and not self.mapper.in_cooldown(seg_start)):
+            # 게이트 닫기용 주먹(3초 유지)과 구분하려고 잠깐 미룬다
+            self._pending = (label, float(conf), seg_start, now + FIST_DEFER_SEC)
+            msg = f"PENDING {FIST_DEFER_SEC}s (fist held? -> gate stop)"
         else:
             msg = self.mapper.handle(label, conf, now, start=seg_start)
             executed = msg.startswith("[DRY]") or msg.startswith("[FIRE]")

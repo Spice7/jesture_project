@@ -1,4 +1,51 @@
-# 제스처 데이터 수집 및 제출 안내
+# 시연 프로그램 사용 안내 (`hwangsoon` 브랜치, 2026-09-07)
+
+손 제스처로 PC 를 제어하는 시연 프로그램입니다. 웹캠 → MediaPipe 손 관절 → 동작 구간 감지(규칙) → GRU 판정 → 상식 검사(규칙) → 키 입력. 정적 포즈(YOLO)로 인식을 켜고 끕니다(손바닥 = 시작, 주먹 = 끝, 세 번째 포즈 = 단축키 하나).
+
+## 다른 팀원이 실행하려면
+
+**1. 준비물**: Windows 10/11, Python 3.12, [uv](https://docs.astral.sh/uv/), 웹캠. NVIDIA GPU 는 있으면 YOLO 가 빨라지고 없어도 CPU 로 동작합니다.
+
+**2. 코드 받기와 설치** (PowerShell, 처음 한 번. 약 3GB 내려받음)
+
+```powershell
+git clone -b hwangsoon https://github.com/Spice7/jesture_project.git
+cd jesture_project
+py -3.12 -m pip install uv      # uv 가 이미 있으면 생략
+uv sync --locked
+```
+
+**3. git 에 없는 파일 3개를 팀 구글드라이브에서 받아 `models/` 폴더에 넣기** (용량 때문에 git 에서 제외)
+
+| 파일 | 역할 | 드라이브 위치 |
+|---|---|---|
+| `models/gru_gesture.pt` | 동적 제스처 모델 (GRU, 4클래스) | 모델 폴더 |
+| `models/gru_gesture.json` | 위 모델의 라벨·설정 | 모델 폴더 |
+| `models/yolo_gate.pt` | 정적 포즈 모델 (YOLOv8n, start/stop/cancel) | `dataset_yolo/lkh/v2/best.pt` 를 이 이름으로 복사 |
+
+`models/hand_landmarker.task` 는 git 에 들어 있어 따로 받을 필요가 없습니다. 데이터셋(`dataset/*.npz`)은 실행에 필요 없고 학습·재생 시험에만 씁니다.
+
+**4. 실행**
+
+```powershell
+uv run python scripts/gesture_app.py          # 연습 모드(키 안 누름)로 시작. 사이드바 '도움말' 부터 보세요
+uv run python scripts/gesture_app.py --live   # 처음부터 실제 키 입력
+```
+
+첫 화면에서 ① 사이드바 아래 "실제 키 입력" 스위치 → ② 손바닥을 카메라에 2초 → ③ 제스처. 키 매핑은 "키 매핑" 페이지에서 바꾸고 바로 저장됩니다(`gestures.json`).
+
+**5. 더 읽을 것**
+
+- 사용 설명서: [docs/user_guide.md](docs/user_guide.md) (제스처 하는 법, 문제 해결, FAQ)
+- 프로그램 구조와 YOLO 게이트: [docs/gesture_app.md](docs/gesture_app.md)
+- 모델 성능: [docs/model_metrics_0907.md](docs/model_metrics_0907.md), GRU vs LSTM 비교: [reports/gru_vs_lstm_0907/summary.md](reports/gru_vs_lstm_0907/summary.md)
+- 학습·평가 절차: [docs/team_conventions.md](docs/team_conventions.md)
+
+카메라는 한 프로그램만 쓸 수 있습니다. 수집기나 다른 데모가 켜져 있으면 화면이 깨집니다.
+
+---
+
+# 제스처 데이터 수집 및 제출 안내 (JIN 브랜치 원문)
 
 팀원은 `JIN` 브랜치의 수집 프로그램을 받아 자신의 브랜치에서 데이터를 수집하고, 자기 NPZ 파일만 제출합니다. 촬영 자세와 라벨별 동작은 [제스처 수집 안내](programs/README.md)를 따릅니다.
 

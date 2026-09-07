@@ -137,9 +137,16 @@ class ActionMapper:
         self.min_confidence = float(cfg.get("min_confidence", 0.8))
         self.cooldown_sec = float(cfg.get("cooldown_sec", 1.0))
         self.actions: dict[str, dict | None] = cfg.get("actions", {})
+        # YOLO 정적 포즈 게이트 설정 (09-07 오후 연결). 없으면 기본값
+        self.gate: dict = {"enabled": True, "model": "models/yolo_gate.pt", "confidence": 0.7, "hold_seconds": 3.0}
+        self.gate.update(cfg.get("gate") or {})
+        self._extra = {k: v for k, v in cfg.items() if k not in ("min_confidence", "cooldown_sec", "actions", "gate")}
 
     def to_config(self) -> dict:
-        return {"min_confidence": self.min_confidence, "cooldown_sec": self.cooldown_sec, "actions": self.actions}
+        out = dict(self._extra)
+        out.update({"min_confidence": self.min_confidence, "cooldown_sec": self.cooldown_sec, "actions": self.actions,
+                    "gate": self.gate})
+        return out
 
     def save(self, path: Path | None = None):
         p = Path(path) if path else self.path
