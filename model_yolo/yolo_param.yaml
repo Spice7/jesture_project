@@ -14,10 +14,10 @@ train:
   device: null                # null: auto, "0": first GPU, cpu: CPU only
   workers: 8
   patience: 20
-  optimizer: auto
-  lr0: 0.01
+  optimizer: AdamW
+  lr0: 0.001
   lrf: 0.01
-  momentum: 0.937
+  momentum: 0.9
   weight_decay: 0.0005
   warmup_epochs: 3.0
   pretrained: true

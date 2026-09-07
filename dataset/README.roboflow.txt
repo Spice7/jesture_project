@@ -1,8 +1,8 @@
 
-start/stop/cancle - v1 2026-09-06 10:30pm
+start/stop/cancle - v2 2026-09-07 12:05pm
 ==============================
 
-This dataset was exported via roboflow.com on September 6, 2026 at 1:36 PM GMT
+This dataset was exported via roboflow.com on September 7, 2026 at 3:06 AM GMT
 
 Roboflow is an end-to-end computer vision platform that helps you
 * collaborate with your team on computer vision projects
@@ -17,17 +17,16 @@ visit https://github.com/roboflow/notebooks
 
 To find over 100k other datasets and pre-trained models, visit https://universe.roboflow.com
 
-The dataset includes 4741 images.
+The dataset includes 4561 images.
 Start-stop-cancle are annotated in YOLOv8 format.
 
 The following pre-processing was applied to each image:
 * Auto-orientation of pixel data (with EXIF-orientation stripping)
 * Resize to 640x640 (Stretch)
 
-The following augmentation was applied to create 3 versions of each source image:
+The following augmentation was applied to create 2 versions of each source image:
 * 50% probability of horizontal flip
 * 50% probability of vertical flip
 * Random Gaussian blur of between 0 and 1.2 pixels
-* Salt and pepper noise was applied to 1.73 percent of pixels
 
 
