@@ -87,6 +87,31 @@ class MotionSegmenter:
         self.early_snap = "finger_snap" in config.LABELS
         self.early_snap_frames = 4          # 09-07 스냅 50개 실측: 3f 는 46/50, 4f 부터 49/50(조기판정 없을 때와 동일), 판정 -293ms
         self._released_count = 0
+        # 09-07 오후: 손목이 크게 움직인 구간(=스와이프)에서는 조기 판정을 하지 않는다. 스와이프 끝에서 손이 기울면 2D 에서
+        # 손가락이 접힌 듯 보여 주먹 규칙이 구간을 중간에 끊었다(실행된 스와이프 26개 중 13개가 EARLY, 잘린 구간은
+        # 상식검사 '손 안 펴짐 1.00~1.09' 에 걸림). 구간 내 손목 최대 이동(손바닥 단위): 스와이프 p5 1.57, 주먹 p95 0.43, 스냅 p95 0.67.
+        self.early_max_wrist_move = 1.0
+        # ── 스와이프 조기 판정 (09-07 오후) ─────────────────────────────────
+        # 웹캠 실측: 스와이프 뒤 손을 바로 되돌리면 "가기+돌아오기"가 한 구간(1.5~2.4s)이 되어 순이동≈0 → 상식검사 차단(12건 전부).
+        # 손목이 swipe_peak 이상 나아간 뒤 swipe_reverse 만큼 되돌아오면, 가장 멀리 간 지점 직후에서 구간을 닫는다.
+        # 되돌리는 동작은 다음 구간이 되고 모델이 복귀(no_gesture)로 배운 것이다.
+        self.early_swipe = True
+        self.swipe_peak = 1.5               # 손바닥 단위. 스와이프 순이동 p5 1.47, 주먹/스냅 최대 이동 p95 0.43/0.67.
+                                            # 1.2~1.8 어디든 결과 동일(바로 되돌리기 118/120, no_gesture 307 중 새는 것 1개 = 옆으로 갔다 오는 클립)
+        self.swipe_reverse = 0.5            # 최고점에서 이만큼 되돌아오면 반전으로 본다
+        self.swipe_tail = 3                 # 최고점 뒤에 남길 프레임 수 (학습 클립의 짧은 멈춤을 흉내)
+        self._peak_disp = 0.0
+        self._peak_rel = -1
+        # (A) 동작 중 손을 놓치면(빠른 스와이프의 모션 블러) 바로 닫지 않고 lost_frames 까지 기다린다. 다시 잡히면 같은 구간.
+        #     09-07 11:48 실측: DROP 10건 중 8건이 "0.32s, 검출 0" = 출발 직후 추적 끊김 → 짧고 빠른 스와이프가 통째로 버려짐.
+        #     이미 스와이프가 완성된 구간(최고 이동 ≥ swipe_peak)이면 예전처럼 off_frames 만 기다린다(손이 화면 밖으로 나간 경우).
+        self.lost_frames = 12               # = 실시간 품질 기준 max_gap 12 (보간 가능한 최대 공백)
+        self._lost_count = 0
+        # (B) 감속 종료: 손목이 swipe_peak 이상 나아간 뒤 속도가 최고 속도의 decel_ratio 아래로 decel_frames 연속이면 멈춤을 안 기다리고 닫는다.
+        #     11:48 실측: 스와이프 30건 중 18건이 '정지 8프레임' 으로 닫혀 끝 자세를 유지해야 했음.
+        self.decel_ratio = 0.3
+        self.decel_frames = 3
+        self._peak_speed = 0.0
         n = int(buffer_sec * fps_hint) + 10
         self._ts = deque(maxlen=n)
         self._lm = deque(maxlen=n)
@@ -159,11 +184,14 @@ class MotionSegmenter:
             # 손이 사라짐: 동작 중이었으면 끝난 것으로 처리 시도, 아니면 대기
             if self.state == "ACTIVE":
                 self._off_count += 1
-                if self._off_count >= self.off_frames:
+                self._lost_count += 1
+                limit = self.off_frames if self._peak_disp >= self.swipe_peak else self.lost_frames
+                if self._lost_count >= limit:
                     return self._finish()
             else:
                 self._on_count = 0
             return None
+        self._lost_count = 0
 
         if self.state == "IDLE":
             # 바닥값 갱신: 손이 보이고 동작 시작 후보가 아닐 때만 (동작 자체가 바닥값을 올리지 않게)
@@ -193,10 +221,40 @@ class MotionSegmenter:
         # ACTIVE
         self._peak = max(self._peak, e)
         self._palms.append(float(np.linalg.norm(lm[MIDDLE_MCP, :2] - lm[WRIST, :2])))
-        if self.early_fist:
+        early_allowed = self.early_fist or self.early_snap
+        if early_allowed:
             from . import sanity   # 순환 import 방지용 지연 import
             s = self._rel(self._start_idx)
             window = np.stack(list(self._lm)[s:], axis=0)
+            wdet = ~np.isnan(window[:, 0, 0])
+            palm_now = float(np.linalg.norm(lm[MIDDLE_MCP, :2] - lm[WRIST, :2])) or 1e-4
+            wrist_move = float(np.max(np.linalg.norm(window[wdet, 0, :2] - window[wdet][0, 0, :2], axis=1))) / palm_now
+            if wrist_move > self.early_max_wrist_move:      # 손목이 크게 움직임 = 스와이프 → 주먹/스냅 조기 판정은 끔
+                early_allowed = False
+                self._closed_count = self._released_count = 0
+            if self.early_swipe and wdet.sum() >= 2:
+                disp = np.linalg.norm(window[wdet, 0, :2] - window[wdet][0, 0, :2], axis=1) / palm_now
+                idx_det = np.where(wdet)[0]
+                k = int(np.argmax(disp))
+                if disp[k] > self._peak_disp:
+                    self._peak_disp, self._peak_rel = float(disp[k]), int(idx_det[k])
+                if self._peak_disp >= self.swipe_peak and self._peak_disp - float(disp[-1]) >= self.swipe_reverse:
+                    self.last_early = True
+                    self._need_rest = True
+                    self._rest_count = 0
+                    return self._finish(end_rel=self._peak_rel + 1 + self.swipe_tail)
+                # (B) 감속 종료
+                w = window[wdet, 0, :2]
+                if len(w) >= self.decel_frames + 2:
+                    speed = np.linalg.norm(np.diff(w, axis=0), axis=1) / palm_now
+                    self._peak_speed = max(self._peak_speed, float(speed.max()))
+                    if (self._peak_disp >= self.swipe_peak and self._peak_speed > 0
+                            and bool(np.all(speed[-self.decel_frames:] < self.decel_ratio * self._peak_speed))):
+                        self.last_early = True
+                        self._need_rest = True
+                        self._rest_count = 0
+                        return self._finish()
+        if early_allowed and self.early_fist:
             if sanity.fist_closed_now(window):
                 self._closed_count += 1
                 if self._closed_count >= self.early_fist_frames:
@@ -207,10 +265,7 @@ class MotionSegmenter:
                     return self._finish()
             else:
                 self._closed_count = 0
-        if self.early_snap:
-            from . import sanity
-            s = self._rel(self._start_idx)
-            window = np.stack(list(self._lm)[s:], axis=0)
+        if early_allowed and self.early_snap:
             if sanity.snap_released_now(window):
                 self._released_count += 1
                 if self._released_count >= self.early_snap_frames:
@@ -240,13 +295,18 @@ class MotionSegmenter:
         self._on_count = self._off_count = 0
         self._closed_count = 0
         self._released_count = 0
+        self._peak_disp, self._peak_rel = 0.0, -1
+        self._lost_count = 0
+        self._peak_speed = 0.0
         self._start_idx = None
 
-    def _finish(self) -> Segment | None:
+    def _finish(self, end_rel: int | None = None) -> Segment | None:
+        """end_rel: 구간 시작 기준 이 프레임 수까지만 잘라서 반환 (스와이프 조기 판정용). None 이면 지금까지 전부."""
         s = self._rel(self._start_idx)
-        ts = np.array(list(self._ts)[s:], dtype=np.float64)
-        lm = np.stack(list(self._lm)[s:], axis=0)
-        hands_all = list(self._hand)[s:]
+        e = None if end_rel is None else s + end_rel
+        ts = np.array(list(self._ts)[s:e], dtype=np.float64)
+        lm = np.stack(list(self._lm)[s:e], axis=0)
+        hands_all = list(self._hand)[s:e]
         peak, palms = self._peak, self._palms
         self._abort()
         det = ~np.isnan(lm[:, 0, 0])

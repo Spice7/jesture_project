@@ -99,6 +99,8 @@ def main():
     ap.add_argument("--reverse-frac", type=float, default=0.5, help="되감을 클립 비율")
     ap.add_argument("--lower-neg", type=float, default=0.0,
                     help="주먹·스냅 클립의 끝 자세로 '손 내리기'를 합성해 no_gesture 로 추가하는 비율 (예 0.5). 09-07 내리기 오인 대책")
+    ap.add_argument("--short-swipe", type=float, default=0.0,
+                    help="스와이프 클립의 이동 폭을 0.4~0.7배로 줄인 '짧은 스와이프'를 추가하는 비율 (예 0.5). 09-07 짧은 스와이프 대책")
     ap.add_argument("--out-dir", default=str(config.REPORTS_DIR))
     args = ap.parse_args()
     seeds = args.seed_list if args.seed_list else list(range(args.seeds))
@@ -123,6 +125,10 @@ def main():
         low = dataset.lowering_negatives(train, fraction=args.lower_neg)
         train = train + low
         print(f"내리기 no_gesture 추가: {len(low)}개 (비율 {args.lower_neg}) → train={len(train)}")
+    if args.short_swipe > 0:
+        sh = dataset.shortened_swipes(train, fraction=args.short_swipe)
+        train = train + sh
+        print(f"짧은 스와이프 추가: {len(sh)}개 (비율 {args.short_swipe}) → train={len(train)}")
     Xtr, ytr, _ = dataset.build_arrays(train, augment_times=args.augment)
     Xva, yva, _ = dataset.build_arrays(val)
     Xte, yte, _ = dataset.build_arrays(test)

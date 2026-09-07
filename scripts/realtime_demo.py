@@ -159,6 +159,12 @@ def main():
                     last_result = f"{label}  {conf:.2f}  ({segment.duration_sec:.2f}s)"
                     seg_start = t0 + segment.timestamps_ms[0] / 1000.0      # 구간 시작 시각 (cooldown 판단용)
                     ok, reason = sanity.check(label, segment.landmarks)
+                    if label == "no_gesture":
+                        # 진단용: 의도한 명령이 no_gesture 로 빠졌을 때 왜인지 볼 수 있게 이동량·펴짐·핀치를 남긴다 (09-07)
+                        b = sanity._basic(segment.landmarks)
+                        if b:
+                            reason = (f"dx {b['dx']:+.2f} dy {b['dy']:+.2f} ext {b['ext_mean']:.2f} "
+                                      f"pinch {b['pinch_min']:.2f}->{b['pinch_end']:.2f}")
                     if label != "no_gesture" and not ok:
                         last_msg = f"GUARD {reason} -> ignored"
                     else:

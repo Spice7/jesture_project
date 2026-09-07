@@ -199,6 +199,34 @@ def lowering_negatives(samples: list[Sample], labels=LOWER_LABELS, fraction: flo
     return out
 
 
+def shortened_swipes(samples: list[Sample], fraction: float = 0.5, scale=(0.4, 0.7),
+                     seed=config.RANDOM_SEED) -> list[Sample]:
+    """스와이프 클립의 손목 이동 폭만 scale 배로 줄인 '짧은 스와이프'를 만든다 (라벨 유지, 학습 세트에만).
+
+    09-07 11:48 실측: 수집 데이터의 스와이프는 순이동 최소 1.47(손바닥) 이라 0.5~0.6 짜리 짧은 스와이프는 모델이
+    본 적이 없어 no_gesture 로 빠졌다. 손 모양(손목 기준 상대 좌표)은 그대로 두고 손목 궤적만 시작점 기준으로 축소한다."""
+    rng = np.random.default_rng(seed)
+    out = []
+    pool = [s for s in samples if s.label == "swipe_left"]
+    k = int(round(len(pool) * fraction))
+    for i in rng.permutation(len(pool))[:k]:
+        s = pool[i]
+        lm = s.landmarks.copy()
+        det = ~np.isnan(lm[:, 0, 0])
+        if det.sum() < 2:
+            continue
+        f = float(rng.uniform(*scale))
+        w0 = lm[det][0, 0, :2]
+        wrist = lm[:, 0:1, :2]                         # (T,1,2)
+        shape = lm[:, :, :2] - wrist                   # 손목 기준 상대 좌표 (손 모양)
+        new_wrist = w0 + (wrist - w0) * f              # 궤적 축소
+        lm[:, :, :2] = shape + new_wrist
+        meta = dict(s.meta) if isinstance(s.meta, dict) else {}
+        meta["shortened"] = f
+        out.append(Sample(s.path.with_name(s.path.stem + "_short.npz"), s.person, s.label, lm, s.timestamps_ms, meta))
+    return out
+
+
 def build_arrays(samples: list[Sample], augment_times: int = 0, seed=config.RANDOM_SEED):
     """→ X (N, SEQ_LEN, FEATURE_DIM), y (N,) int, dropped(list[path])
     좌우반전 증강은 하지 않는다: swipe_left 를 뒤집으면 존재하지 않는 swipe_right 가 된다."""

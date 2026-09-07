@@ -16,8 +16,8 @@ FINGERTIPS = [4, 8, 12, 16, 20]
 FIST_RATIO = 0.7        # 끝-손목 거리가 30% 이상 줄면 주먹
 MIN_MOVE = 1.0          # 손바닥 크기 1배 이상 이동하면 스와이프
 EDGE = 5                # 시작/끝 판단에 쓰는 프레임 수
-SNAP_PINCH_END = 0.8    # 스냅: 뒤 1/3 엄지끝-중지끝 최대 거리 (09-07 p006 50개로 보정, sanity 와 동일)
-SNAP_RELEASE = 0.6      # 스냅: 뒤 1/3 최대 거리 - 구간 전체 최소 거리
+SNAP_PINCH_END = 0.5    # 스냅: 뒤 1/3 엄지끝-중지끝 최대 거리 (09-07 6명 450개로 보정, sanity 와 동일)
+SNAP_RELEASE = 0.3      # 스냅: 뒤 1/3 최대 거리 - 구간 전체 최소 거리
 SNAP_INDEX_OPEN = 1.0   # 스냅: 뒤 1/3 검지 펴짐 평균
 THUMB_TIP, MIDDLE_TIP = 4, 12
 
