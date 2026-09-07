@@ -8,9 +8,9 @@ gestures.json 예:
   "min_confidence": 0.8,
   "cooldown_sec": 1.0,
   "actions": {
-    "swipe_left": {"keys": ["alt", "tab"], "label": "Next window (Alt+Tab)"},
-    "make_fist":  {"keys": ["win", "tab"], "label": "Task view (Win+Tab)"},
-    "finger_snap": {"keys": ["media_play_pause"], "label": "Play/Pause"},
+    "swipe_left": {"keys": ["tab"], "label": "Switcher: next (Tab)"},
+    "make_fist":  {"keys": ["ctrl", "alt", "tab"], "label": "Open switcher (Ctrl+Alt+Tab)"},
+    "finger_snap": {"keys": ["enter"], "label": "Switcher: select (Enter)"},
     "no_gesture": null
   }
 }

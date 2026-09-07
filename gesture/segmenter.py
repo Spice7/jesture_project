@@ -10,6 +10,8 @@
 구간 끝의 미검출(손이 화면 밖) 프레임은 잘라낸 뒤 품질 검사 (꼬리 NaN 때문에 검출률 80% 미달로 버려지던 문제).
 3차 실측 후: off_frames 10→8 로 복귀 (주먹 뒤 짧은 멈춤에도 구간이 닫히게. 10 이면 주먹+내리기가 한 구간으로 합쳐져
 확신도가 떨어짐), max_sec 2.5→3.0 (화면 가장자리에서 진입해 쓸면 2.4초까지 나옴).
+09-07 웹캠 7차 후: min_sec 0.4→0.25. 실행된 스와이프 최소 길이가 정확히 0.40s 였고 0.32~0.40s 구간 18개가 크게 움직인
+채 DROP = 빠른 스와이프가 모델에 가기 전에 버려지고 있었다. 모델은 길이와 무관하게 30프레임으로 리샘플하므로 문턱만 낮춘다.
 
 상태:
   IDLE   손이 없거나 가만히 있음. 링버퍼에 프레임만 쌓음(pre-roll 용).
@@ -48,7 +50,7 @@ class MotionSegmenter:
     def __init__(self, fps_hint: float = 30.0,
                  on_thresh: float = 0.05, off_thresh: float = 0.025,
                  on_frames: int = 3, off_frames: int = 8,
-                 pre_roll_sec: float = 0.25, min_sec: float = 0.4, max_sec: float = 3.0,
+                 pre_roll_sec: float = 0.25, min_sec: float = 0.25, max_sec: float = 3.0,
                  buffer_sec: float = 4.0, smooth: int = 3, top_k: int = 8,
                  floor_alpha: float = 0.05, on_over_floor: float = 2.5, off_over_floor: float = 1.6):
         self.on_thresh, self.off_thresh = on_thresh, off_thresh

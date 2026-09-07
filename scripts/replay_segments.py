@@ -53,6 +53,9 @@ def main():
                     help="make_fist·finger_snap 클립 뒤에 '명령 자세 그대로 손 내리기' 0.5초를 합성해 붙임 (내리기 오인 재현. 09-07 스냅 포함)")
     ap.add_argument("--no-guard", action="store_true", help="상식 검사(sanity) 끄기 (효과 비교용)")
     ap.add_argument("--model", default=None, help="시험할 모델 .pt (기본 models/gru_gesture.pt). 새 모델을 시연 모델과 바꾸기 전 검증용")
+    ap.add_argument("--speed", type=float, default=1.0,
+                    help="모든 클립을 이 배속으로 빨리 재생 (프레임 솎아내기). 빠른 스와이프 흉내. 예 2, 3")
+    ap.add_argument("--min-sec", type=float, default=None, help="감지기 최소 구간 길이(초). 기본은 segmenter 기본값")
     ap.add_argument("--noise-rel", type=float, default=0.0,
                     help="모든 프레임에 손바닥 크기 × 이 값의 좌표 잡음을 더함 (먼 거리 손의 떨림 흉내). 예 0.02")
     args = ap.parse_args()
@@ -74,7 +77,7 @@ def main():
     clf = GestureClassifier(model_file=args.model) if args.model else GestureClassifier()
     print(f"모델: {args.model or '(기본) models/gru_gesture.pt'} | 라벨 {clf.labels}")
     mapper = ActionMapper(dry_run=True)
-    seg = MotionSegmenter(fps_hint=args.fps)
+    seg = MotionSegmenter(fps_hint=args.fps, **({"min_sec": args.min_sec} if args.min_sec is not None else {}))
     dt = 1000.0 / args.fps
 
     t = 0.0
@@ -104,6 +107,11 @@ def main():
     for s in picked:
         total[s.label] += 1
         lm_seq = s.landmarks
+        if args.speed != 1.0:
+            # 배속: 프레임을 균등하게 솎아 같은 fps 로 흘림 → 동작이 speed 배 빨라짐 (미검출 프레임 패턴은 대략 유지)
+            n_new = max(4, int(round(len(lm_seq) / args.speed)))
+            idx = np.round(np.linspace(0, len(lm_seq) - 1, n_new)).astype(int)
+            lm_seq = lm_seq[idx]
         # 클립 시작 자세로 0.7초 정지: 손이 "다음 시작 위치에 이미 놓여 있는" 상태. (이걸 안 하면 이전 클립 자세에서
         # 순간이동한 프레임이 pre-roll 에 섞여 손목 이동량이 엉뚱하게 계산된다 — 실제 카메라에는 없는 현상)
         first_pose = lm_seq[~np.isnan(lm_seq[:, 0, 0])][0]

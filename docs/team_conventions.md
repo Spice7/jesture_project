@@ -84,7 +84,7 @@ SPACE 시작 → 동작 → SPACE 종료. 수집기 기준: 0.6~2.5초, 20프레
 - 1인당 30개 이상. 양은 make_fist 와 비슷하게.
 
 코드에서 finger_snap 에 걸린 곳: `config.LABELS`(맨 뒤), `sanity.py`(끝에서 엄지끝-중지끝 ≥1.2 & 증가량 ≥0.6 & 검지 펴짐 ≥1.0. p006 10개로 보정, 스냅 10/10 통과·no_gesture 누출 6/157·주먹 0), `baseline.py`(같은 룰),
-`dataset.REVERSE_SETS["all"]`(스냅 되감기도 no_gesture), `gestures.json`(Play/Pause), `realtime_demo` 색.
+`dataset.REVERSE_SETS["all"]`(스냅 되감기도 no_gesture), `gestures.json`(처음엔 Play/Pause, 09-07 오후부터 창 목록 선택 Enter), `realtime_demo` 색.
 "시작에 붙어 있음" 조건은 뺐다: 손등 방향에서는 엄지가 가려져 시작 핀치가 0.08~1.28 로 흔들린다. 끝에서 떨어짐과 검지 펴짐은 안정적.
 다른 사람 데이터가 오면 `scripts/label_stats.py --labels finger_snap` 으로 통과율이 유지되는지 확인하고 필요하면 `sanity.SNAP_*`/`baseline.SNAP_*` 재보정.
 그 다음 `train_model.py --test-persons --val-persons --reverse-neg both --out models/gru_gesture_4cls.pt` 로 4클래스 재학습
