@@ -1,0 +1,1486 @@
+[
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "gesture_model/gesture_detector.py",
+    "destination": "gesture_model/gesture_detector.py",
+    "sha256": "12d500d16caf84a2ec8dcc5d278b9ea7452897dfc4274967cb13c4ea9de9e48d"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "gesture_model/__init__.py",
+    "destination": "gesture_model/__init__.py",
+    "sha256": "16824e745c1ea4a2c61257a0bbf002db0e9d630ce9945e88abaf4d60d64a0886"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "programs/collect_gesture.py",
+    "destination": "programs/collect_gesture.py",
+    "sha256": "62d981516996a1393c0f3a3978e0958a4a462e8b6af86fbfd98d84fb595dc0cc"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "programs/collect_gesture_video.py",
+    "destination": "programs/collect_gesture_video.py",
+    "sha256": "56f46bd1291924e45d5fb4593c8bf3ce59475120bb2842c615b9753b67d17ccf"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "programs/extract_gesture_videos.py",
+    "destination": "programs/extract_gesture_videos.py",
+    "sha256": "d5a8f59051c4554d74fa9b3895f0dca69cbefceaa9e196103f0ff84fe1d95c7a"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "programs/flip_image.py",
+    "destination": "programs/flip_image.py",
+    "sha256": "22658d7a563098be7bb33a9c59eaa87670c0f4ebd528a21cab151fe4a7823372"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "programs/validate_gesture_dataset.py",
+    "destination": "programs/validate_gesture_dataset.py",
+    "sha256": "43d91e0704c90eaee776c00dd66558997a95f5c4ae76de0a503243132d6c2ce3"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "util/slice.py",
+    "destination": "util/slice.py",
+    "sha256": "c9346e0c5cd7e7bb4c08e2db429935c2025a6d859aef8106a9f3356c36dbf66f"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "util/valid_npz.py",
+    "destination": "util/valid_npz.py",
+    "sha256": "69962c91c6cac57b56457e8b7341ea6f98ce71f45a444b4f73a019ce06949b0d"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "yolo/evaluate_yolo.py",
+    "destination": "yolo/evaluate_yolo.py",
+    "sha256": "167ef802659995ca32357eb0371eeebe5b3be96abe5c4aecb64cf0102886938d"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "yolo/test_yolo_webcam.py",
+    "destination": "yolo/test_yolo_webcam.py",
+    "sha256": "5714c7383c461090ce1f1d709614dd791ac709bf473084390ab5acf0cfb84137"
+  },
+  {
+    "branch": "lkh",
+    "commit": "46cea527ccbbcdb03435ef54edf70ac6c1e17969",
+    "source": "yolo/train_yolo.py",
+    "destination": "yolo/train_yolo.py",
+    "sha256": "24cc9e115f5a22256d49898222414a9d60e6352e036f21abdbf08c1caabcf023"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gestures.json",
+    "destination": "implementations/hwangsoon/gestures.json",
+    "sha256": "408a0c7c6f078a7b8cb40549f8ffa4fcdfe29eb05cea5687039daa00d8f8347c"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "README.md",
+    "destination": "implementations/hwangsoon/README.md",
+    "sha256": "1e24d01ace12fe786e74ec1dca6fabd1cdb825103b248e1819e59df51d3e2b71"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/index.csv",
+    "destination": "implementations/hwangsoon/dataset/index.csv",
+    "sha256": "8617d1503bb52d28d192206536047858769b07e85eb574f000779114742eaa95"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/experiment_report_0905.md",
+    "destination": "implementations/hwangsoon/docs/experiment_report_0905.md",
+    "sha256": "06bcc47d90ad635b1edc0330f43f40135e4e853c5e98f450d830e8c1e78861d8"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/gesture_app.md",
+    "destination": "implementations/hwangsoon/docs/gesture_app.md",
+    "sha256": "4eac969d6e286a012e41a87503d27883e381e718440aa00192d62a3d3e5e44bc"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/model_metrics_0907.md",
+    "destination": "implementations/hwangsoon/docs/model_metrics_0907.md",
+    "sha256": "77e2a414c2689f72716489091ead0865d35cfa3ed2d61f97d1da1dde5f540bb1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/setup_windows.md",
+    "destination": "implementations/hwangsoon/docs/setup_windows.md",
+    "sha256": "4c32071a298f7daf3cc694009666755d5a341117ec1f26d6e05a4e0efc99b252"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/team_conventions.md",
+    "destination": "implementations/hwangsoon/docs/team_conventions.md",
+    "sha256": "5e3c6768f1f0a3eb1a503db4837cf66d87c40c558c9b19147fe676d6a454b68d"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/user_guide.md",
+    "destination": "implementations/hwangsoon/docs/user_guide.md",
+    "sha256": "061ad0f90d50802ad19180e0943dcb3b7729f0e1eab8a4f32def5dd8a3c4657d"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "docs/why_not_jester.md",
+    "destination": "implementations/hwangsoon/docs/why_not_jester.md",
+    "sha256": "a3640183db4f880bf8f2ddc3736dba8911411e50586641e731cf7f8621d4b508"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/actions.py",
+    "destination": "implementations/hwangsoon/gesture/actions.py",
+    "sha256": "87cf001ac57bce4fbf2a78a2df0b1926fe72597f29eaf649c79cc763e0e2afee"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/baseline.py",
+    "destination": "implementations/hwangsoon/gesture/baseline.py",
+    "sha256": "cb5148782244b33261cc8f7c95967dc53994443ff481c9e110d6bb6a4945bc17"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/config.py",
+    "destination": "implementations/hwangsoon/gesture/config.py",
+    "sha256": "441c7237ca72ce70256f13fc966520a3930af130c28a1956af45b982cc6a540f"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/dataset.py",
+    "destination": "implementations/hwangsoon/gesture/dataset.py",
+    "sha256": "281f7e702888c69f99492cc25849563a100aa850c82ad4d7ce619afb2ba980bc"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/gate.py",
+    "destination": "implementations/hwangsoon/gesture/gate.py",
+    "sha256": "3bcd98922027e2d51cce0d28861945b7327c90b62e7be27f61947f1a8612bc62"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/landmarks.py",
+    "destination": "implementations/hwangsoon/gesture/landmarks.py",
+    "sha256": "89e29b9ba698033ff813334967c17427ebb9733f52dca4610b5cf91d7dd93f0e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/model.py",
+    "destination": "implementations/hwangsoon/gesture/model.py",
+    "sha256": "09376e24fce236230c51713908fa9abe21230267b4db471a8317d3e535f922e7"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/pipeline.py",
+    "destination": "implementations/hwangsoon/gesture/pipeline.py",
+    "sha256": "77e2706113c03760d539aa5e7ea077899b6810501508ab03060711f1369c3084"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/preprocess.py",
+    "destination": "implementations/hwangsoon/gesture/preprocess.py",
+    "sha256": "b91623e1be7465b5a07da50a7b0f35afcfeae56a2a96b5ee177502f76bef2610"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/presets.py",
+    "destination": "implementations/hwangsoon/gesture/presets.py",
+    "sha256": "91827a0324512e52b12e14294243115c63d0ec2e466932c255912629cbaa2dd3"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/sanity.py",
+    "destination": "implementations/hwangsoon/gesture/sanity.py",
+    "sha256": "44b448569388771504a178220de8bcfae4eb019cf93bd1071adcb9df6828683a"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/segmenter.py",
+    "destination": "implementations/hwangsoon/gesture/segmenter.py",
+    "sha256": "8e5ae9b8368197280c5925b68f3fdd86fa342dcc63fd7d98eab7d98b47171f43"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/training.py",
+    "destination": "implementations/hwangsoon/gesture/training.py",
+    "sha256": "605b8cec48818fb9458defe7351c47e7ca8041be1df338e0e4c20e573c798a49"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture/__init__.py",
+    "destination": "implementations/hwangsoon/gesture/__init__.py",
+    "sha256": "fdf250d9be512d5c24272e2f83adb1506939de9f6818de249621783f00f08e0e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture_model/gesture_detector.py",
+    "destination": "implementations/hwangsoon/gesture_model/gesture_detector.py",
+    "sha256": "12d500d16caf84a2ec8dcc5d278b9ea7452897dfc4274967cb13c4ea9de9e48d"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "gesture_model/__init__.py",
+    "destination": "implementations/hwangsoon/gesture_model/__init__.py",
+    "sha256": "16824e745c1ea4a2c61257a0bbf002db0e9d630ce9945e88abaf4d60d64a0886"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "models/hand_landmarker.task",
+    "destination": "implementations/hwangsoon/models/hand_landmarker.task",
+    "sha256": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "programs/check.py",
+    "destination": "implementations/hwangsoon/programs/check.py",
+    "sha256": "130bcc3d0e0cc97ade8d5d26db9a2e39e50815f9714a70c79cd8d1b7d1b0082b"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "programs/collect_gesture.py",
+    "destination": "implementations/hwangsoon/programs/collect_gesture.py",
+    "sha256": "9ce69d8c980001440f557313dcc008e8b9a86e54c6aa42f9dc17d4768b629443"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "programs/README.md",
+    "destination": "implementations/hwangsoon/programs/README.md",
+    "sha256": "79b093942b04a5f9e9152f0c9c497b0923a5bd8d2691c88314ca854ef21e5eee"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/compare_models.csv",
+    "sha256": "58449e170744e311be6a923d7ca3160f825906036e3ae600e73f06f2a2ca8da0"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/compare_models_summary.md",
+    "sha256": "8f1220d414a6e6dd546c13614dd798b3f8b077784e143efca7a22d483383dc71"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/compare_models.py",
+    "destination": "implementations/hwangsoon/scripts/compare_models.py",
+    "sha256": "f3db6513f5227eabf6904df9b59942c72537a9e3c395f1c87a1c7af009c84bfe"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/dataset_summary.py",
+    "destination": "implementations/hwangsoon/scripts/dataset_summary.py",
+    "sha256": "92d00a66273eacb7d5e9f942122b101ed285e22299651a0076d4a89eb7c2242f"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/eval_model.py",
+    "destination": "implementations/hwangsoon/scripts/eval_model.py",
+    "sha256": "ca19072c82426b2b484248107abb892e4c78c67fdf1e6cd58d4ab3d24dc1b239"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/gesture_app.py",
+    "destination": "implementations/hwangsoon/scripts/gesture_app.py",
+    "sha256": "0ae979bf1d86f238b31daa74e530be4e303701f0b22b468354cbda731dd76cf2"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/label_stats.py",
+    "destination": "implementations/hwangsoon/scripts/label_stats.py",
+    "sha256": "8d7032f09ca868f380c69524457681c2f37bfb6e04fe87ca749a8aac8bbe4265"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/realtime_demo.py",
+    "destination": "implementations/hwangsoon/scripts/realtime_demo.py",
+    "sha256": "61bbb0ec39aa7c9c0115bea8346f03c7fefdbb7fed534fa74a925aeb991dfbf3"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/replay_segments.py",
+    "destination": "implementations/hwangsoon/scripts/replay_segments.py",
+    "sha256": "11aa3f92936c5d9d648947ed0dc7aceedf6aca1799866c25243650c760369921"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "scripts/train_model.py",
+    "destination": "implementations/hwangsoon/scripts/train_model.py",
+    "sha256": "459971595dbc9a0573769a687d764ea7f023e8db2bb3b25f1e4af5159af29b93"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0001.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0001.npz",
+    "sha256": "d848e4127156a8670dae37abe450e0f612e935b0d89205dccfa05f57503e52d1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0002.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0002.npz",
+    "sha256": "ba4e9ff386b4d5a5d2f3eab66f7fefdf7ee4a7731a70ceca22eb5d3cd717b9d8"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0003.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0003.npz",
+    "sha256": "c85f2cd037856e4691d09e489815491340c0bca9313111fbf3aa7911c6ff6a86"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0004.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0004.npz",
+    "sha256": "3a71a162a116ecdd58fda47d2c1792c4cafd85e8282178e8510c52bfb57ba8dd"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0005.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0005.npz",
+    "sha256": "1bf5497a550c0aa013713903896351f6fa696ae21f0d6f0a9e4c53c672e207c9"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0006.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0006.npz",
+    "sha256": "b2a361a04226c4c01ef1c00c35681fc2fe506d11af20ea0b3eff6dea6900688a"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0007.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0007.npz",
+    "sha256": "0d64398de4ce5e59d775b49e8e0bdcca679c58847b2ff1dce4d583ea141fcdd7"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0008.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0008.npz",
+    "sha256": "920b82959fe6051259f3b5bf75e5708564859a10172a3894f66f2b1bcbeda56e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0009.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0009.npz",
+    "sha256": "8fed75386d322f201aa7132d6d314f58899d7585965435a38e352f22025f36cf"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0010.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0010.npz",
+    "sha256": "91018cd74492dbe1046f8075a08cc81aa2116359c07893515dd7e500789e349a"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0011.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0011.npz",
+    "sha256": "f7815d3934ce6685e30137cabf1ce40356549737b801c7c93f9c48218d7ba219"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0012.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0012.npz",
+    "sha256": "f47c9a0f8046abbc51d59599024715ff193c4b17980aee2a28724794b90f037c"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0013.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0013.npz",
+    "sha256": "68a6fe27f56031b0d904db5e2c21b7c8d4b59fa459826bca56c6fd0210bea140"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0014.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0014.npz",
+    "sha256": "eb8b9aa5cd337e36b199c51f601050a9bbcbaf2b029022d618e1e688b0c5c249"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0015.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0015.npz",
+    "sha256": "b5d93b0207cc046b2990ff03c0a8ea1caedd6fed91c5885eae69084fb48f6627"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0016.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0016.npz",
+    "sha256": "37a08a707979237a05cb492f46ecb9da0bac139e391751becdc536d80c1314dc"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0017.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0017.npz",
+    "sha256": "1ada80b59fdb4c7a8e453db2905320ef8329ce937a28d22bc6ad6877e46d5864"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0018.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0018.npz",
+    "sha256": "e5e179a7e70b6ad6a695695843c3981e934be842a78272845ee4f2a17292c0f1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0019.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0019.npz",
+    "sha256": "735f19005c33ba0f871106515b04efc38e4fd4ca2c38727609661a065247eaf3"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0020.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0020.npz",
+    "sha256": "b36881baf76413ccdfb3c4982784c93dbd6dbe061adb69e509ce8853ccd22793"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0021.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0021.npz",
+    "sha256": "2e2c3ecd9c4f340a254c32266097ef9ce9ab9b5d4f6c0312faf861df203b0900"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0022.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0022.npz",
+    "sha256": "51bbd0f96391c0fb88a23e6bfed27573380ab48ac9d5304eb92206af021dc041"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0023.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0023.npz",
+    "sha256": "046adca3b1e2b3e3aadc07601532fe68b0836b7d5bd67151f106d059c207f807"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0024.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0024.npz",
+    "sha256": "d186051aba5243fc2351914b548c746fabb988cebb7cb02c9f047e2429e529c8"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0025.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0025.npz",
+    "sha256": "12177d5f49e3bcce5377b82a6af02f6ddde67b970eff240ca8401bcd2d16f9ca"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0026.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0026.npz",
+    "sha256": "6a8d8b3c2aad04bca735bffb60d8c1f0b3ab25a976f69aef04b0e333a0bc96fc"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0027.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0027.npz",
+    "sha256": "bfc65c29c4dc57f8d9081452c96689878cadd2ba854652ddcbf198ca948b64db"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0028.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0028.npz",
+    "sha256": "b68d3702315043e0e621f52f27161f059941cd96610451ce810fb6b97af98dfb"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0029.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0029.npz",
+    "sha256": "6f9ec2d0a2b385d36ed9abffc44ff01da394361b7af468ccae37f989593a10a0"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0030.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0030.npz",
+    "sha256": "ceb7856939967bfac738dc92d3f78119af9eb1dd94dd5d36e26bc5006d7b4c0c"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0031.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0031.npz",
+    "sha256": "ad233c50123c8cf28934d7e9790fb4cfd080bd29c15ae2743f83ae789069df49"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0032.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0032.npz",
+    "sha256": "4f2fa79752e8343d5ddc62b2fde03b84f052456d69e4e8038c1a46a21022357d"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0033.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0033.npz",
+    "sha256": "a11036e74cf43149620dc374b1614be883c3afc046a92fce079c58aebfba6f1f"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0034.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0034.npz",
+    "sha256": "0368eb3a7bcf0e1f5f5c33f4b1b9a0cb31833f92ebe383989a26a7363042c8c3"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0035.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0035.npz",
+    "sha256": "e171781c22d1c6372fad084d66de8bfb91194fe5b1b7230173c90d211c03b4e6"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0036.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0036.npz",
+    "sha256": "9eee4ae262c88b5624c3c3ee02d5da51580b8737271071321f59e14d804bff5c"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "dataset/swipe_left/user00_swipe_left_0037.npz",
+    "destination": "implementations/hwangsoon/dataset/swipe_left/user00_swipe_left_0037.npz",
+    "sha256": "24f9c59410854b531816486c53ab450b6e615793813e02e2714ba7e5f5ac12e5"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig1_accuracy_f1.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig1_accuracy_f1.png",
+    "sha256": "3346ebad119179b89a3700dec16088b3037ce47b69d54f8ea600569d49e15ff1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig2_per_class_recall.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig2_per_class_recall.png",
+    "sha256": "17b8c2a72dadc79f8bc8d541d72ab4429af17dc287ae27e41184d8bb020e42f3"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig3b_confusion_val_p004.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig3b_confusion_val_p004.png",
+    "sha256": "e69dd354d6369e37ccfdd63f3e27841db54f3a0f8a08d614ccf5f999af6d66c7"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig3_confusion_test_p006.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig3_confusion_test_p006.png",
+    "sha256": "fd3a0e323bafd45344497aea74830cff1b1bd4fd7de2a7017dc9c19d3c770862"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig4_params_latency.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig4_params_latency.png",
+    "sha256": "90367c4cf784be6781a2db770d997f99a7f4466cbb2dd248fc14f7a85e890157"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig5_training_curves.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig5_training_curves.png",
+    "sha256": "7928987a6c9b17f521aa28bb7440c3558f08a5f5823475c9ebe77d7de94abd0e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/fig_system_flow.png",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/fig_system_flow.png",
+    "sha256": "2088e8c99044e411899e6b6e59e4871fa5cf2b6a4c66e429ada7dcf946d928f1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/numbers.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/numbers.json",
+    "sha256": "3c2aef4d66197ca1fefdb2683bf2c0433cd292428cac416fb036739d540369cf"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/summary.md",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/summary.md",
+    "sha256": "8092b42b6b25854d4971131916a8821b1144af1b7c333d7ca2ab218e80ce5729"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/table_main.md",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/table_main.md",
+    "sha256": "6ada5d4b1d8708178c600a3d6141489b881dcb5273e4b05829e4271181630487"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/bench_infer.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/bench_infer.json",
+    "sha256": "9788cb571d04353e085981d5e9d6e55e68c58f4d3b8c84ab18e8eca8aa093052"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_ckpt_scores.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_ckpt_scores.json",
+    "sha256": "2a039b04246c05d009abf40259fa6e6773836ddd795c1cc00bf3bb146a82c725"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_on_ours_scores.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_on_ours_scores.json",
+    "sha256": "228d808f7b9b8d3ffcdbbf77803bd820c1c93f96ef8dc0da92def5f9963e889b"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/ours_results.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/ours_results.json",
+    "sha256": "5d5c12033ff5b578ec937949b97fcffdabc93efe6ee14d7f363cc3b6f3db0217"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/scripts/bench_infer.py",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/scripts/bench_infer.py",
+    "sha256": "2ee1ba5367e79d0ea4eb1656d75795cecca618b9d87d10069dfaf03775e776ac"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/scripts/make_report.py",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/scripts/make_report.py",
+    "sha256": "02b269bf1ce8c6395a5f6ce36ef064e4b255b00208e20ade16a10e414d428cd0"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/scripts/run_ours.py",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/scripts/run_ours.py",
+    "sha256": "2881f765486202589940548fb2b07c0b17a64bbc36d75fcb23624e6c174b5c3e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/scripts/score_jin_ckpt.py",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/scripts/score_jin_ckpt.py",
+    "sha256": "90820eb4b30b924483ad542c268281e822e4c7d52c407e2b064d784d9329e8b6"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/prepare_report.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/prepare_report.json",
+    "sha256": "fa8ba2bf3a848e407d9845b6cb7c0369a52793ffcac54f5a62b105ae7e70fb56"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed0/history.csv",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed0/history.csv",
+    "sha256": "f279803fde5565a1c3567991dbfa16f2664bb5100dbf6454528047fed1168a09"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed0/training_summary.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed0/training_summary.json",
+    "sha256": "e9362bcbb135e7511f4ffaff8d6d804d1ca75a2b4b4bf71944897c5c2fe4e541"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed1/history.csv",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed1/history.csv",
+    "sha256": "7519d77ae55bf9e391181caef6eff582d61f9b5806f169f8c9dcedb3712b0143"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed1/training_summary.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed1/training_summary.json",
+    "sha256": "20d4d73c24a8ec00afa1021289fe43366559eace8bdd7e853c83b7701a1c5e08"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed2/history.csv",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed2/history.csv",
+    "sha256": "f6b545733e8911eff7906d8928013e25624f374b010c30e856ba1356a707f27f"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed2/training_summary.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed2/training_summary.json",
+    "sha256": "0c0733cf46963861e3a4680204319bf0f7e83fb73c55740a0feef04fa1b95d17"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed42/history.csv",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed42/history.csv",
+    "sha256": "58a382e891e4b0d445292437e05791dc060d305b069ff46e6ef51d4b5c69627b"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed42/training_summary.json",
+    "destination": "implementations/hwangsoon/reports/gru_vs_lstm_0907/raw/jin_lstm_on_our_data/seed42/training_summary.json",
+    "sha256": "247cf7a7052fc3b72578a36f2f33f75a1865b49b514e30681f4dde563649a768"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p002/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo/test_p002/compare_models.csv",
+    "sha256": "162198c2a5353398d41569b27d31be61a18adc4816c8754aa359fa1237cbe5d4"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p002/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo/test_p002/compare_models_summary.md",
+    "sha256": "acaf0ca911c366fa9ac4e6e77141a87d319dfe3837266be88f87d3a990e655b4"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p003/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo/test_p003/compare_models.csv",
+    "sha256": "4a92a8db8d6751fc265d87d42aa69ec77e5fa6d25d4e75402639192d0ce36e1e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p003/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo/test_p003/compare_models_summary.md",
+    "sha256": "0b4ddf9d5510f1e3669d9508262feaef0dd80de67cf1b16d3c223c5759ea5913"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p004/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo/test_p004/compare_models.csv",
+    "sha256": "d43d8c6dcb6ae4a1f74b1499ce87601690b1918582b1edf4e38063b3952247f2"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p004/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo/test_p004/compare_models_summary.md",
+    "sha256": "bcc343c73323fc337aacacd8331eddbe3c5d96a0088ab29b00fe830ec6f22210"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p006/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo/test_p006/compare_models.csv",
+    "sha256": "5ba275ab2153b914fc5e3e9ae784e151b5cf332176992854ed0cae416d456b86"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo/test_p006/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo/test_p006/compare_models_summary.md",
+    "sha256": "da58a89905a56f3fe8cf178bf9036b4caccedf8f006a7b65272448cfb148fdc5"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p001/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p001/compare_models.csv",
+    "sha256": "b963fe3353656997bd47377d686070c27eea59b40dd35b7efb882f2df9df7933"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p001/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p001/compare_models_summary.md",
+    "sha256": "aa04591c4d65fe8bcfb33f6523d7cf220235084e2accf1c67ce1451e6e1610d6"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p002/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p002/compare_models.csv",
+    "sha256": "abf1a050e1d38c0f6b642290f4a9ffd7148da9f322ee4de21a783758a3aed20b"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p002/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p002/compare_models_summary.md",
+    "sha256": "f14e73c2829d8646f517dce2050b3f90309da93c51c8a67a6cd429902b4c5fd4"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p003/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p003/compare_models.csv",
+    "sha256": "c37416806f86fd0e880c9b36848927cf72455578ed7f6c29c443ecb1b5eefab1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p003/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p003/compare_models_summary.md",
+    "sha256": "3212de3b427466acfe8b670569fd133d2ce4b8fae292c8198c02a2d06d894928"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p004/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p004/compare_models.csv",
+    "sha256": "c7d7dccf73295d587a07d436b4cd078fcb226582b08de1ac2c4caf8a8a699d9e"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p004/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p004/compare_models_summary.md",
+    "sha256": "46f5f124fa42c5ffa53185af6907349c1c6f4421dfff3ad760e35efed30ce1b4"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p006/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p006/compare_models.csv",
+    "sha256": "61fe014ed8b7542aabdb622a26056dc796021d75e9630d846caaa6a8bbb13e70"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_4cls/test_p006/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_4cls/test_p006/compare_models_summary.md",
+    "sha256": "b6c77aeb50a19dcc20ee73b569625b6a52909febf7428178ccf2a88a475b8046"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p002/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p002/compare_models.csv",
+    "sha256": "48eb42b7d8219c689a3b72b58876a46141faaccad4673a7562ac3a99a3978141"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p002/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p002/compare_models_summary.md",
+    "sha256": "657c651aca5f91898d7b809a076f8cdceac4379bcd64c440bd9f7faa15ceb7a1"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p003/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p003/compare_models.csv",
+    "sha256": "36fa7af09838232ba5d12c9b79c2e9d5deacf2a681a1d26258c149bbced868ca"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p003/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p003/compare_models_summary.md",
+    "sha256": "b103a19ebbb0b01eaad86ba925054138a5f34f7475153708428f756073860d08"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p004/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p004/compare_models.csv",
+    "sha256": "e7aac1fe2223de00719fe9d52ffaed7b18612ac5e2885c23eccb9e083a99677c"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p004/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p004/compare_models_summary.md",
+    "sha256": "5f4a1b1694954c49222e6c0193de16862aa41492fee39e00e11776321f4999fa"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p006/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p006/compare_models.csv",
+    "sha256": "fcb6cfb436ff44b9585e97170c6e633b6d5397e4794bc59ee2fcdacd66010c99"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_none/test_p006/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_none/test_p006/compare_models_summary.md",
+    "sha256": "5625efbc14172eb447114c13a776a0cae6b8069eb2469ffafaf9f70a4ffc1a29"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p002/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p002/compare_models.csv",
+    "sha256": "844ca27af9e39b4c2243171d95ce689cad33b9a3ce50e3ab479a56dbafb190b9"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p002/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p002/compare_models_summary.md",
+    "sha256": "1dfde0eb1c99a2477536baff05909891be11c5f33538cbeedd43769c0c8e8968"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p003/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p003/compare_models.csv",
+    "sha256": "bb0324770089f810eaec215ec9fa748dfe10f4e1909a0620985c13f1e74a2c36"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p003/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p003/compare_models_summary.md",
+    "sha256": "e4604138a118d62aa411a6353be6d2af15500e76357af909335db89cc88a0a47"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p004/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p004/compare_models.csv",
+    "sha256": "624fad3fe5513350b7992898ca90bba19bb0d70d80787b0dc41d8ded206329c0"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p004/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p004/compare_models_summary.md",
+    "sha256": "79653261588c268573fc1e6f7eeeb4c9862f41738683c15f1033eb2fe1e795d8"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p006/compare_models.csv",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p006/compare_models.csv",
+    "sha256": "07453a9ee61ae0c8bab0b4a59703e984bb20196502dc722b040e6ae381ddd8d8"
+  },
+  {
+    "branch": "hwangsoon",
+    "commit": "23cc75f7cef4d77560618809bcd5cff14311d361",
+    "source": "reports/loo_revfist/test_p006/compare_models_summary.md",
+    "destination": "implementations/hwangsoon/reports/loo_revfist/test_p006/compare_models_summary.md",
+    "sha256": "4c9fae3a22d472c2287ea74eab27f0201f35aa442970aaddf8edd2b701eac2d1"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "data_preprocessing.py",
+    "destination": "implementations/kmj02/data_preprocessing.py",
+    "sha256": "02dc6d6984ab83143ba256a794c6bc4543c45b880b9006fe4008cedf9d81a0c6"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "EDA.ipynb",
+    "destination": "implementations/kmj02/EDA.ipynb",
+    "sha256": "a357a006abfa87a2bfa78e741371bcef88c70c1c1958f59298909eff96e05ebd"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "README.md",
+    "destination": "implementations/kmj02/README.md",
+    "sha256": "6d7b14f6db08939248fdf7080d96cd142cc72819c40f4ed2bb28a71f9bc03264"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "realtime_detect.py",
+    "destination": "implementations/kmj02/realtime_detect.py",
+    "sha256": "efab91744e93e77e1b24ace6137d1b85662a3aa7fcadd7721597dae9cbc2ea26"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "slicing.py",
+    "destination": "implementations/kmj02/slicing.py",
+    "sha256": "9c00cd401233d6a7cab45435b79d4c8c6b4c5a26e1f111b8a7429a1d5d4d90f4"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "yolov8n.pt",
+    "destination": "implementations/kmj02/yolov8n.pt",
+    "sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/best_78.pt",
+    "destination": "implementations/kmj02/ckpoint/best_78.pt",
+    "sha256": "fc9fce7a74693f1b9a5a79c9802dfc454bc0e187beacd8250a684cc3fd21defa"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_100.pt",
+    "destination": "implementations/kmj02/ckpoint/last_100.pt",
+    "sha256": "3ef7fda125798c1986ae710cf8dbd83b031fe29511c4ae3086cb0b9549227535"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_48.pt",
+    "destination": "implementations/kmj02/ckpoint/last_48.pt",
+    "sha256": "0e8594b0ce97056bbed4997f49605f145d6b1ef5c08b4985a03ca5b24b5e1415"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_58.pt",
+    "destination": "implementations/kmj02/ckpoint/last_58.pt",
+    "sha256": "bfa13f7f5e3bbfb629c18a418d8c23669fbe4ae9750234732850bedfe831336f"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_62.pt",
+    "destination": "implementations/kmj02/ckpoint/last_62.pt",
+    "sha256": "619d170502a4a138cceb737e0b37e9e9c085db2299923c680f1e897aeec46458"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_71.pt",
+    "destination": "implementations/kmj02/ckpoint/last_71.pt",
+    "sha256": "c7c2c81d7b2e115e1e9aff6da32d4e57ec982038e271e255c345c444fb00b7d2"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_74.pt",
+    "destination": "implementations/kmj02/ckpoint/last_74.pt",
+    "sha256": "b9d67bd504a0b9eaca183cce9fda7b757c8165982a6c32f9dd284870538464a2"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_86.pt",
+    "destination": "implementations/kmj02/ckpoint/last_86.pt",
+    "sha256": "5de29484094c9d2bc7e36681ac41e5eab2c525cd9fdb05a3599a209b62035a46"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_97.pt",
+    "destination": "implementations/kmj02/ckpoint/last_97.pt",
+    "sha256": "3c227a5ba323d05da305ea89ff629389ff625330628a4b5ba4b82d1dd61a86a6"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_98.pt",
+    "destination": "implementations/kmj02/ckpoint/last_98.pt",
+    "sha256": "efc695abdec0c1c3671224361643c1d2f0873af2607e4335d6e48310d395fbed"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "ckpoint/last_99.pt",
+    "destination": "implementations/kmj02/ckpoint/last_99.pt",
+    "sha256": "2aa045c62c48f5b646fd01ba4532b672ba8d2d0e95eb93906fbadd3ad3722252"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "dataset/data.yaml",
+    "destination": "implementations/kmj02/dataset/data.yaml",
+    "sha256": "2248f0d066c85f588a5ff5c99352fdac4497d332411965ebe6629a8dcfe0632e"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "dataset/data_EDA.yaml",
+    "destination": "implementations/kmj02/dataset/data_EDA.yaml",
+    "sha256": "9bcb0e3ecfa57f7a0050c5531eee9cf76d95c130df49793fd566ff08512a31c6"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "dataset/README.roboflow.txt",
+    "destination": "implementations/kmj02/dataset/README.roboflow.txt",
+    "sha256": "09a2d680fb73f94171100c7a81ac1120c4d5fca967ea863618a487c55b62a7da"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "model_yolo/yolo.py",
+    "destination": "implementations/kmj02/model_yolo/yolo.py",
+    "sha256": "baa2989b9684285b62bd6273d89ac629ed467247be02f3e9745c29f70e462284"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "model_yolo/yolo_param.yaml",
+    "destination": "implementations/kmj02/model_yolo/yolo_param.yaml",
+    "sha256": "eb317f72caf49e6cd88956961efc81dd0027cf1c395bbe97ca95fa9f988cc047"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "weights/yolo26n.pt",
+    "destination": "implementations/kmj02/weights/yolo26n.pt",
+    "sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/args.yaml",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/args.yaml",
+    "sha256": "ffdf09c6f1026666b66f3c526dccc4891d6ba77fbd444f1d1c154197ca83a3f8"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/BoxF1_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/BoxF1_curve.png",
+    "sha256": "3d51b01cd4ab1e9c8943998b04f4eb3f876e33ad61508979641b164867b1181e"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/BoxPR_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/BoxPR_curve.png",
+    "sha256": "1f3165f1177600cf715087e1e4d748195571f72c70ed88328537e26d391f604c"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/BoxP_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/BoxP_curve.png",
+    "sha256": "f219483dd4cac725a3e48ab9f9269cd2ab20f1e68fec2c1239d384c3f1b96918"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/BoxR_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/BoxR_curve.png",
+    "sha256": "5d52ea0c575ed870917507794f3e6c260cd2af9f4e124bc3746fe21cb8d7490b"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/confusion_matrix.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/confusion_matrix.png",
+    "sha256": "f4c421bf4575e6e1be71509477bfffef294c08fb249e4b30cfd7ba3c59b0d024"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/confusion_matrix_normalized.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/confusion_matrix_normalized.png",
+    "sha256": "66b8367e5661fa007880aee0eae6d438132eaab638df1cb3d27f6db385e012d3"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/labels.jpg",
+    "sha256": "6f3fee1915dda28d39f51773f658beb99696d568dfef570c56c53ffebf827235"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/results.csv",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/results.csv",
+    "sha256": "e337abefb169f3763dfedd947a2895c2d97b892ea09ed2fd71b87768c1072a78"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/results.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/results.png",
+    "sha256": "efdc3368ccc6c303d787e2d3e51c1d89af41f74fdea6e59547d02d763d717640"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/train_batch0.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/train_batch0.jpg",
+    "sha256": "1b83baea9d18148eff5f07d6ccdad9f696759d1ebbcd887f7d959e03e67bbc4e"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/train_batch1.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/train_batch1.jpg",
+    "sha256": "b54827ecd85706d91675ae2c4afb05348818aaff620c1ecdbc07d69d12f3a4e0"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/train_batch2.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/train_batch2.jpg",
+    "sha256": "839c9d2c9c18fdf28bca5c7ed35ede34752b0d2ffa3d57b48ef153ce557adadb"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/train_batch21060.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/train_batch21060.jpg",
+    "sha256": "52c7e78a3ff57c3f8621f40b88d13743bbcade00ffd47d84da7d01fb2ca87037"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/train_batch21061.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/train_batch21061.jpg",
+    "sha256": "578b244c1432a331498820ec0ca49d6cb3e302c25610ceb7ce34d3c28aecad1d"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/train_batch21062.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/train_batch21062.jpg",
+    "sha256": "29c37bd3351d0a07fa7639dd915fdb2c5fe0dab2c1acdc4f6f1f4648f5bf5476"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/val_batch0_labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/val_batch0_labels.jpg",
+    "sha256": "61f7baed5a3fc0cfc0fa65dca2a8cdb82c1a453c02d5873f8ecc07d5497ac67a"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/val_batch0_pred.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/val_batch0_pred.jpg",
+    "sha256": "2a61f54c5f92c8d3cafa9f03c3994a26dfd2cc79b25af5f7e605e71205599bd4"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/val_batch1_labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/val_batch1_labels.jpg",
+    "sha256": "8bcd44d9263d1448716886eabc6fc23045414188cc52591759bbb76f08c42196"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/val_batch1_pred.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/val_batch1_pred.jpg",
+    "sha256": "0caf81339fa5670896663c6c4a9d79d4ae2031e9716624e95a877b708172fc00"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/val_batch2_labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/val_batch2_labels.jpg",
+    "sha256": "9664a5a56481bbb575766b98c4c6fa9d5269eb74645525b404ca2f772f96820f"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/val_batch2_pred.jpg",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/val_batch2_pred.jpg",
+    "sha256": "36a808fddcbaacebf1ab8d194a84ca9347f3feac07aff12fb14f6f27dcfd202a"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/BoxF1_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/val/BoxF1_curve.png",
+    "sha256": "c9c374554daffb7983410b0784620b7e656ea78d9cb025d890f1b0e0d480dcc4"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/BoxPR_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/val/BoxPR_curve.png",
+    "sha256": "0421447a97ee7cd65aff9eae8292530fcd296fa16fadca9ba937e34b62109af6"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/BoxP_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/val/BoxP_curve.png",
+    "sha256": "abd9091fb77a279d6d2d5067eb4a9816e81727417347df0cea61b907672dd537"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/BoxR_curve.png",
+    "destination": "implementations/kmj02/runs/yolo/val/BoxR_curve.png",
+    "sha256": "5c155444a69a15d552c1feead21d1f2afb294020b29751e8e88d7487d2c875b8"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/confusion_matrix.png",
+    "destination": "implementations/kmj02/runs/yolo/val/confusion_matrix.png",
+    "sha256": "b30fe22fbf5c367f8e7b1776ed37413f0ea4a3fc70dd2bf68390947264974f6b"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/confusion_matrix_normalized.png",
+    "destination": "implementations/kmj02/runs/yolo/val/confusion_matrix_normalized.png",
+    "sha256": "633e0a1b8e787db13637ff2864485d730adcd76658c5143e75a4e7e3a3c584d9"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/val_batch0_labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/val/val_batch0_labels.jpg",
+    "sha256": "bff7c0524d7a6f2fddf50f9c7c904949e5e0503616feb5ca623fd757ac51d325"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/val_batch0_pred.jpg",
+    "destination": "implementations/kmj02/runs/yolo/val/val_batch0_pred.jpg",
+    "sha256": "3a0f3be0d504d66e74304879afdc48084dbb7047706a99a0bf9c407ab926ceb7"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/val_batch1_labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/val/val_batch1_labels.jpg",
+    "sha256": "b5d9b65d2f906d80986cd1cf5f3f7e137ba13660f9774435c2714bb33671af15"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/val_batch1_pred.jpg",
+    "destination": "implementations/kmj02/runs/yolo/val/val_batch1_pred.jpg",
+    "sha256": "2b2ade83348c6944ab7764f5bafeb46415c176681b93d5517d06b84d68cae3b9"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/val_batch2_labels.jpg",
+    "destination": "implementations/kmj02/runs/yolo/val/val_batch2_labels.jpg",
+    "sha256": "8b24c89538333378855586942f9e377cf6a492c37d915214b353ba6f2f16605d"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/val/val_batch2_pred.jpg",
+    "destination": "implementations/kmj02/runs/yolo/val/val_batch2_pred.jpg",
+    "sha256": "535655d8f03776d2fdcb1d773a4158d7412f18814fbdbe94da5ce2410b6a6180"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/loss_plots/box_loss.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/loss_plots/box_loss.png",
+    "sha256": "535aab97ecce61c60a07b3a8f0aeefdc02f6a230e5c32634449e98809f2c9b42"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/loss_plots/cls_loss.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/loss_plots/cls_loss.png",
+    "sha256": "1546cb6f468863631a056e7d9c2f12a4d935fcc47aaaa88de074d4385e40e14e"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/loss_plots/dfl_loss.png",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/loss_plots/dfl_loss.png",
+    "sha256": "a7f57f1d4096c4ed62ee8752b4a10c6f757b631c426ad19968b2d6669e7c6b52"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/weights/best.pt",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/weights/best.pt",
+    "sha256": "e80ff4d285a131a77ffe7e4b4249d89f2678b61e606305d8e257cea4cc03f2b9"
+  },
+  {
+    "branch": "kmj02",
+    "commit": "ab45fd68f475fc9b94e5a33df345e042c310d150",
+    "source": "runs/yolo/gesture_yolov8n/weights/last.pt",
+    "destination": "implementations/kmj02/runs/yolo/gesture_yolov8n/weights/last.pt",
+    "sha256": "3ef7fda125798c1986ae710cf8dbd83b031fe29511c4ae3086cb0b9549227535"
+  }
+]

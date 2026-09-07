@@ -1,0 +1,84 @@
+# All relative paths are resolved from this file's directory (model_yolo/).
+paths:
+  # 시작모델
+  model: yolov8n.pt            # yolov8n/s/m/l/x.pt or a local .pt checkpoint
+  trained_model: ../runs/yolo/gesture_yolov8n/weights/best.pt
+  data: ../dataset/data.yaml
+  project: ../runs/yolo
+
+# Arguments passed directly to YOLO.train().
+train:
+  name: gesture_yolov8n
+  epochs: 100
+  imgsz: 640
+  batch: 16
+  device: null                # null: auto, "0": first GPU, cpu: CPU only
+  workers: 8
+  patience: 20
+  optimizer: AdamW
+  lr0: 0.001
+  lrf: 0.01
+  momentum: 0.9
+  weight_decay: 0.0005
+  warmup_epochs: 3.0
+  pretrained: true
+  cache: false
+  seed: 42
+  deterministic: true
+  amp: true
+  save: true
+  save_period: -1
+  plots: true
+  exist_ok: false
+
+# Validation runs automatically after normal training.
+validation:
+  enabled: true
+  split: val
+  imgsz: 640
+  batch: 16
+  conf: 0.001
+  iou: 0.6
+  plots: true
+
+# Final evaluation used only with: python model_yolo/yolo.py --mode test
+# Run this once after the model and all hyperparameters have been finalized.
+test:
+  enabled: true
+  name: test
+  imgsz: 640
+  batch: 16
+  device: 0
+  conf: 0.001               # low value retained for Ultralytics PR/F1/mAP curves
+  iou: 0.60                 # NMS IoU threshold
+  metric_conf: 0.70         # threshold for custom precision/recall/F1/accuracy
+  match_iou: 0.50           # predicted/GT box IoU required for a true positive
+  roc_min_conf: 0.001       # minimum score collected for image-level ROC-AUC
+  max_det: 10
+  plots: true
+  save_json: false            # custom YAML/JSON/CSV metric reports are saved separately
+  exist_ok: true
+
+# Actual detection settings used only with: python model_yolo/yolo.py --mode predict --source ...
+# If every detection score is below conf, the frame is handled as "no detection".
+inference:
+  conf: 0.70                 # confidence threshold; increase it to reduce false positives
+  iou: 0.50                  # NMS IoU threshold for removing overlapping boxes
+  imgsz: 640
+  device: 0                  # first CUDA GPU
+  max_det: 10
+  save: true
+  show: false
+  stream: true               # prevents long videos from accumulating in memory
+  verbose: false
+
+# Used only with: python model_yolo/yolo.py --mode tune
+# Tuning can take a long time because it performs multiple training trials.
+tune:
+  enabled: true
+  iterations: 30
+  epochs: 50
+  optimizer: AdamW
+  plots: true
+  save: true
+  val: true
