@@ -1,116 +1,136 @@
-# 제스처 데이터 수집 및 제출 안내
+# Jesture — 손동작으로 Windows를 제어하는 제스처 인식 서비스
 
-팀원은 `JIN` 브랜치의 수집 프로그램을 받아 자신의 브랜치에서 데이터를 수집하고, 자기 NPZ 파일만 제출합니다. 촬영 자세와 라벨별 동작은 [제스처 수집 안내](programs/README.md)를 따릅니다.
+웹캠으로 오른손 동작을 인식해 Windows 단축키를 실행합니다. 정적 손모양(YOLO)으로 인식을 켜고 끄고, 동작 시퀀스(LSTM)로 명령을 판정하는 2단 구조입니다.
 
-## 시작 전 확인
-
-- 담당자가 최신 수집 코드와 README를 `JIN`에 push한 뒤 시작합니다.
-- 각 팀원은 실제 제스처 수행자 기준으로 `p001`~`p006` 중 고유 ID 하나를 배정받습니다.
-- Git과 Python 3.12를 준비합니다. 현재 수집 환경은 Windows와 웹캠을 기준으로 합니다.
-- 개인 브랜치를 push하려면 GitHub 저장소 쓰기 권한이 필요합니다. 권한이 없으면 저장소 담당자에게 요청합니다.
-
-아래 명령은 **`p002`를 예시로 작성했습니다. 브랜치명과 파일명에 있는 `p002`를 모두 자신의 ID로 바꿔 사용하세요.**
-
-## 1. JIN 브랜치 받기
-
-저장소를 처음 받는 경우 PowerShell에서 실행합니다.
-
-```powershell
-git clone -b JIN https://github.com/Spice7/jesture_project.git
-cd jesture_project
+```
+카메라 ─┬─ YOLO 손모양 게이트 (상시)  보자기 3초 → 인식 ON
+        │                            주먹 3초   → 인식 OFF
+        │                            총 모양 3초 → 창 표시/숨김
+        └─ MediaPipe → LSTM (인식 ON일 때만)  →  단축키 전송
 ```
 
-이미 저장소가 있다면 `git status`로 작업 상태를 확인합니다. 미완료 변경이 없는 경우 다음 명령으로 `JIN`을 업데이트합니다. 변경이 남아 있다면 먼저 해당 작업을 정리하고 진행하세요.
+| 명령 제스처 | 동작 | 기본 단축키 |
+| --- | --- | --- |
+| 왼쪽으로 스와이프 | 편 오른손을 수행자 기준 왼쪽으로 이동 | `Left` |
+| 손 오므리기 | 편 손 → 주먹 | `Space` |
+| 핑거 스냅 | 손가락 튕기기 | 미지정 |
 
-```powershell
-git switch JIN
-git pull --ff-only origin JIN
-```
+`no_gesture`는 명령이 아니라 "아무것도 실행하지 않는 상태"를 학습하기 위한 보조 라벨입니다.
 
-이후 명령은 프로젝트 루트인 `jesture_project`에서 실행합니다.
+## 빠르게 시작하기
 
-## 2. 개인 수집 브랜치 만들기
+목적에 따라 필요한 문서가 다릅니다.
 
-```powershell
-git switch -c data/p002
-git branch --show-current
-```
+| 하고 싶은 것 | 문서 |
+| --- | --- |
+| **프로그램만 써 보기** | 아래 [실행](#실행) |
+| 실행 파일(exe) 만들어 배포하기 | [packaging/README.md](packaging/README.md) |
+| GUI 조작·설정·손모양 게이트 상세 | [service/GUI_README.md](service/GUI_README.md) |
+| 서비스 내부 구조와 판정 규칙 | [service/README.md](service/README.md) |
+| 데이터 전처리·학습·평가 | [training/README.md](training/README.md) |
+| 제스처 촬영 방법 | [programs/README.md](programs/README.md) |
+| 수집한 데이터 제출 절차 | [programs/DATA_SUBMISSION.md](programs/DATA_SUBMISSION.md) |
 
-출력이 `data/p002`인지 확인합니다. 이미 같은 브랜치를 만들어 수집 중이라면 새로 만들지 말고 기존 브랜치에서 계속합니다.
+## 환경 설치
 
-## 3. 환경 설치와 수집
-
-프로젝트에는 의존성 설정과 `uv.lock`이 포함되어 있습니다. Python 3.12가 설치된 상태에서 다음 명령을 실행합니다.
+Python 3.12와 Windows, 웹캠이 필요합니다.
 
 ```powershell
 py -3.12 -m pip install uv
-py -3.12 -m uv sync --locked
-.\.venv\Scripts\python.exe .\programs\collect_gesture.py
+py -3.12 -m uv sync --extra gui
 ```
 
-참가자 ID에는 자신의 ID를 입력하고, 라벨은 아래 세 가지 중 이번에 수집할 항목을 입력합니다.
+`--extra gui`를 빼면 GUI에 필요한 PySide6가 설치되지 않습니다. `pip install`로 따로 넣으면 다음 `uv sync` 때 사라지므로 이 방식을 쓰세요.
 
-| 라벨 | 구분 | 인당 초기 목표 |
-| --- | --- | ---: |
-| `swipe_left` | 오른손을 수행자 기준 왼쪽으로 이동하는 명령 | 50개 |
-| `make_fist` | 편 오른손을 주먹으로 쥐는 명령 | 50개 |
-| `no_gesture` | 명령하지 않는 상태의 보조 데이터 | 20개 |
-| 합계 | | 120개 |
-
-시험 수집 데이터도 목표 개수에 포함합니다. 먼저 각 명령 10개씩을 수집해 담당자에게 확인받고 나머지를 채웁니다. 개수는 녹화 시도 횟수가 아닌 정상 저장된 NPZ 수를 기준으로 합니다.
-
-구체적인 촬영 순서, 키 조작, 이동량 경고의 의미는 [programs/README.md](programs/README.md)를 확인하세요.
-
-## 4. 자기 NPZ만 커밋하기
-
-수집 완료 후 변경 파일을 확인합니다.
+## 실행
 
 ```powershell
-git status --short
+.\.venv\Scripts\python.exe -m service.gui --device auto
 ```
 
-아래 명령으로 자신의 ID에 해당하는 NPZ만 스테이징합니다. `git add -A`는 사용하지 않습니다.
+앱을 켜면 **카메라가 바로 열리고 손모양 게이트가 돕니다.** 제스처 인식 자체는 OFF로 시작하며, 보자기를 3초 유지하거나 `인식 시작` 버튼 또는 `Ctrl+Alt+G`로 켭니다.
+
+**기본 단축키가 지정되지 않은 명령은 키를 보내지 않습니다.** `단축키 · 설정`에서 지정한 뒤, 저장하지 않아도 되는 창에서 먼저 시험하세요.
+
+파이썬 없이 쓰려면 실행 파일을 만들 수 있습니다. 결과는 약 800MB 폴더이며 CPU만 사용합니다.
 
 ```powershell
-git add -- "dataset/swipe_left/p002_*.npz"
-git add -- "dataset/make_fist/p002_*.npz"
-git add -- "dataset/no_gesture/p002_*.npz"
-git --no-pager diff --cached --stat
+.\.venv\Scripts\python.exe .\packaging\build_exe.py
+.\dist\Jesture\Jesture.exe --self-test
 ```
 
-스테이징 목록에 자기 NPZ만 있는지 확인합니다. 수집 중 수정된 `dataset/index.csv`, 개인적으로 수정한 코드, 다른 사람의 파일은 제출 커밋에 포함하지 않습니다. 이전에 다른 파일을 스테이징했다면 이 명령이 자동으로 제외해 주지는 않으므로 목록을 반드시 확인하세요.
+## 저장소 구조
 
-Git 작성자 정보가 설정되어 있지 않으면 현재 저장소에서 한 번 설정합니다. 예시 문자열 대신 본인의 이름과 GitHub에 등록된 이메일 또는 계정의 noreply 이메일을 입력합니다.
+```text
+programs/     제스처 데이터 수집기(collect_gesture.py)와 확인 도구
+training/     전처리(prepare_dataset) · 모델(models) · 학습(train) · 평가(evaluate)
+service/      실시간 서비스. CLI(main)와 Windows GUI(gui) + YOLO 게이트(yolo_gate)
+packaging/    PyInstaller 빌드 스크립트와 스펙
+dataset/      수집한 원본 NPZ (라벨별 폴더)
+artifacts/    전처리 결과, 학습 run, 평가 보고서
+models/       MediaPipe hand_landmarker.task
+yolo/         정적 손모양 YOLO 가중치
+```
+
+## 현재 상태
+
+**데이터** — 참가자 6명(`p001`~`p006`), 오른손 4클래스, NPZ 1,762개.
+
+| 클래스 | 개수 |
+| --- | ---: |
+| finger_snap | 608 |
+| swipe_left | 467 |
+| make_fist | 447 |
+| no_gesture | 240 |
+
+**모델** — `artifacts/four_class_lstm_1layers_001`이 현재 기본 체크포인트입니다. 단방향 LSTM 1층(hidden 64), validation(p004, 298샘플) accuracy 98.66% / macro F1 0.981입니다. 층 수 비교 실험(1~4층)에서 1층이 가장 좋았습니다.
+
+**손모양 게이트** — `yolo/v2/best.pt`, YOLOv8n 3클래스(`start`/`stop`/`cancel`)입니다.
+
+**아직 안 한 것**
+
+- **최종 test 평가(p006)를 실행하지 않았습니다.** 모델·설정 선택을 확정한 뒤 한 번만 수행해야 합니다.
+- 위 98.66%는 모델을 고르는 데 이미 사용한 validation 수치입니다. 새 사용자·새 환경의 성능이 아닙니다.
+- 연속 영상에서의 오작동률, 명령 중복 실행, 인식 지연 같은 **실시간 서비스 지표는 측정하지 않았습니다.** 잘라진 시퀀스 분류 성능만 확인한 상태입니다.
+- p005의 finger_snap이 최근 크게 늘어 `artifacts/four_class_data_001`과 학습 결과는 현재 `dataset/`보다 오래되었습니다. 전처리부터 다시 실행해야 반영됩니다.
+
+## 학습 다시 돌리기
+
+전처리 → 학습 → validation 평가 순서입니다. **출력 폴더는 매번 새 이름을 써야 합니다.** 기존 폴더는 덮어쓰지 않고 거부합니다.
+
+먼저 읽기 전용 점검으로 데이터 상태를 확인합니다.
 
 ```powershell
-git config user.name "본인 이름 또는 GitHub 사용자명"
-git config user.email "본인의 커밋 이메일"
+.\.venv\Scripts\python.exe -m training.prepare_dataset --input-dir .\dataset --output-dir .\artifacts\audit_002 --participant-map .\training\participant_map.json --train-subjects p001 p002 p003 p005 --val-subjects p004 --test-subjects p006 --audit-only
 ```
 
 ```powershell
-git commit -m "p002 제스처 데이터 추가"
-git push -u origin data/p002
+.\.venv\Scripts\python.exe -m training.prepare_dataset --input-dir .\dataset --output-dir .\artifacts\four_class_data_002 --participant-map .\training\participant_map.json --train-subjects p001 p002 p003 p005 --val-subjects p004 --test-subjects p006
 ```
 
-`dataset/index.csv`가 커밋되지 않은 변경으로 남는 것은 예상된 상태입니다. 자기 NPZ 커밋과 push는 그대로 진행할 수 있습니다.
+```powershell
+.\.venv\Scripts\python.exe -m training.train --data-dir .\artifacts\four_class_data_002 --output-dir .\artifacts\four_class_lstm_1layers_002 --device cuda --num-layers 1
+```
 
-## 5. JIN으로 Pull Request 만들기
+```powershell
+.\.venv\Scripts\python.exe -m training.evaluate --data-dir .\artifacts\four_class_data_002 --run-dir .\artifacts\four_class_lstm_1layers_002 --output-dir .\artifacts\four_class_eval_1layers_002 --split val --device auto
+```
 
-GitHub 저장소에서 Pull Request를 생성할 때 다음 브랜치를 선택합니다.
+같은 사람이 두 split에 들어가면 안 되고, 각 split에 네 클래스가 모두 있어야 합니다. 자세한 규칙과 옵션은 [training/README.md](training/README.md)에 있습니다.
 
-- **base:** `JIN`
-- **compare:** `data/p002` 등 자신의 수집 브랜치
+## 테스트
 
-PR 제목은 `p002 제스처 데이터 추가`처럼 작성하고, 본문에 참가자 ID, 라벨별 실제 저장 개수, 촬영 중 특이사항을 적습니다. **대상 브랜치를 `main`으로 선택하거나 다른 사람의 브랜치에 push하지 않습니다.**
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s service -t . -p "test_*.py"
+.\.venv\Scripts\python.exe -m unittest discover -s training -p "test_*.py"
+```
 
-저장소 담당자가 파일과 라벨을 확인한 후 `JIN`에 병합합니다. 추가 수집이나 수정이 필요하면 같은 개인 브랜치에서 자기 NPZ만 커밋하고 다시 push하면 PR에 반영됩니다.
+현재 service 106개, training 75개입니다. 모두 임시 폴더의 합성 데이터와 모의 카메라·키보드를 사용하며 **실제 카메라나 사용자 키보드를 건드리지 않습니다.** 따라서 테스트 통과는 인터페이스와 계약이 맞는다는 뜻이지 실제 제스처 인식 성능을 보장하지 않습니다.
 
-## 담당자의 병합 순서
+## 알아둘 제약
 
-1. PR에 해당 참가자의 NPZ만 포함됐는지 확인합니다.
-2. 파일 내부 라벨·참가자 ID·품질과 파일명 중복을 검사합니다.
-3. 확인한 PR을 `JIN`에 병합합니다.
-4. 전체 NPZ가 모이면 파일들을 기준으로 `dataset/index.csv`를 재생성합니다. 각 팀원의 CSV를 덮어쓰는 방식으로 합치지 않습니다.
-5. 수집 결과를 검토한 뒤 프로젝트 통합 시점에 `JIN`에서 `main`으로 PR을 만듭니다.
-
-현재 인덱스를 재생성하는 전용 프로그램은 포함되어 있지 않으며, 병합 담당자가 전체 데이터 취합 단계에서 마련합니다.
+- **Windows 전용입니다.** 전역 단축키와 키 입력 전송이 Win32 API에 의존합니다.
+- **오른손만 지원합니다.** 좌우 반전 증강과 왼손 모델은 지원하지 않으며, 좌표를 임의로 뒤집어 우회하지 마세요.
+- 한 번에 손 하나만 봅니다. 양손 동시 등장이나 여러 사람은 지원하지 않습니다.
+- 본 앱 창이 활성 상태면 단축키를 보내지 않습니다(의도된 안전장치). 그래서 총 모양으로 창을 띄울 때는 포커스를 가져오지 않습니다.
+- `pyproject.toml`의 `tensorflow`는 코드 어디에서도 쓰지 않습니다. exe 빌드에서는 제외합니다.

@@ -223,7 +223,7 @@ class SettingsDialog(QDialog):
         layout.addWidget(self.camera)
         layout.addWidget(text_label("외부 모델 경로 (변경 후 앱 재시작 필요)"))
         self.model = QLineEdit(settings["model_path"])
-        self.model.setPlaceholderText("비우면 기본 모델: lstm_gpu_2layers_001/best_model.pt")
+        self.model.setPlaceholderText("비우면 기본 모델: four_class_lstm_1layers_001/best_model.pt")
         layout.addWidget(self.model)
         choose = QPushButton("모델 파일 선택…")
         choose.clicked.connect(self.choose_model)

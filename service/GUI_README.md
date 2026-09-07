@@ -25,7 +25,7 @@
 .\.venv\Scripts\python.exe -m unittest discover -s training -p "test_*.py" -v
 ```
 
-GUI 기본 모델은 `artifacts/pilot_20260906/lstm_gpu_2layers_001/best_model.pt`입니다. 모델 선택 우선순위는 `--checkpoint` → 저장된 `model_path` → 기본 모델이며, 기본 경로는 저장소 위치를 기준으로 찾습니다. 이 기본 설정은 모델의 최종 성능 평가를 의미하지 않습니다.
+GUI 기본 모델은 `artifacts/four_class_lstm_1layers_001/best_model.pt`(오른손 4클래스)입니다. 모델 선택 우선순위는 `--checkpoint` → 저장된 `model_path` → 기본 모델이며, 기본 경로는 저장소 위치를 기준으로 찾습니다(exe에서는 번들 안). 이 기본 설정은 모델의 최종 성능 평가를 의미하지 않습니다.
 
 ```powershell
 .\.venv\Scripts\python.exe -m service.gui --device auto
@@ -43,11 +43,15 @@ GUI 옵션:
 
 설정에서 외부 모델을 선택하여 저장한 뒤 앱을 재시작하세요. 기본 모델로 돌아가려면 모델 경로를 비워 저장하고 `--checkpoint` 없이 실행합니다. 명시한 모델 파일이 없거나 잘못되었을 때 다른 모델로 몰래 대체하지 않고 기존 predictor가 오류를 표시합니다. MediaPipe의 `models/hand_landmarker.task`와 기존 `training/` 의존 코드가 필요하며, 학습 데이터 파일은 필요하지 않습니다.
 
-기존 CLI 실행은 변경하지 않았습니다.
+기존 CLI 실행은 변경하지 않았습니다. CLI에는 손모양 게이트가 없고 `--checkpoint`가 필수입니다.
 
 ```powershell
-.\.venv\Scripts\python.exe -m service.main --checkpoint .\artifacts\pilot_20260906\lstm_gpu_002\best_model.pt --device auto
+.\.venv\Scripts\python.exe -m service.main --checkpoint .\artifacts\four_class_lstm_1layers_001\best_model.pt --device auto
 ```
+
+## 실행 파일로 배포하기
+
+파이썬 없이 쓸 수 있는 `Jesture.exe`를 만들 수 있습니다. 빌드 방법과 제약은 [packaging/README.md](../packaging/README.md)에 있습니다. 배포본은 CPU 전용이며 GUI 서비스만 담습니다. 학습과 데이터 수집은 저장소에서 그대로 실행하세요.
 
 ## 손모양 게이트 (YOLO)
 
@@ -230,7 +234,7 @@ UI는 50ms마다 잠금으로 보호된 최신 상태 슬롯을 읽습니다. �
 
 ## 새 4클래스 모델 사용
 
-기본 경로의 lstm_gpu_2layers_001은 기존 3클래스 모델입니다. 파일 이름만 바꾸거나 label_map만 고쳐서는 finger_snap을 지원하지 않습니다. 새 학습이 끝난 뒤 아래처럼 실행하거나 옵션 창의 모델 경로를 변경하고 앱을 재시작하세요. 아래 경로는 학습 안내의 예시 출력입니다.
+기본 모델은 이미 오른손 4클래스라 finger_snap을 지원합니다. 다른 학습 결과를 쓰려면 아래처럼 실행하거나 옵션 창의 모델 경로를 바꾸고 앱을 재시작하세요. 기존 3클래스 체크포인트도 그 세 클래스에 한해 호환하지만, 파일 이름이나 label_map만 고쳐서 finger_snap을 쓸 수는 없습니다.
 
 ```powershell
 .\.venv\Scripts\python.exe -m service.gui --checkpoint .\artifacts\four_class_lstm_001\best_model.pt --device auto

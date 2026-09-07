@@ -6,8 +6,9 @@ from pathlib import Path
 
 import numpy as np
 from .policy import SERVICE_HAND
+from .resources import resource_path
 
-DEFAULT_MODEL = Path(__file__).resolve().parents[1] / "models" / "hand_landmarker.task"
+DEFAULT_MODEL = resource_path("models", "hand_landmarker.task")
 
 
 @dataclass

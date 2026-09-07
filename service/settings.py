@@ -6,9 +6,10 @@ import os
 from pathlib import Path
 import tempfile
 
+from .resources import resource_path
 from .shortcuts import Shortcut, OS_ACTION_CHORDS
 
-DEFAULT_CHECKPOINT = (Path(__file__).resolve().parents[1] / "artifacts" / "four_class_lstm_1layers_001" / "best_model.pt")
+DEFAULT_CHECKPOINT = resource_path("artifacts", "four_class_lstm_1layers_001", "best_model.pt")
 
 
 def resolve_checkpoint(explicit=None, saved=""):

@@ -13,7 +13,7 @@ GUI의 실행·설정·수동 검증·제한 사항은 [GUI_README.md](GUI_READM
 .\.venv\Scripts\python.exe -m service.gui --device auto
 ```
 
-GUI 기본 모델은 `artifacts/pilot_20260906/lstm_gpu_2layers_001/best_model.pt`입니다. 우선순위는 `--checkpoint` 지정 → 저장된 사용자 모델 경로 → 기본 모델입니다. 기본 경로는 실행 위치가 아니라 저장소 위치를 기준으로 찾습니다. 기본 모델로 돌아가려면 설정의 모델 경로를 비워 저장하고 `--checkpoint` 없이 재시작하세요.
+GUI 기본 모델은 `artifacts/four_class_lstm_1layers_001/best_model.pt`(오른손 4클래스)입니다. 우선순위는 `--checkpoint` 지정 → 저장된 사용자 모델 경로 → 기본 모델입니다. 기본 경로는 실행 위치가 아니라 저장소 위치를 기준으로 찾습니다. 기본 모델로 돌아가려면 설정의 모델 경로를 비워 저장하고 `--checkpoint` 없이 재시작하세요.
 
 GUI는 OFF로 시작하며 사용자가 인식을 시작하면 **실제 활성 앱에 키를 전송**합니다. 먼저 저장할 필요 없는 테스트 문서/무해한 창에서 사용하세요. 설치 후 GUI 모의 테스트를 먼저 실행하는 방법은 새 안내에 포함했습니다.
 
@@ -32,13 +32,13 @@ MediaPipe가 Left로 판정한 프레임은 분류 입력에서 제외하고 기
 
 좌우 반전 증강과 왼손 모델은 지원하지 않습니다. finger_snap은 새 오른손 4클래스 체크포인트에서만 활성화됩니다. 기본 모델 경로는 기존 3클래스 모델이므로, 네 클래스를 사용하려면 새 학습 결과를 명시적으로 선택하세요. GUI와 기존 전역 단축키·알림·미리보기 기능은 유지합니다.
 
-프로젝트 루트 PowerShell에서 실행합니다. 다음은 현재 예비 학습 체크포인트를 지정하는 예시이며 최종 선택을 의미하지 않습니다.
+프로젝트 루트 PowerShell에서 실행합니다. CLI는 `--checkpoint`가 필수이며, 아래는 현재 기본 4클래스 모델을 지정하는 예시입니다. 최종 성능 검증을 마친 선택이라는 뜻은 아닙니다.
 
 ```powershell
-.\.venv\Scripts\python.exe -m service.main --checkpoint .\artifacts\pilot_20260906\lstm_gpu_002\best_model.pt --device auto
+.\.venv\Scripts\python.exe -m service.main --checkpoint .\artifacts\four_class_lstm_1layers_001\best_model.pt --device auto
 ```
 
-2층 모델을 사용하려면 체크포인트 경로를 `artifacts/pilot_20260906/lstm_gpu_2layers_001/best_model.pt`로 바꾸세요. 층 수와 hidden 크기는 저장된 설정으로 복원합니다. `python service/main.py ...` 형태도 지원하지만 `-m service.main` 실행을 권장합니다.
+다른 학습 결과를 쓰려면 경로만 바꾸면 됩니다. 층 수와 hidden 크기는 저장된 설정으로 복원하므로 따로 지정하지 않습니다. `python service/main.py ...` 형태도 지원하지만 `-m service.main` 실행을 권장합니다.
 
 카메라를 열지 않고 옵션만 확인하려면:
 

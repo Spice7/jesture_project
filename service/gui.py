@@ -7,7 +7,8 @@ import sys
 
 def make_parser():
     parser = argparse.ArgumentParser(description="제스처 GUI: 실행 시 OFF, 사용자가 시작하면 실제 단축키를 전송합니다.")
-    parser.add_argument("--checkpoint", type=Path, help="이번 실행의 모델. 생략 시 저장 경로, 없으면 lstm_gpu_2layers_001 사용")
+    parser.add_argument("--checkpoint", type=Path,
+                        help="이번 실행의 모델. 생략 시 저장 경로, 없으면 four_class_lstm_1layers_001 사용")
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     parser.add_argument("--settings", type=Path, help="설정 경로 재정의. 기본 LOCALAPPDATA/JestureService/settings.json")
     parser.add_argument("--diagnostics", type=Path, help="선택적 진단 JSONL 경로. 기존 파일은 덮어쓰지 않습니다.")
@@ -15,11 +16,16 @@ def make_parser():
                         help="정적 손모양 게이트 가중치. 생략 시 yolo/v2/best.pt")
     parser.add_argument("--no-gate", action="store_true",
                         help="손모양 게이트를 끄고 버튼/단축키로만 인식을 켭니다.")
+    parser.add_argument("--self-test", action="store_true",
+                        help="카메라와 창 없이 자산·모델 로딩만 확인하고 종료합니다.")
     return parser
 
 
 def main(argv=None):
     args = make_parser().parse_args(argv)
+    if args.self_test:
+        from .selftest import main as run_self_test
+        return run_self_test("cpu" if args.device == "cpu" else "auto")
     try:
         from .gui_widgets import run_gui
     except ModuleNotFoundError as exc:

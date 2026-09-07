@@ -8,11 +8,13 @@ from dataclasses import dataclass
 import math
 from pathlib import Path
 
+from .resources import resource_path
+
 # 학습된 가중치의 클래스 계약입니다. 순서가 아니라 이름으로 대응합니다.
 GATE_LABELS = ("cancel", "start", "stop")
 # 손모양 → 서비스 동작. 보자기=start, 주먹=stop, 총 모양=cancel로 확인했습니다.
 GATE_ACTIONS = {"start": "arm", "stop": "disarm", "cancel": "toggle_window"}
-DEFAULT_WEIGHTS = Path(__file__).resolve().parents[1] / "yolo" / "v2" / "best.pt"
+DEFAULT_WEIGHTS = resource_path("yolo", "v2", "best.pt")
 
 
 @dataclass(frozen=True)
