@@ -4,9 +4,9 @@
   "actions": {
     "swipe_left": {
       "keys": [
-        "tab"
+        "space"
       ],
-      "label": "다음 창",
+      "label": "Space",
       "cooldown_sec": 0.5
     },
     "make_fist": {

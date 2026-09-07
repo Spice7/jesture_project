@@ -127,7 +127,6 @@ class KeyRecorder(ctk.CTkFrame):
         self._focus.place(x=0, y=0)
         self._focus.bind("<KeyPress>", self._on_press)
         self._focus.bind("<KeyRelease>", self._on_release)
-        self._focus.bind("<FocusOut>", lambda e: self.after(50, self._cancel_if_recording))
         for w in (self, self._inner, self._hint):
             w.bind("<Button-1>", self.start)
         self.set_keys([])
@@ -161,11 +160,21 @@ class KeyRecorder(ctk.CTkFrame):
         ctk.CTkLabel(self._inner, text="키 조합을 누르세요…", font=font(14, "bold"), text_color=self.color).pack(side="left")
         self._hint.configure(text="Esc 취소 · Backspace 지우기 · Win 은 오른쪽 체크")
         self.configure(fg_color=("#dfe9f5", "#1f2a3a"), border_width=2, border_color=self.color)
-        self._focus.focus_set()
+        top = self.winfo_toplevel()
+        top.bind("<KeyPress>", self._on_press)
+        top.bind("<KeyRelease>", self._on_release)
+        top.bind("<Button-1>", lambda e: self.after(50, self._cancel_if_recording), add="+")
+        self._focus.focus_force()
+
+    def _unbind_top(self):
+        top = self.winfo_toplevel()
+        for ev in ("<KeyPress>", "<KeyRelease>", "<Button-1>"):
+            top.unbind(ev)
 
     def _finish(self, keys):
         self.recording = False
         self._held = []
+        self._unbind_top()
         self.set_keys(keys)
         self.on_change(keys)
 
@@ -173,6 +182,7 @@ class KeyRecorder(ctk.CTkFrame):
         if self.recording:
             self.recording = False
             self._held = []
+            self._unbind_top()
             self.set_keys(self.keys)
 
     def _on_press(self, e):
@@ -205,8 +215,10 @@ class KeyRecorder(ctk.CTkFrame):
         if name in MODIFIERS and name in self._held:
             self._held.remove(name)
             if not self._held:
-                # 보조키만 눌렀다 뗀 경우 (예: Win 하나) → 그 조합으로 확정
-                self._finish(normalize_keys([name]))
+                if name == "win":
+                    self._finish(["win"])
+                else:
+                    self._hint.configure(text="보조키 + 키 하나를 같이 누르세요 (Esc 취소)")
         return "break"
 
 
@@ -437,7 +449,6 @@ class App(ctk.CTk):
             ent = ctk.CTkEntry(tools, textvariable=name_var, width=200, font=font(12), placeholder_text="예: 다음 슬라이드")
             ent.pack(side="left", padx=(6, 12))
             ent.bind("<Return>", lambda e, l=lab: self._rename(l))
-            ent.bind("<FocusOut>", lambda e, l=lab: self._rename(l))
             ctk.CTkButton(tools, text="눌러보기", width=84, font=font(12), fg_color="transparent", border_width=1,
                           text_color=TEXT, command=lambda l=lab: self.try_key(l)).pack(side="left")
             ctk.CTkButton(tools, text="기본값", width=70, font=font(12), fg_color="transparent", border_width=1,
