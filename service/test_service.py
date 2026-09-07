@@ -274,6 +274,26 @@ mp.tasks.vision.HandLandmarker.create_from_options.assert_not_called()
         self.feed(controller, 9, 15)
         self.assertTrue(controller.armed)
 
+    def test_suppressed_command_is_deferred_then_fires_when_released(self):
+        """YOLO 주먹 유지가 진행 중이면 make_fist 확정을 미루고, 손을 풀면 바로 실행합니다."""
+        controller = self.controller()
+        controller.start()
+        controller.predictor.predict.return_value = probabilities(1)
+        controller.suppressed = frozenset({"make_fist"})
+        self.assertEqual(self.feed(controller, 0, 8), [], "유예 중에는 확정하지 않습니다.")
+        self.assertEqual(controller.candidate, "make_fist")
+        self.assertEqual(controller.candidate_count, controller.config.stable_predictions)
+        self.assertTrue(controller.armed, "유예는 재무장 상태를 소비하지 않습니다.")
+        self.assertIn("deferred", controller.reason)
+        controller.suppressed = frozenset()
+        self.assertEqual(self.feed(controller, 9, 9), ["make_fist"], "보류가 풀리면 즉시 확정합니다.")
+
+    def test_suppression_does_not_block_other_commands(self):
+        controller = self.controller()
+        controller.start()
+        controller.suppressed = frozenset({"make_fist"})
+        self.assertEqual(self.feed(controller, 0, 5), ["swipe_left"])
+
     def test_low_confidence_class_changes_and_quality_reset(self):
         controller = self.controller()
         controller.start()

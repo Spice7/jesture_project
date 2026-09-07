@@ -55,6 +55,8 @@ class GestureController:
         self.enabled = False
         self.diagnostics = None
         self._diagnostic_state = None
+        # YOLO 게이트가 매 프레임 갱신합니다. 여기 있는 명령은 확정을 미룹니다.
+        self.suppressed = frozenset()
         self._reset(armed=True)
         self.reason = "Recognition OFF"
 
@@ -131,6 +133,12 @@ class GestureController:
         self.candidate = label
         self.reason = "Stabilizing prediction"
         if self.candidate_count < self.config.stable_predictions:
+            return None
+        if label in self.suppressed:
+            # 같은 손모양의 유지 판정이 진행 중입니다. 3초를 채우면 게이트가 인식을 끄고,
+            # 그 전에 손을 풀면 보류가 사라져 바로 다음 추론에서 확정합니다.
+            self.candidate_count = self.config.stable_predictions
+            self.reason = "Hold gesture in progress: command deferred"
             return None
         self.armed = False
         self.cooldown_until = timestamp + self.config.cooldown_seconds

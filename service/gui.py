@@ -11,6 +11,10 @@ def make_parser():
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     parser.add_argument("--settings", type=Path, help="설정 경로 재정의. 기본 LOCALAPPDATA/JestureService/settings.json")
     parser.add_argument("--diagnostics", type=Path, help="선택적 진단 JSONL 경로. 기존 파일은 덮어쓰지 않습니다.")
+    parser.add_argument("--gate-weights", type=Path,
+                        help="정적 손모양 게이트 가중치. 생략 시 yolo/v2/best.pt")
+    parser.add_argument("--no-gate", action="store_true",
+                        help="손모양 게이트를 끄고 버튼/단축키로만 인식을 켭니다.")
     return parser
 
 

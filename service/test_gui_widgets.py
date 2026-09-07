@@ -15,28 +15,37 @@ HAS_QT = importlib.util.find_spec("PySide6") is not None
 
 
 class FakeRuntime:
-    def __init__(self, *args):
+    def __init__(self, *args, camera_index=0, **kwargs):
+        # 카메라와 게이트는 실행 직후부터 돌아갑니다. 인식 ON/OFF와는 별개입니다.
         self.status = dict(ready=True, labels=("swipe_left", "make_fist", "no_gesture"),
-                          schema="right-only", model_status="모의 모델", camera="해제", recognition="OFF",
-                          session=None, error="", detail="test")
+                          schema="right-only", model_status="모의 모델", camera="사용 중", recognition="OFF",
+                          session=None, error="", detail="test", gate=None, gate_ready=True, gate_error="")
         self.launched = False
         self.starts = []
         self.closed = False
         self.preview = True
-        self.frame = self.event = None
+        self.camera_index = camera_index
+        self.reopened = []
+        self.frame = self.event = self.gate_event = None
 
     def launch(self):
         self.launched = True
 
-    def start(self, session, camera):
+    def start(self, session, camera=None):
         self.starts.append((session, camera))
-        self.status.update(camera="사용 중", recognition="ACTIVE", session=session)
+        self.status.update(recognition="ACTIVE", session=session)
 
     def stop(self):
-        self.status.update(camera="해제", recognition="OFF")
+        self.status.update(recognition="OFF")
+
+    def reopen(self, camera_index=None):
+        self.reopened.append(camera_index)
+        if camera_index is not None:
+            self.camera_index = camera_index
 
     def close(self):
         self.closed = True
+        self.status.update(camera="해제")
 
     def alive(self):
         return not self.closed
@@ -45,8 +54,8 @@ class FakeRuntime:
         self.preview = value
 
     def poll(self):
-        packet = dict(self.status), self.frame, self.event
-        self.frame = self.event = None
+        packet = dict(self.status), self.frame, self.event, self.gate_event
+        self.frame = self.event = self.gate_event = None
         return packet
 
 
@@ -128,6 +137,57 @@ class WidgetTests(unittest.TestCase):
             result = [call for call in diagnostic.emit.call_args_list if call.args == ("key_send_result",)]
             self.assertTrue(result[-1].kwargs["sent"])
             self.assertEqual(result[-1].kwargs["serial"], 2)
+
+    def gate_event(self, action, serial=1):
+        from service.gui_runtime import GateEvent
+        self.window.runtime.gate_event = GateEvent(serial, action, 100.)
+        self.window.poll()
+
+    def test_hand_shape_gate_arms_and_disarms_recognition(self):
+        self.assertFalse(self.window.gate.enabled)
+        self.gate_event("arm")
+        self.assertTrue(self.window.gate.enabled, "보자기 확정이 인식을 켜야 합니다.")
+        self.assertEqual(len(self.window.runtime.starts), 1)
+        self.gate_event("arm", 2)  # 이미 켜져 있으면 다시 시작하지 않습니다.
+        self.assertEqual(len(self.window.runtime.starts), 1)
+        self.gate_event("disarm", 3)
+        self.assertFalse(self.window.gate.enabled, "주먹 확정이 인식을 꺼야 합니다.")
+
+    def test_gate_is_ignored_while_settings_are_open_or_closing(self):
+        self.window.open_settings()
+        self.gate_event("arm")
+        self.assertFalse(self.window.gate.enabled, "설정 중에는 손모양으로 켜지지 않습니다.")
+        self.window.dialog.reject()
+        self.window.gate.closing = True
+        self.gate_event("arm", 2)
+        self.assertFalse(self.window.gate.enabled)
+        self.window.gate.closing = False
+
+    def test_gun_shape_toggles_window_without_stealing_focus(self):
+        self.window.show()
+        self.assertTrue(self.window.isVisible())
+        self.gate_event("toggle_window")
+        self.assertFalse(self.window.isVisible(), "총 모양 확정이 창을 숨겨야 합니다.")
+        self.gate_event("toggle_window", 2)
+        self.assertTrue(self.window.isVisible(), "다시 확정하면 창이 보여야 합니다.")
+        # 활성 창을 바꾸면 KeySender가 단축키 전송을 막으므로 포커스를 가져오지 않습니다.
+        self.assertTrue(self.window.testAttribute(self.Qt.WidgetAttribute.WA_ShowWithoutActivating))
+
+    def test_camera_and_gate_keep_running_after_recognition_stops(self):
+        self.window.toggle()
+        self.assertTrue(self.window.gate.enabled)
+        self.window.stop()
+        self.assertFalse(self.window.gate.enabled)
+        self.window.poll()
+        self.assertEqual(self.window.worker_camera, "사용 중")
+        self.assertIn("손모양 게이트", self.window.gate_status.text())
+
+    def test_changing_camera_number_reopens_the_camera(self):
+        self.window.open_settings()
+        dialog = self.window.dialog
+        dialog.camera.setValue(2)
+        dialog.save()
+        self.assertEqual(self.window.runtime.reopened, [2])
 
     def test_default_model_without_cli_or_saved_path(self):
         self.window.close()
@@ -267,8 +327,9 @@ class WidgetTests(unittest.TestCase):
                 self.window.changeEvent(self.QEvent(self.QEvent.Type.WindowStateChange))
                 self.app.processEvents()
                 hide.assert_called()
-            self.window.poll()  # fake 작업자의 카메라 해제 완료 상태를 UI에도 반영합니다.
-            status.setText.assert_called_with("인식 OFF · 카메라 해제")
+            self.window.poll()
+            # 인식만 꺼지고 카메라와 손모양 게이트는 계속 돌아갑니다.
+            status.setText.assert_called_with("인식 OFF · 카메라 사용 중")
             toggle.setEnabled.assert_called()
             self.window.close()
             self.window.poll()

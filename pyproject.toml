@@ -11,6 +11,7 @@ dependencies = [
     "pandas>=3.0.5",
     "tensorflow>=2.21.0",
     "torch>=2.14.0",
+    "torchvision>=0.29.0",
     "ultralytics>=8.4.138",
 ]
 
@@ -18,3 +19,11 @@ dependencies = [
 gui = [
     "pyside6>=6.8,<7",
 ]
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu126"

@@ -25,6 +25,7 @@ STATUS_NAMES = {
     "Wait for neutral before next command": "다음 명령을 위해 잠시 자연스러운 손 자세로 돌아와 주세요",
     "Event confirmed (DRY RUN)": "동작을 확인했습니다",
     "Hand/class mismatch: command blocked": "지원하는 손동작이 아니어서 실행을 보류합니다",
+    "Hold gesture in progress: command deferred": "손모양을 유지하고 있어 명령을 잠시 보류합니다. 계속 유지하면 인식을 끕니다",
     "Input latency/gap: fresh window and neutral required": "입력이 끊기거나 화면이 바뀌어 동작을 다시 확인합니다",
     "Camera time gap: fresh window required": "카메라 입력이 지연되어 동작을 다시 확인합니다",
     "Hand changed: fresh window and neutral required": "손이 바뀌어 동작을 다시 확인합니다",
@@ -34,9 +35,36 @@ STATUS_NAMES = {
 }
 
 
+# YOLO 게이트의 정적 손모양. 모델 라벨은 start/stop/cancel 그대로 두고 표시만 바꿉니다.
+GATE_GESTURE_NAMES = {"start": "보자기", "stop": "주먹", "cancel": "총 모양"}
+GATE_ACTION_NAMES = {
+    "arm": "보자기를 3초 유지해 제스처 인식을 켰습니다",
+    "disarm": "주먹을 3초 유지해 제스처 인식을 껐습니다",
+    "toggle_window": "총 모양을 3초 유지해 창 표시를 전환했습니다",
+}
+GATE_IDLE = "손모양 대기 중 · 보자기=시작, 주먹=중지, 총 모양=창 표시"
+
+
 def gesture_name(label):
     """명령 라벨의 한국어 이름입니다. 표시 전용이며 판정에는 쓰지 않습니다."""
     return GESTURE_NAMES.get(label, "지원하지 않는 동작")
+
+
+def gate_action_name(action):
+    return GATE_ACTION_NAMES.get(action, "손모양 명령을 확인했습니다")
+
+
+def gate_line(gate, ready=False, error=""):
+    """메인 화면의 손모양 게이트 한 줄입니다. gate는 (라벨, 확신도, 진행률)입니다."""
+    if error:
+        return f"손모양 게이트: {error}"
+    if not ready:
+        return "손모양 게이트: 사용 안 함 · 버튼이나 단축키로 인식을 켜세요"
+    if not gate or gate[0] is None:
+        return f"손모양 게이트: {GATE_IDLE}"
+    label, score, progress = gate
+    name = GATE_GESTURE_NAMES.get(label, label)
+    return f"손모양 게이트: {name} {score:.2f} · 유지 {round(progress * 100)}%"
 
 
 def command_names(labels):

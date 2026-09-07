@@ -314,10 +314,18 @@ class RuntimeTests(unittest.TestCase):
         self.camera, self.tracker = mock.Mock(), mock.Mock()
         self.camera.read.return_value = True, np.zeros((10, 20, 3), dtype=np.uint8)
         self.tracker.process.return_value = SimpleNamespace(landmarks=np.zeros((21, 3)), detected=True, handedness="Right", status="Right")
+        # 게이트는 별도 테스트에서 다루고 여기서는 기존 LSTM 경로만 확인합니다.
         self.runtime = RecognitionRuntime("synthetic-only", "cpu", lambda: (100, 2),
             predictor_factory=lambda *a: self.predictor, controller_factory=lambda p: self.controller,
-            camera_factory=mock.Mock(return_value=self.camera), tracker_factory=mock.Mock(return_value=self.tracker))
+            camera_factory=mock.Mock(return_value=self.camera), tracker_factory=mock.Mock(return_value=self.tracker),
+            gate_factory=None)
         self.addCleanup(self.cleanup)
+
+    def loop(self, request=None):
+        """카메라 루프를 현재 세대로 한 번 실행합니다."""
+        self.runtime.request = request
+        return self.runtime._camera_loop(self.controller, self.predictor, None,
+                                         self.runtime.camera_index, self.runtime.camera_generation)
 
     def cleanup(self):
         self.runtime.close()
@@ -332,45 +340,61 @@ class RuntimeTests(unittest.TestCase):
                 self.fail("worker timeout")
             threading.Event().wait(.005)
 
-    def test_off_launch_no_camera_model_once_and_duplicate_launch(self):
+    def test_launch_opens_camera_once_and_rejects_duplicate_launch(self):
         factory = mock.Mock(return_value=self.predictor)
         self.runtime.predictor_factory = factory
         self.runtime.launch()
-        self.wait_for(lambda: self.runtime.poll()[0]["ready"])
+        # 인식 OFF여도 카메라는 앱 수명 동안 열려 있습니다. 게이트를 항상 확인하기 때문입니다.
+        self.wait_for(lambda: self.runtime.poll()[0]["camera"] == "사용 중")
+        self.assertTrue(self.runtime.poll()[0]["ready"])
         factory.assert_called_once()
-        self.runtime.camera_factory.assert_not_called()
+        self.runtime.camera_factory.assert_called_once_with(0)
+        self.controller.start.assert_not_called()
         with self.assertRaises(RuntimeError):
             self.runtime.launch()
 
+    def test_disarmed_loop_skips_tracker_and_controller(self):
+        calls = 0
+        def read():
+            nonlocal calls
+            calls += 1
+            if calls >= 3:
+                self.runtime.close()
+            return True, np.zeros((10, 20, 3), dtype=np.uint8)
+        self.camera.read.side_effect = read
+        self.loop(None)
+        self.tracker.process.assert_not_called()
+        self.controller.step.assert_not_called()
+        self.assertIsNone(self.runtime.poll()[2])
+        self.camera.release.assert_called_once()
+        self.tracker.close.assert_called_once()
+
     def test_session_preview_hidden_and_resource_cleanup(self):
         self.runtime.preview = False
-        request = (1, 0)
-        self.runtime.request = request
         def step(*args):
             # 첫 프레임은 발행, 다음 프레임에서 중지하여 뒤늦은 명령이 발행되지 않음을 검사.
             if self.controller.step.call_count == 2:
                 self.assertIsNone(self.runtime.poll()[1])
-                self.runtime.stop()
+                self.runtime.close()
             return "swipe_left"
         self.controller.step.side_effect = step
-        self.runtime._session(self.controller, self.predictor, request)
+        self.loop((1, 0))
         self.assertEqual(self.controller.step.call_count, 2)
         self.assertIsNone(self.runtime.poll()[2])
         self.camera.release.assert_called_once()
         self.tracker.close.assert_called_once()
-        self.controller.stop.assert_called_once()
+        self.controller.stop.assert_called()
 
     def test_late_frame_error_and_tracker_failure_release(self):
-        self.runtime.request = request = (1, 0)
         self.camera.read.return_value = False, None
         with self.assertRaises(RuntimeError):
-            self.runtime._session(self.controller, self.predictor, request)
+            self.loop((1, 0))
         self.camera.release.assert_called_once()
         self.tracker.close.assert_called_once()
         self.camera.reset_mock()
         self.runtime.tracker_factory.side_effect = RuntimeError("detector failed")
         with self.assertRaises(RuntimeError):
-            self.runtime._session(self.controller, self.predictor, request)
+            self.loop((1, 0))
         self.camera.release.assert_called_once()
 
     def test_worker_load_failure_never_opens_camera(self):
@@ -382,28 +406,64 @@ class RuntimeTests(unittest.TestCase):
         self.assertIn("invalid checkpoint", status["error"])
         self.runtime.camera_factory.assert_not_called()
 
+    def gate_stub(self, actions):
+        """확정 동작을 순서대로 내보내는 가짜 게이트입니다. YOLO 가중치를 쓰지 않습니다."""
+        from service.yolo_gate import GateConfig, HoldDetector
+        stub = mock.Mock()
+        stub.detector = HoldDetector(GateConfig())
+        stub.step.side_effect = [(action, "stop" if action == "disarm" else "start", .9, 1.)
+                                 for action in actions]
+        return stub
+
+    def test_gate_runs_while_disarmed_and_publishes_confirmed_action(self):
+        gate = self.gate_stub([None, "arm"])
+        def read():
+            # close()는 대기 중인 슬롯을 지우므로, 카메라 세대를 올려 루프만 끝냅니다.
+            if gate.step.call_count >= 2:
+                self.runtime.camera_generation += 1
+            return True, np.zeros((10, 20, 3), dtype=np.uint8)
+        self.camera.read.side_effect = read
+        self.runtime.request = None
+        self.runtime._camera_loop(self.controller, self.predictor, gate, 0, 0)
+        # 인식이 꺼져 있어도 게이트는 매 프레임 확인합니다.
+        self.assertEqual(gate.step.call_count, 2)
+        self.tracker.process.assert_not_called()
+        event = self.runtime.poll()[3]
+        self.assertIsNotNone(event, "확정된 손모양 동작이 GUI로 올라와야 합니다.")
+        self.assertEqual(event.action, "arm")
+        self.assertEqual(event.serial, 1)
+
+    def test_gate_sets_command_suppression_on_the_controller(self):
+        from service.yolo_gate import GateConfig, HoldDetector
+        gate = mock.Mock()
+        gate.detector = HoldDetector(GateConfig(hold_seconds=3., suppress_after_seconds=1.))
+        for _ in range(15):  # 주먹 1.5초 유지 → 유예 구간
+            gate.detector.update(gate.detector.last_timestamp or 100., "stop")
+            gate.detector.last_timestamp = (gate.detector.last_timestamp or 100.) + .1
+        gate.step.return_value = (None, "stop", .9, .5)
+        self.runtime._gate_step(gate, self.controller, gate.detector.last_timestamp, None)
+        self.assertEqual(self.controller.suppressed, frozenset({"make_fist"}))
+
+    def test_no_gate_clears_suppression(self):
+        self.runtime._gate_step(None, self.controller, 100., None)
+        self.assertEqual(self.controller.suppressed, frozenset())
+
     def test_focus_change_or_slow_inference_drops_event(self):
         for slow in (False, True):
             with self.subTest(slow=slow):
-                self.runtime.request = request = (1, 0)
+                self.controller.reset_mock()
                 self.runtime.clock = mock.Mock(side_effect=[0, 1 if slow else .1])
                 targets = iter([(100, 2), (101, 2)])
                 self.runtime.foreground = lambda: next(targets)
-                self.camera.read.side_effect = [(True, np.zeros((10, 20, 3), dtype=np.uint8))]
-                original = self.runtime._current
-                calls = 0
-                def current(req):
-                    nonlocal calls
-                    calls += 1
-                    # 초기화 후/루프 시작/프레임 직후는 허용하고 다음 루프는 종료합니다.
-                    return calls <= 3
-                self.runtime._current = current
-                try:
-                    self.runtime._session(self.controller, self.predictor, request)
-                finally:
-                    self.runtime._current = original
+                self.camera.read.side_effect = None
+                def step(*args):
+                    self.runtime.close()  # 이 프레임까지만 처리하고 루프를 끝냅니다.
+                    return "swipe_left"
+                self.controller.step.side_effect = step
+                self.loop((1, 0))
                 self.assertIsNone(self.runtime.poll()[2])
                 self.controller.reset_after_gap.assert_called()
+                self.runtime.quitting = False
 
     def test_stop_during_read_and_restart_no_overlapping_camera(self):
         entered, release = threading.Event(), threading.Event()

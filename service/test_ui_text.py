@@ -86,6 +86,21 @@ class TextTests(unittest.TestCase):
         missing = sorted(emitted - set(STATUS_NAMES))
         self.assertEqual(missing, [], f"ui_text.STATUS_NAMES에 번역이 없는 문구: {missing}")
 
+    def test_gate_line_uses_korean_hand_shape_names(self):
+        from service.ui_text import gate_action_name, gate_line
+        self.assertEqual(gate_line(("start", .93, .5), ready=True),
+                         "손모양 게이트: 보자기 0.93 · 유지 50%")
+        self.assertEqual(gate_line(("stop", .8, 1.), ready=True), "손모양 게이트: 주먹 0.80 · 유지 100%")
+        self.assertIn("총 모양", gate_line(("cancel", .7, .1), ready=True))
+        self.assertIn("보자기=시작", gate_line((None, 0., 0.), ready=True))
+        self.assertIn("사용 안 함", gate_line(None, ready=False))
+        self.assertIn("가중치 없음", gate_line(None, ready=False, error="가중치 없음"))
+        for action, expected in (("arm", "켰습니다"), ("disarm", "껐습니다"), ("toggle_window", "창 표시")):
+            with self.subTest(action=action):
+                self.assertIn(expected, gate_action_name(action))
+        for label in ("start", "stop", "cancel"):
+            self.assertNotIn(label, gate_line((label, .9, .5), ready=True))
+
     def test_unknown_sources_fall_back_without_leaking_internals(self):
         self.assertEqual(detail_text(""), "")
         self.assertTrue(has_hangul(detail_text("brand new internal reason")))

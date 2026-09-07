@@ -11,12 +11,12 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
     QPushButton, QCheckBox, QFrame, QDialog, QLineEdit, QSpinBox, QFileDialog, QSystemTrayIcon, QMenu,
     QScrollArea)
 
-from .gui_runtime import RecognitionRuntime, SessionGate
+from .gui_runtime import RecognitionRuntime, SessionGate, default_gate
 from .settings import SettingsStore, defaults, validate_settings, default_settings_path, resolve_checkpoint
 from .shortcuts import ChordCapture, Shortcut, HotkeyManager, KeySender, KEYS, MODIFIERS
 from .windows_input import WindowsInput, WM_HOTKEY
 from .policy import COMMAND_LABELS, supported_labels
-from .ui_text import detail_text, gesture_name, model_line
+from .ui_text import detail_text, gate_action_name, gate_line, gesture_name, model_line
 
 STYLE = """
 QWidget { font-family: 'Malgun Gothic'; font-size: 13px; color: #203454; }
@@ -216,7 +216,7 @@ class SettingsDialog(QDialog):
         self.notifications.setChecked(settings["notifications"])
         layout.addWidget(self.preview)
         layout.addWidget(self.notifications)
-        layout.addWidget(text_label("카메라 번호 (다음 인식 시작 시 적용)"))
+        layout.addWidget(text_label("카메라 번호 (저장하면 카메라를 다시 엽니다)"))
         self.camera = QSpinBox()
         self.camera.setRange(0, 99)
         self.camera.setValue(settings["camera_index"])
@@ -321,7 +321,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self, settings, store, *, checkpoint=None, device="auto", load_error="",
                  backend_factory=WindowsInput, runtime_factory=RecognitionRuntime, enable_tray=True,
-                 diagnostics=None):
+                 diagnostics=None, gate_weights=None, use_gate=True):
         super().__init__()
         self.settings, self.store = copy.deepcopy(settings), store
         self.checkpoint = str(resolve_checkpoint(checkpoint, settings["model_path"]))
@@ -362,7 +362,10 @@ class MainWindow(QMainWindow):
             self.hotkeys.replace(Shortcut.from_dict(settings["toggle"]))
         except Exception as exc:
             self.show_error(str(exc))
-        self.runtime = runtime_factory(Path(self.checkpoint), device, self.backend.foreground)
+        self.runtime = runtime_factory(Path(self.checkpoint), device, self.backend.foreground,
+                                       camera_index=settings["camera_index"],
+                                       gate_weights=gate_weights,
+                                       gate_factory=default_gate if use_gate else None)
         if diagnostics is not None:
             self.runtime.diagnostics = diagnostics
         self.runtime.set_preview(settings["preview"])
@@ -394,12 +397,14 @@ class MainWindow(QMainWindow):
         self.state = text_label("인식 OFF · 카메라 해제")
         self.model_status = text_label("모델 준비 중", "muted")
         self.mode = text_label("지원 모드: 모델 로딩 전", "muted")
+        self.gate_status = text_label("손모양 게이트: 준비 중", "muted")
         self.path_label = text_label(f"현재 모델: {self.checkpoint or '미선택'}", "muted")
         self.toggle_button = QPushButton("인식 시작")
         self.toggle_button.setObjectName("primary")
         self.toggle_button.clicked.connect(self.toggle)
         self.hotkey_label = text_label("", "muted")
-        for widget in (self.state, self.model_status, self.mode, self.path_label, self.toggle_button, self.hotkey_label):
+        for widget in (self.state, self.model_status, self.mode, self.gate_status, self.path_label,
+                       self.toggle_button, self.hotkey_label):
             box.addWidget(widget)
         layout.addWidget(card)
         controls = QHBoxLayout()
@@ -459,9 +464,12 @@ class MainWindow(QMainWindow):
 
     def commit_settings(self, changed):
         self.hotkeys.replace(Shortcut.from_dict(changed["toggle"]), lambda: self.store.save(changed))
+        moved = changed["camera_index"] != self.settings["camera_index"]
         self.settings = copy.deepcopy(changed)
         if self.runtime:
             self.runtime.set_preview(changed["preview"])
+            if moved:
+                self.runtime.reopen(changed["camera_index"])
         self._show_preferences()
         self.show_error("모델 경로 변경은 앱 재시작 후 적용됩니다." if
                         str(resolve_checkpoint(saved=changed["model_path"])) != self.checkpoint else "")
@@ -501,7 +509,7 @@ class MainWindow(QMainWindow):
             return
         if self.gate.enabled:
             self.stop()
-        elif self.ready and self.worker_camera == "해제" and self.runtime and self.runtime.alive():
+        elif self.ready and self.worker_camera == "사용 중" and self.runtime and self.runtime.alive():
             if self.gate.start():
                 try:
                     self.runtime.start(self.gate.session, self.settings["camera_index"])
@@ -511,14 +519,36 @@ class MainWindow(QMainWindow):
                     self.show_error(str(exc))
         self.update_controls()
 
+    def handle_gate(self, event):
+        """손모양 유지로 확정된 동작입니다. 실행 권한은 여기서 다시 검사합니다."""
+        if self.gate.closing or self.gate.settings_open:
+            return
+        if event.action == "arm" and not self.gate.enabled:
+            self.toggle()
+        elif event.action == "disarm" and self.gate.enabled:
+            self.stop()
+        elif event.action == "toggle_window":
+            self.toggle_window()
+        else:
+            return
+        self.notify(gate_action_name(event.action))
+
+    def toggle_window(self):
+        """창을 보이거나 숨깁니다. 활성 창을 바꾸면 단축키 전송이 막히므로 포커스는 두지 않습니다."""
+        if self.isVisible() and not self.isMinimized():
+            self.hide()
+            return
+        # 이후 트레이 조작은 restore_window의 명시적 activateWindow로 계속 활성화됩니다.
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+        self.showNormal()
+
     def stop(self):
         was_on = self.gate.enabled
         self.gate.stop()  # worker의 작업 완료를 기다리기 전에 UI 전송 권한부터 취소합니다.
         if self.runtime:
             self.runtime.stop()
         self.last_command.setText("마지막 명령: 없음")
-        self.preview_label.clear()
-        self.preview_label.setText("인식 OFF · 카메라 정리/해제")
+        # 카메라와 손모양 게이트는 계속 돌아가므로 미리보기를 지우지 않습니다.
         if was_on:
             self.notify("제스처 인식을 중지했습니다.")
         self.update_controls()
@@ -549,23 +579,27 @@ class MainWindow(QMainWindow):
             return
         if self.runtime is None:
             return
-        status, frame, event = self.runtime.poll()
+        status, frame, event, gate_event = self.runtime.poll()
         self.ready, self.labels = status["ready"], supported_labels(status["labels"])
         self.worker_camera = status["camera"]
         self.model_status.setText(status["model_status"])
         self.mode.setText(model_line(status["schema"], self.labels))
+        self.gate_status.setText(gate_line(status["gate"], status["gate_ready"], status["gate_error"]))
         if status["error"]:
             self.show_error(status["error"])
             if self.gate.enabled:
                 self.stop()
         if self.gate.enabled and status["session"] == self.gate.session:
             self.detail.setText(detail_text(status["detail"]))
-            if frame is not None and self.settings["preview"]:
-                height, width = frame.shape[:2]
-                image = QImage(frame.data, width, height, frame.strides[0], QImage.Format.Format_BGR888).copy()
-                self.preview_label.setPixmap(QPixmap.fromImage(image).scaled(
-                    self.preview_label.width(), 300, Qt.AspectRatioMode.KeepAspectRatio,
-                    Qt.TransformationMode.SmoothTransformation))
+        # 카메라와 게이트는 인식 OFF에서도 돌아가므로 미리보기는 항상 갱신합니다.
+        if frame is not None and self.settings["preview"]:
+            height, width = frame.shape[:2]
+            image = QImage(frame.data, width, height, frame.strides[0], QImage.Format.Format_BGR888).copy()
+            self.preview_label.setPixmap(QPixmap.fromImage(image).scaled(
+                self.preview_label.width(), 300, Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation))
+        if gate_event is not None:
+            self.handle_gate(gate_event)
         accepted = event is not None and self.gate.accept(event, time.monotonic(), self.labels)
         if event is not None and self.diagnostics is not None:
             self.diagnostics.emit("gui_command", session=event.session, serial=event.serial,
@@ -593,7 +627,10 @@ class MainWindow(QMainWindow):
                                           frame_s=event.frame_s, error=str(exc))
                 self.stop()
                 self.show_error(f"입력 전송 실패: {exc}")
-        self.update_controls(status["recognition"])
+        # 손모양으로 방금 켠 직후에는 작업자가 아직 이전 세션을 보고하고 있습니다.
+        # 다른 세션의 mode를 그대로 쓰면 ON 상태를 OFF로 표시하므로 무시합니다.
+        matched = status["session"] == self.gate.session
+        self.update_controls(status["recognition"] if matched else None)
 
     def nativeEvent(self, event_type, message):
         if bytes(event_type) in (b"windows_generic_MSG", b"windows_dispatcher_MSG"):
@@ -660,7 +697,9 @@ def run_gui(args):
     window = None
     try:
         window = MainWindow(settings, store, checkpoint=args.checkpoint, device=args.device,
-                            load_error=error, diagnostics=diagnostics)
+                            load_error=error, diagnostics=diagnostics,
+                            gate_weights=getattr(args, "gate_weights", None),
+                            use_gate=not getattr(args, "no_gate", False))
         window.show()
         return app.exec()
     finally:
