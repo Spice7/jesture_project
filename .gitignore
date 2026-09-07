@@ -1,5 +1,15 @@
+# 최상위
+/dataset/
+/video/
+/videos/
+/frames/
+
 # model_make 관련
+model_make/dataset/
 model_make/datasets/
+model_make/video/
+model_make/videos/
+model_make/frames/
 model_make/runs/
 model_make/.venv/
 model_make/weights/
@@ -8,6 +18,8 @@ model_make/weights/
 
 # slice 관련
 slice/.venv/
+slice/dataset/
+slice/video/
 slice/videos/
 
 # 공통
