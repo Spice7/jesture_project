@@ -2,8 +2,10 @@ from pathlib import Path
 
 from ultralytics import YOLO
 
-GESTURE_VERSION = "static_gesture_v2"
-MODEL_NAME = "yolov8n_v2_null"
+# GESTURE_VERSION = "static_gesture_v2"
+# MODEL_NAME = "yolov8n_v2_null"
+GESTURE_VERSION = "static_gesture_v3"
+MODEL_NAME = "yolov8n_v3_rotation"
 
 def main():
     project_root = Path(__file__).resolve().parent.parent

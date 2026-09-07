@@ -4,7 +4,8 @@ import time
 import cv2
 from ultralytics import YOLO
 
-MODEL_NAME = "yolov8n_v2_null"
+# MODEL_NAME = "yolov8n_v2_null"
+MODEL_NAME = "yolov8n_v3_rotation"
 
 # ============================================================
 # 설정
@@ -15,11 +16,11 @@ RECOGNITION_HOLD_SECONDS = 3.0
 
 # YOLO 검출 신뢰도 기준
 # 기초 설정 0.7
-CONFIDENCE_THRESHOLD = 0.7
+CONFIDENCE_THRESHOLD = 0.6
 
 # YOLO 입력 이미지 크기
-# 기본 640
-IMAGE_SIZE = 640
+# 기초 설정 640
+IMAGE_SIZE = 960
 
 # 카메라 번호
 # 기본 웹캠: 0
@@ -42,7 +43,7 @@ def main():
         / "gesture"
         / MODEL_NAME
         / "weights"
-        / "best.pt"
+        / "best.pt"         
     )
 
     if not model_path.exists():

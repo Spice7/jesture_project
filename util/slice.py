@@ -6,7 +6,7 @@ from pathlib import Path
 # 설정
 # ========================================
 
-VIDEO_SUBJECT = "two_finger"
+VIDEO_SUBJECT = "null"
 
 VIDEO_DIR = Path("videos")
 SAVE_DIR = Path(f"dataset/{VIDEO_SUBJECT}")
