@@ -1,0 +1,159 @@
+{
+  "mode": "normal",
+  "success": true,
+  "training_arrays_written": true,
+  "input_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\pilot_20260906\\input",
+  "output_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\pilot_20260906\\prepared",
+  "discovered_files": 1069,
+  "counts": {
+    "accepted": 1069
+  },
+  "by_label": {
+    "make_fist": {
+      "input": 395,
+      "accepted": 395,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "no_gesture": {
+      "input": 220,
+      "accepted": 220,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "swipe_left": {
+      "input": 454,
+      "accepted": 454,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_participant": {
+    "p001": {
+      "input": 380,
+      "accepted": 380,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p002": {
+      "input": 135,
+      "accepted": 135,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 225,
+      "accepted": 225,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 209,
+      "accepted": 209,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p006": {
+      "input": 120,
+      "accepted": 120,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_original_participant": {
+    "p001": {
+      "input": 380,
+      "accepted": 380,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p002": {
+      "input": 135,
+      "accepted": 135,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 225,
+      "accepted": 225,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 209,
+      "accepted": 209,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p006": {
+      "input": 120,
+      "accepted": 120,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "schema_counts": {
+    "2": 1057,
+    "1": 12
+  },
+  "duplicates": [],
+  "conflicts": [],
+  "split_class_distribution": {
+    "train": {
+      "swipe_left": 304,
+      "make_fist": 271,
+      "no_gesture": 165
+    },
+    "val": {
+      "swipe_left": 100,
+      "make_fist": 74,
+      "no_gesture": 35
+    },
+    "test": {
+      "swipe_left": 50,
+      "make_fist": 50,
+      "no_gesture": 20
+    }
+  },
+  "split_errors": [],
+  "errors": [],
+  "warnings": [],
+  "assumptions": {
+    "legacy_v1_missing_mirrored_assumed_false_from_collector": 12
+  },
+  "accepted_ranges": {
+    "original_T": [
+      20,
+      132
+    ],
+    "duration": [
+      0.6242826999805402,
+      4.344672200008063
+    ],
+    "valid_detection_ratio": [
+      0.8148148148148148,
+      1.0
+    ],
+    "longest_missing_run": [
+      0,
+      5
+    ],
+    "scale": [
+      0.06282666871252589,
+      0.4341854804004124
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+﻿true_label / predicted_label,swipe_left,make_fist,no_gesture
+swipe_left,100,0,0
+make_fist,0,73,1
+no_gesture,0,0,35

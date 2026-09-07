@@ -27,7 +27,7 @@ class LSTMClassifierTests(unittest.TestCase):
         x = torch.randn(4, 32, 66)
         original = x.clone()
         logits = model(x)
-        self.assertEqual(logits.shape, (4, 3))
+        self.assertEqual(logits.shape, (4, 4))
         self.assertEqual(logits.dtype, torch.float32)
         self.assertEqual(logits.device.type, "cpu")
         self.assertTrue(torch.isfinite(logits).all().item())
@@ -39,7 +39,7 @@ class LSTMClassifierTests(unittest.TestCase):
             for length in (1, 7, 32, 45):
                 with self.subTest(layers=layers, length=length):
                     out = model(torch.randn(1, length, 66))
-                    self.assertEqual(out.shape, (1, 3))
+                    self.assertEqual(out.shape, (1, 4))
                     self.assertTrue(torch.isfinite(out).all().item())
 
     def test_constructor_overrides(self):
@@ -70,7 +70,7 @@ class LSTMClassifierTests(unittest.TestCase):
             torch.zeros(2, 5, 4), (hidden, torch.zeros_like(hidden))
         )):
             logits = model(torch.zeros(2, 5, 66))
-        torch.testing.assert_close(logits, torch.full((2, 3), -2.0), rtol=0, atol=0)
+        torch.testing.assert_close(logits, torch.full((2, 4), -2.0), rtol=0, atol=0)
 
     def test_invalid_inputs(self):
         model = models.LSTMClassifier()
@@ -100,7 +100,7 @@ class LSTMClassifierTests(unittest.TestCase):
         for layers in (1, 2):
             model = models.LSTMClassifier(num_layers=layers)
             logits = model(torch.randn(4, 32, 66))
-            labels = torch.tensor([0, 1, 2, 0], dtype=torch.int64)
+            labels = torch.tensor([0, 1, 2, 3], dtype=torch.int64)
             loss = nn.CrossEntropyLoss()(logits, labels)
             self.assertTrue(torch.isfinite(loss).item())
             loss.backward()  # 기울기 계산만 검사합니다. 가중치 갱신이나 실제 데이터 학습은 하지 않습니다.
@@ -128,7 +128,7 @@ class LSTMClassifierTests(unittest.TestCase):
         # 시간에 따라 동일한 특징을 반복하는 정지 시퀀스도 거부하지 않습니다.
         x = torch.randn(2, 1, 66).repeat(1, 32, 1)
         out = model(x)
-        self.assertEqual(out.shape, (2, 3))
+        self.assertEqual(out.shape, (2, 4))
         self.assertTrue(torch.isfinite(out).all().item())
 
     def test_state_dict_roundtrip(self):

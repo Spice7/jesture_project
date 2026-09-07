@@ -13,3 +13,8 @@ dependencies = [
     "torch>=2.14.0",
     "ultralytics>=8.4.138",
 ]
+
+[project.optional-dependencies]
+gui = [
+    "pyside6>=6.8,<7",
+]

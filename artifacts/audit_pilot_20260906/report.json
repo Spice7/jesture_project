@@ -1,0 +1,458 @@
+{
+  "mode": "audit-only",
+  "success": false,
+  "training_arrays_written": false,
+  "input_dir": "C:\\Users\\WOOJIN\\jesture_project\\dataset",
+  "output_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\audit_pilot_20260906",
+  "discovered_files": 1071,
+  "counts": {
+    "accepted": 993,
+    "conflict": 78
+  },
+  "by_label": {
+    "make_fist": {
+      "input": 397,
+      "accepted": 393,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 4
+    },
+    "no_gesture": {
+      "input": 220,
+      "accepted": 220,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "swipe_left": {
+      "input": 454,
+      "accepted": 380,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 74
+    }
+  },
+  "by_participant": {
+    "p001": {
+      "input": 380,
+      "accepted": 306,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 74
+    },
+    "p002": {
+      "input": 135,
+      "accepted": 135,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 225,
+      "accepted": 225,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 211,
+      "accepted": 207,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 4
+    },
+    "p006": {
+      "input": 120,
+      "accepted": 120,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_original_participant": {
+    "p001": {
+      "input": 343,
+      "accepted": 306,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 37
+    },
+    "p002": {
+      "input": 135,
+      "accepted": 135,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 225,
+      "accepted": 225,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 211,
+      "accepted": 207,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 4
+    },
+    "p006": {
+      "input": 120,
+      "accepted": 120,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "user00": {
+      "input": 37,
+      "accepted": 0,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 37
+    }
+  },
+  "schema_counts": {
+    "2": 1059,
+    "1": 12
+  },
+  "duplicates": [],
+  "conflicts": [
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0001.npz",
+        "swipe_left/user00_swipe_left_0001.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0002.npz",
+        "swipe_left/user00_swipe_left_0002.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0003.npz",
+        "swipe_left/user00_swipe_left_0003.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0004.npz",
+        "swipe_left/user00_swipe_left_0004.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0005.npz",
+        "swipe_left/user00_swipe_left_0005.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0006.npz",
+        "swipe_left/user00_swipe_left_0006.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0007.npz",
+        "swipe_left/user00_swipe_left_0007.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0008.npz",
+        "swipe_left/user00_swipe_left_0008.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0009.npz",
+        "swipe_left/user00_swipe_left_0009.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0010.npz",
+        "swipe_left/user00_swipe_left_0010.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0011.npz",
+        "swipe_left/user00_swipe_left_0011.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0012.npz",
+        "swipe_left/user00_swipe_left_0012.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0013.npz",
+        "swipe_left/user00_swipe_left_0013.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0014.npz",
+        "swipe_left/user00_swipe_left_0014.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0015.npz",
+        "swipe_left/user00_swipe_left_0015.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0016.npz",
+        "swipe_left/user00_swipe_left_0016.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0017.npz",
+        "swipe_left/user00_swipe_left_0017.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0018.npz",
+        "swipe_left/user00_swipe_left_0018.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0019.npz",
+        "swipe_left/user00_swipe_left_0019.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0020.npz",
+        "swipe_left/user00_swipe_left_0020.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0021.npz",
+        "swipe_left/user00_swipe_left_0021.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0022.npz",
+        "swipe_left/user00_swipe_left_0022.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0023.npz",
+        "swipe_left/user00_swipe_left_0023.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0024.npz",
+        "swipe_left/user00_swipe_left_0024.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0025.npz",
+        "swipe_left/user00_swipe_left_0025.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0026.npz",
+        "swipe_left/user00_swipe_left_0026.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0027.npz",
+        "swipe_left/user00_swipe_left_0027.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0028.npz",
+        "swipe_left/user00_swipe_left_0028.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0029.npz",
+        "swipe_left/user00_swipe_left_0029.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0030.npz",
+        "swipe_left/user00_swipe_left_0030.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0031.npz",
+        "swipe_left/user00_swipe_left_0031.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0032.npz",
+        "swipe_left/user00_swipe_left_0032.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0033.npz",
+        "swipe_left/user00_swipe_left_0033.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0034.npz",
+        "swipe_left/user00_swipe_left_0034.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0035.npz",
+        "swipe_left/user00_swipe_left_0035.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0036.npz",
+        "swipe_left/user00_swipe_left_0036.npz"
+      ]
+    },
+    {
+      "reason": "same_identity_different_arrays",
+      "sources": [
+        "swipe_left/p001_swipe_left_0037.npz",
+        "swipe_left/user00_swipe_left_0037.npz"
+      ]
+    },
+    {
+      "reason": "same_arrays_different_identity",
+      "sources": [
+        "make_fist/p004_make_fist_0001.npz",
+        "make_fist/p004_make_fist_0033.npz"
+      ]
+    },
+    {
+      "reason": "same_arrays_different_identity",
+      "sources": [
+        "make_fist/p004_make_fist_0002.npz",
+        "make_fist/p004_make_fist_0034.npz"
+      ]
+    }
+  ],
+  "split_class_distribution": {
+    "train": {
+      "swipe_left": 0,
+      "make_fist": 0,
+      "no_gesture": 0
+    },
+    "val": {
+      "swipe_left": 0,
+      "make_fist": 0,
+      "no_gesture": 0
+    },
+    "test": {
+      "swipe_left": 0,
+      "make_fist": 0,
+      "no_gesture": 0
+    }
+  },
+  "split_errors": [
+    "empty_split:train",
+    "empty_split:val",
+    "empty_split:test",
+    "unassigned_subject:p001",
+    "unassigned_subject:p002",
+    "unassigned_subject:p003",
+    "unassigned_subject:p004",
+    "unassigned_subject:p006",
+    "missing_classes:train:swipe_left,make_fist,no_gesture",
+    "missing_classes:val:swipe_left,make_fist,no_gesture",
+    "missing_classes:test:swipe_left,make_fist,no_gesture"
+  ],
+  "errors": [
+    "identity_conflicts:resolve_conflicting_sources_before_preparing"
+  ],
+  "warnings": [
+    "audit_only:split_requirements_not_met; no training arrays are produced",
+    "some_sources_not_accepted; inspect manifest reasons"
+  ],
+  "assumptions": {
+    "legacy_v1_missing_mirrored_assumed_false_from_collector": 12
+  },
+  "accepted_ranges": {
+    "original_T": [
+      20,
+      132
+    ],
+    "duration": [
+      0.6242826999805402,
+      4.344672200008063
+    ],
+    "valid_detection_ratio": [
+      0.8148148148148148,
+      1.0
+    ],
+    "longest_missing_run": [
+      0,
+      5
+    ],
+    "scale": [
+      0.06282666871252589,
+      0.4341854804004124
+    ]
+  }
+}

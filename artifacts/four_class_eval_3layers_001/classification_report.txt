@@ -1,0 +1,17 @@
+Classification Report
+split: val
+
+                precision     recall   f1-score    support
+
+    swipe_left     1.0000     1.0000     1.0000        100
+     make_fist     1.0000     1.0000     1.0000         63
+    no_gesture     0.8611     0.8857     0.8732         35
+   finger_snap     0.9596     0.9500     0.9548        100
+
+      accuracy                           0.9698        298
+     macro avg     0.9552     0.9589     0.9570        298
+  weighted avg     0.9701     0.9698     0.9699        298
+
+CrossEntropyLoss: 0.151953
+점수는 0~1 비율이며 소수점 4자리로 표시합니다. 분모가 0인 지표는 0입니다.
+완료 여부는 evaluation_metrics.json의 status=success, completed=true를 확인하세요.

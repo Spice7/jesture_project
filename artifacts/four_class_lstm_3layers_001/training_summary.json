@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "epochs_completed": 31,
+  "best_epoch": 21,
+  "best_metrics": {
+    "epoch": 21,
+    "train_loss": 0.010297343941269124,
+    "train_accuracy": 0.997289972899729,
+    "val_loss": 0.15195332006504447,
+    "val_accuracy": 0.9697986577181208
+  },
+  "early_stopped": true,
+  "error": null,
+  "test_evaluated": false,
+  "partial_run": false
+}

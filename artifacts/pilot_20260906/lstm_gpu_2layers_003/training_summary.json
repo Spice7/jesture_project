@@ -1,0 +1,16 @@
+{
+  "status": "failed",
+  "epochs_completed": 22,
+  "best_epoch": 13,
+  "best_metrics": {
+    "epoch": 13,
+    "train_loss": 0.012052335047691657,
+    "train_accuracy": 0.995945945945946,
+    "val_loss": 0.0016716874319320303,
+    "val_accuracy": 1.0
+  },
+  "early_stopped": true,
+  "error": "PermissionError: [WinError 5] 액세스가 거부되었습니다: 'C:\\\\Users\\\\WOOJIN\\\\jesture_project\\\\artifacts\\\\pilot_20260906\\\\lstm_gpu_2layers_003\\\\.training_summary.json.ufn4wjey.tmp' -> 'C:\\\\Users\\\\WOOJIN\\\\jesture_project\\\\artifacts\\\\pilot_20260906\\\\lstm_gpu_2layers_003\\\\training_summary.json'",
+  "test_evaluated": false,
+  "partial_run": true
+}

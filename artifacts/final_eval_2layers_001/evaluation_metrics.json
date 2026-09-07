@@ -1,0 +1,50 @@
+{
+  "status": "success",
+  "split": "val",
+  "completed": true,
+  "sample_count": 298,
+  "overall": {
+    "loss": 0.2647980925745812,
+    "accuracy": 0.8791946308724832,
+    "macro_precision": 0.7865384615384615,
+    "macro_recall": 0.7567857142857142,
+    "macro_f1": 0.7358695652173913,
+    "weighted_f1": 0.8417712284797199
+  },
+  "per_class": {
+    "swipe_left": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 100
+    },
+    "make_fist": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 63
+    },
+    "no_gesture": {
+      "precision": 0.4,
+      "recall": 0.05714285714285714,
+      "f1": 0.09999999999999999,
+      "support": 35
+    },
+    "finger_snap": {
+      "precision": 0.7461538461538462,
+      "recall": 0.97,
+      "f1": 0.8434782608695651,
+      "support": 100
+    }
+  },
+  "label_order": [
+    "swipe_left",
+    "make_fist",
+    "no_gesture",
+    "finger_snap"
+  ],
+  "zero_division_policy": "분모가 0이면 0; macro는 모델의 전체 클래스 포함",
+  "score_unit": "ratio_0_to_1",
+  "error": null,
+  "split_note": "validation은 이미 모델/epoch 선택에 사용된 자료입니다."
+}

@@ -21,7 +21,7 @@ class LSTMClassifier(nn.Module):
         input_size: 프레임 하나의 특징 개수. 현재 전처리 결과는 66개입니다.
         hidden_size: LSTM이 각 시점의 정보를 표현하는 hidden 벡터 크기.
         num_layers: 쌓을 LSTM 층 수. 마지막 층의 최종 상태로 분류합니다.
-        num_classes: 분류할 클래스 수. 기본은 swipe_left/make_fist/no_gesture의 3개.
+        num_classes: 분류할 클래스 수. 기본은 swipe_left/make_fist/no_gesture/finger_snap의 4개.
         dropout: 학습 모드에서 특징을 무작위로 끄는 비율. 0 이상 1 미만.
 
     크기와 층 수는 bool이 아닌 양의 int를 받습니다. 기본값은 초기 실험용이며
@@ -34,7 +34,7 @@ class LSTMClassifier(nn.Module):
         input_size: int = 66,
         hidden_size: int = 64,
         num_layers: int = 1,
-        num_classes: int = 3,
+        num_classes: int = 4,
         dropout: float = 0.2,
     ) -> None:
         super().__init__()

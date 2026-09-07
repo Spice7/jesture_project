@@ -1,0 +1,190 @@
+{
+  "mode": "normal",
+  "success": true,
+  "training_arrays_written": true,
+  "input_dir": "C:\\Users\\WOOJIN\\jesture_project\\dataset",
+  "output_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_data_001",
+  "discovered_files": 1604,
+  "counts": {
+    "accepted": 1575,
+    "excluded": 28,
+    "duplicate": 1
+  },
+  "by_label": {
+    "finger_snap": {
+      "input": 450,
+      "accepted": 450,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "make_fist": {
+      "input": 447,
+      "accepted": 434,
+      "excluded": 12,
+      "duplicate": 1,
+      "conflict": 0
+    },
+    "no_gesture": {
+      "input": 240,
+      "accepted": 229,
+      "excluded": 11,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "swipe_left": {
+      "input": 467,
+      "accepted": 462,
+      "excluded": 5,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_participant": {
+    "p001": {
+      "input": 443,
+      "accepted": 443,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p002": {
+      "input": 185,
+      "accepted": 171,
+      "excluded": 14,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 325,
+      "accepted": 323,
+      "excluded": 2,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 311,
+      "accepted": 298,
+      "excluded": 12,
+      "duplicate": 1,
+      "conflict": 0
+    },
+    "p005": {
+      "input": 170,
+      "accepted": 170,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p006": {
+      "input": 170,
+      "accepted": 170,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_original_participant": {
+    "p001": {
+      "input": 443,
+      "accepted": 443,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p002": {
+      "input": 185,
+      "accepted": 171,
+      "excluded": 14,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 325,
+      "accepted": 323,
+      "excluded": 2,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 311,
+      "accepted": 298,
+      "excluded": 12,
+      "duplicate": 1,
+      "conflict": 0
+    },
+    "p005": {
+      "input": 170,
+      "accepted": 170,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p006": {
+      "input": 170,
+      "accepted": 170,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "schema_counts": {
+    "2": 1604
+  },
+  "duplicates": [
+    {
+      "source_path": "make_fist/p004_make_fist_0033.npz",
+      "reason": "duplicate_of:make_fist/p004_make_fist_0001.npz"
+    }
+  ],
+  "conflicts": [],
+  "split_class_distribution": {
+    "train": {
+      "swipe_left": 312,
+      "make_fist": 321,
+      "no_gesture": 174,
+      "finger_snap": 300
+    },
+    "val": {
+      "swipe_left": 100,
+      "make_fist": 63,
+      "no_gesture": 35,
+      "finger_snap": 100
+    },
+    "test": {
+      "swipe_left": 50,
+      "make_fist": 50,
+      "no_gesture": 20,
+      "finger_snap": 50
+    }
+  },
+  "split_errors": [],
+  "errors": [],
+  "warnings": [
+    "some_sources_not_accepted; inspect manifest reasons",
+    "unused_participant_map_keys:user00"
+  ],
+  "assumptions": {},
+  "accepted_ranges": {
+    "original_T": [
+      20,
+      76
+    ],
+    "duration": [
+      0.6242826999805402,
+      2.5
+    ],
+    "valid_detection_ratio": [
+      0.8076923076923077,
+      1.0
+    ],
+    "longest_missing_run": [
+      0,
+      5
+    ],
+    "scale": [
+      0.04996308718419774,
+      0.43833142159763994
+    ]
+  }
+}

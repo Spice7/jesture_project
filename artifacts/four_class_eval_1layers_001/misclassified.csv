@@ -1,0 +1,5 @@
+﻿output_index,source_path,participant_id,canonical_participant_id,true_label_id,true_label,predicted_label_id,predicted_label,probability_swipe_left,probability_make_fist,probability_no_gesture,probability_finger_snap,correct
+56,finger_snap/p004_finger_snap_0057.npz,p004,p004,3,finger_snap,2,no_gesture,0.0013720471179112792,0.022634588181972504,0.881320059299469,0.09467333555221558,False
+57,finger_snap/p004_finger_snap_0058.npz,p004,p004,3,finger_snap,2,no_gesture,0.0007778472499921918,0.02551143616437912,0.9550970792770386,0.01861358992755413,False
+175,no_gesture/p004_no_gesture_0013.npz,p004,p004,2,no_gesture,3,finger_snap,0.00396964605897665,0.002189165446907282,0.43070927262306213,0.5631318688392639,False
+189,no_gesture/p004_no_gesture_0027.npz,p004,p004,2,no_gesture,3,finger_snap,0.014167527668178082,0.004811472725123167,0.20430903136730194,0.7767119407653809,False

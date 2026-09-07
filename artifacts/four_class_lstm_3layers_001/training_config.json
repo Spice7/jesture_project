@@ -1,0 +1,138 @@
+{
+  "data_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_data_001",
+  "output_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_lstm_3layers_001",
+  "hidden_size": 64,
+  "num_layers": 3,
+  "batch_size": 32,
+  "epochs": 100,
+  "patience": 10,
+  "seed": 42,
+  "num_workers": 0,
+  "dropout": 0.2,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "min_delta": 0.0001,
+  "max_grad_norm": 1.0,
+  "device": "cuda",
+  "actual_device": "cuda",
+  "model_config": {
+    "input_size": 66,
+    "hidden_size": 64,
+    "num_layers": 3,
+    "num_classes": 4,
+    "dropout": 0.2
+  },
+  "label_map": {
+    "swipe_left": 0,
+    "make_fist": 1,
+    "no_gesture": 2,
+    "finger_snap": 3
+  },
+  "preprocessing_config": {
+    "preprocessing_version": "1.0.0",
+    "seq_len": 32,
+    "feature_dim": 66,
+    "X_dtype": "float32",
+    "y_dtype": "int64",
+    "label_map": {
+      "swipe_left": 0,
+      "make_fist": 1,
+      "no_gesture": 2,
+      "finger_snap": 3
+    },
+    "quality": {
+      "min_frames": 20,
+      "min_detection_rate": 0.8,
+      "max_missing_run": 5,
+      "min_duration": 0.6,
+      "max_duration": 2.5,
+      "scale_epsilon": 1e-06
+    },
+    "participant_map": {
+      "user00": "p001"
+    },
+    "requested_split_subjects": {
+      "train": [
+        "p001",
+        "p002",
+        "p003",
+        "p005"
+      ],
+      "val": [
+        "p004"
+      ],
+      "test": [
+        "p006"
+      ]
+    },
+    "canonical_split_subjects": {
+      "train": [
+        "p001",
+        "p002",
+        "p003",
+        "p005"
+      ],
+      "val": [
+        "p004"
+      ],
+      "test": [
+        "p006"
+      ]
+    },
+    "interpolation": {
+      "axis": "timestamps - timestamps[0], seconds",
+      "missing": "linear on original timestamps; nearest valid value at edges",
+      "resampling": "linear on filled sequence at linspace(0, duration, seq_len)"
+    },
+    "scale": "fixed sequence median of positive wrist(0)-middle_MCP(9) xy distances in ORIGINAL valid frames",
+    "features": {
+      "0:63": "flatten_landmark_xyz((resampled_xyz - current_wrist_xyz) / s)",
+      "63:65": "(current_wrist_xy - first_resampled_wrist_xy) / s (cumulative, not velocity)",
+      "65": "norm(current_landmark9_xy - current_wrist_xy) / s"
+    },
+    "coordinate_caveat": "image-normalized x/y use width/height respectively; approximate, not physical or aspect-ratio-corrected; z is not metric depth",
+    "absolute_duration_in_features": false,
+    "global_standardization": null,
+    "augmentation": null,
+    "world_landmarks_used": false,
+    "valid_mask": "detected AND all 63 landmark coordinates finite",
+    "handedness": "Right when provided; no handedness inferred when absent",
+    "mirrored": "false only; legacy v1 missing flag assumed false; v2 missing flag excluded",
+    "synthetic_flags_checked": [
+      "synthetic",
+      "is_synthetic",
+      "augmented",
+      "is_augmented",
+      "augmentation",
+      "augmentation_type"
+    ],
+    "deduplication": "canonical participant/label/sample_id + normalized essential arrays; float64 bytes, canonical NaN/zero, absolute timestamps; source SHA-256 also recorded",
+    "ordering": "source_path sorted; first valid duplicate retained; output_index zero-based within split"
+  },
+  "input_sha256": {
+    "manifest.csv": "8cdc9920fbac1978dfd6844041c3caef4843de236472555da98962b57cfa7724",
+    "preprocessing_config.json": "d86b992ab43c2a5facba969a56c55440a32d3e688c929ffa7549f3a35a670bea",
+    "label_map.json": "ab73c2426ac60fdbfa0f211be52ea2e707ad096e626facc56a5fe1944410f5fb",
+    "report.json": "4401921bf0f6c3d87aaab59a4fee0f2378da36835430a5758463a96a96a3b033"
+  },
+  "split_counts": {
+    "train": 1107,
+    "val": 298,
+    "test": 170
+  },
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.5.2",
+    "torch": "2.14.0+cu130"
+  },
+  "optimizer": "AdamW",
+  "loss": "CrossEntropyLoss",
+  "accuracy_unit": "ratio_0_to_1",
+  "loader_config": {
+    "train_shuffle": true,
+    "val_shuffle": false,
+    "drop_last": false
+  },
+  "cuda_seeded": true,
+  "early_stopping_rule": "strict decrease from reference AND reference-value >= min_delta; reference updates only on sufficient improvement; best checkpoint uses any strict minimum"
+}

@@ -1,0 +1,126 @@
+{
+  "run_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_lstm_3layers_001",
+  "data_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_data_001",
+  "output_dir": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_eval_3layers_001",
+  "checkpoint_path": "C:\\Users\\WOOJIN\\jesture_project\\artifacts\\four_class_lstm_3layers_001\\best_model.pt",
+  "split": "val",
+  "batch_size": 32,
+  "requested_device": "cuda",
+  "actual_device": "cuda",
+  "num_workers": 0,
+  "model_config": {
+    "input_size": 66,
+    "hidden_size": 64,
+    "num_layers": 3,
+    "num_classes": 4,
+    "dropout": 0.2
+  },
+  "label_map": {
+    "swipe_left": 0,
+    "make_fist": 1,
+    "no_gesture": 2,
+    "finger_snap": 3
+  },
+  "preprocessing_config": {
+    "preprocessing_version": "1.0.0",
+    "seq_len": 32,
+    "feature_dim": 66,
+    "X_dtype": "float32",
+    "y_dtype": "int64",
+    "label_map": {
+      "swipe_left": 0,
+      "make_fist": 1,
+      "no_gesture": 2,
+      "finger_snap": 3
+    },
+    "quality": {
+      "min_frames": 20,
+      "min_detection_rate": 0.8,
+      "max_missing_run": 5,
+      "min_duration": 0.6,
+      "max_duration": 2.5,
+      "scale_epsilon": 1e-06
+    },
+    "participant_map": {
+      "user00": "p001"
+    },
+    "requested_split_subjects": {
+      "train": [
+        "p001",
+        "p002",
+        "p003",
+        "p005"
+      ],
+      "val": [
+        "p004"
+      ],
+      "test": [
+        "p006"
+      ]
+    },
+    "canonical_split_subjects": {
+      "train": [
+        "p001",
+        "p002",
+        "p003",
+        "p005"
+      ],
+      "val": [
+        "p004"
+      ],
+      "test": [
+        "p006"
+      ]
+    },
+    "interpolation": {
+      "axis": "timestamps - timestamps[0], seconds",
+      "missing": "linear on original timestamps; nearest valid value at edges",
+      "resampling": "linear on filled sequence at linspace(0, duration, seq_len)"
+    },
+    "scale": "fixed sequence median of positive wrist(0)-middle_MCP(9) xy distances in ORIGINAL valid frames",
+    "features": {
+      "0:63": "flatten_landmark_xyz((resampled_xyz - current_wrist_xyz) / s)",
+      "63:65": "(current_wrist_xy - first_resampled_wrist_xy) / s (cumulative, not velocity)",
+      "65": "norm(current_landmark9_xy - current_wrist_xy) / s"
+    },
+    "coordinate_caveat": "image-normalized x/y use width/height respectively; approximate, not physical or aspect-ratio-corrected; z is not metric depth",
+    "absolute_duration_in_features": false,
+    "global_standardization": null,
+    "augmentation": null,
+    "world_landmarks_used": false,
+    "valid_mask": "detected AND all 63 landmark coordinates finite",
+    "handedness": "Right when provided; no handedness inferred when absent",
+    "mirrored": "false only; legacy v1 missing flag assumed false; v2 missing flag excluded",
+    "synthetic_flags_checked": [
+      "synthetic",
+      "is_synthetic",
+      "augmented",
+      "is_augmented",
+      "augmentation",
+      "augmentation_type"
+    ],
+    "deduplication": "canonical participant/label/sample_id + normalized essential arrays; float64 bytes, canonical NaN/zero, absolute timestamps; source SHA-256 also recorded",
+    "ordering": "source_path sorted; first valid duplicate retained; output_index zero-based within split"
+  },
+  "checkpoint_sha256": "79195249752cd8cd0961656c574aa13d2516cbd1fa131c945adc3ff112291add",
+  "input_sha256": {
+    "manifest.csv": "8cdc9920fbac1978dfd6844041c3caef4843de236472555da98962b57cfa7724",
+    "preprocessing_config.json": "d86b992ab43c2a5facba969a56c55440a32d3e688c929ffa7549f3a35a670bea",
+    "label_map.json": "ab73c2426ac60fdbfa0f211be52ea2e707ad096e626facc56a5fe1944410f5fb",
+    "report.json": "4401921bf0f6c3d87aaab59a4fee0f2378da36835430a5758463a96a96a3b033"
+  },
+  "array_sha256": {
+    "X_val.npy": "13583ff2bf80829cff52038ad86d60dc6d0077224979b3d7f1ada3280509f381",
+    "y_val.npy": "fbc08395362e47c23974a32ff01f3874be88c62e30a7ceaae312d60c1818be8a"
+  },
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.5.2",
+    "torch": "2.14.0+cu130"
+  },
+  "loader_config": {
+    "shuffle": false,
+    "drop_last": false
+  },
+  "hash_limit": "NPY 해시는 평가 시점의 지문이며 학습 당시 NPY 동일성을 보증하지 않습니다."
+}

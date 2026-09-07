@@ -38,7 +38,11 @@ import numpy as np
 # 실행한 터미널 위치가 아니라 이 파일 위치를 기준으로 프로젝트 루트를 찾습니다.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # 일부 클래스의 데이터가 없어도 라벨 번호는 바뀌지 않습니다.
-LABEL_MAP = {"swipe_left": 0, "make_fist": 1, "no_gesture": 2}
+if __package__:
+    from .gesture_schema import RIGHT_LABELS
+else:
+    from gesture_schema import RIGHT_LABELS
+LABEL_MAP = dict(RIGHT_LABELS)
 SPLITS = ("train", "val", "test")
 VERSION = "1.0.0"
 # manifest.csv의 열 순서. 발견한 원본 파일 하나가 보고서의 한 행에 대응합니다.
@@ -402,7 +406,7 @@ def resolve_duplicates(rows: list[dict]) -> list[dict]:
     """rows의 상태를 중복/충돌로 갱신하고 충돌 목록을 반환합니다. 충돌 판정이 우선입니다."""
     # 두 방향으로 묶어 검사합니다.
     # identities: 같은 대표 참가자/라벨/샘플 번호에 서로 다른 데이터가 있는가?
-    # contents: 같은 원본 배열이 서로 다른 식별자로 제출되었는가?
+    # contents: 같은 배열에 다른 참가자/라벨이 붙었는가? 번호만 다른 복사본은 허용합니다.
     identities, contents = defaultdict(list), defaultdict(list)
     for index, row in enumerate(rows):
         if row["arrays_sha256"]:
@@ -410,12 +414,12 @@ def resolve_duplicates(rows: list[dict]) -> list[dict]:
             identities[key].append(index)
             contents[row["arrays_sha256"]].append(index)
     conflicts = []
-    for groups, field, reason in (
-        (identities, "arrays_sha256", "same_identity_different_arrays"),
-        (contents, "identity_content_sha256", "same_arrays_different_identity"),
+    for groups, fields, reason in (
+        (identities, ("arrays_sha256",), "same_identity_different_arrays"),
+        (contents, ("canonical_participant_id", "label"), "same_arrays_different_identity"),
     ):
         for indices in groups.values():
-            if len({rows[i][field] for i in indices}) > 1:
+            if len({tuple(rows[i][field] for field in fields) for i in indices}) > 1:
                 conflicts.append({"reason": reason, "sources": [rows[i]["source_path"] for i in indices]})
                 for index in indices:
                     row = rows[index]
@@ -423,8 +427,10 @@ def resolve_duplicates(rows: list[dict]) -> list[dict]:
                     row["reason"] = ";".join(filter(None, (row["reason"], reason)))
     # 충돌 없는 동일 자료는 경로 정렬상 첫 번째 유효 파일만 채택합니다.
     # 보고서 상태만 변경하며 원본 복사본을 삭제하지 않습니다.
-    for indices in identities.values():
-        accepted = [i for i in indices if rows[i]["status"] == "accepted"]
+    # 품질 검사에서 제외된 복사본은 제외 사유를 유지하며 유효본 대신 선택하지 않습니다.
+    for indices in contents.values():
+        accepted = sorted((i for i in indices if rows[i]["status"] == "accepted"),
+                          key=lambda i: rows[i]["source_path"])
         for index in accepted[1:]:
             rows[index].update(status="duplicate", reason="duplicate_of:" + rows[accepted[0]]["source_path"])
     return conflicts
@@ -461,7 +467,7 @@ def validate_splits(rows: list[dict], subjects: dict, mapping: dict):
         split = assignment.get(row["canonical_participant_id"])
         if split:
             distribution[split][row["label"]] += 1
-    # 참가자가 겹치지 않는 것뿐 아니라 각 split에 세 클래스가 모두 있는지도 확인합니다.
+    # 참가자가 겹치지 않는 것뿐 아니라 각 split에 네 클래스가 모두 있는지도 확인합니다.
     for split in SPLITS:
         missing = [label for label, count in distribution[split].items() if not count]
         if missing:

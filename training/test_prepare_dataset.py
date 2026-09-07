@@ -263,10 +263,10 @@ class PreparationTests(unittest.TestCase):
         for split in p.SPLITS:
             x = np.load(self.output / f"X_{split}.npy", allow_pickle=False)
             y = np.load(self.output / f"y_{split}.npy", allow_pickle=False)
-            self.assertEqual(x.shape, (3, 32, 66))
+            self.assertEqual(x.shape, (4, 32, 66))
             self.assertEqual(x.dtype, np.float32)
             self.assertEqual(y.dtype, np.int64)
-            self.assertEqual(set(y), {0, 1, 2})
+            self.assertEqual(set(y), {0, 1, 2, 3})
             self.assertTrue(np.isfinite(x).all())
             for row in [r for r in rows if r["split"] == split]:
                 index = int(row["output_index"])
@@ -313,6 +313,38 @@ class PreparationTests(unittest.TestCase):
         self.assertTrue(all(row["status"] == "conflict" for row in rows))
         self.assert_metadata_only()
 
+    def test_same_content_different_number_keeps_one_and_preserves_files(self):
+        self.add_complete_dataset()
+        data = fixture(sample_id=33)
+        path = save_fixture(self.source, data)
+        before = {f: f.read_bytes() for f in self.source.rglob("*.npz")}
+        report, rows = self.invoke(*self.splits())
+        self.assertTrue(report["training_arrays_written"])
+        self.assertEqual(report["counts"], {"accepted": 12, "duplicate": 1})
+        duplicate = next(r for r in rows if r["status"] == "duplicate")
+        self.assertEqual(duplicate["sample_id"], "33")
+        self.assertTrue(duplicate["reason"].startswith("duplicate_of:"))
+        self.assertEqual(duplicate["output_index"], "")
+        self.assertEqual(before, {f: f.read_bytes() for f in self.source.rglob("*.npz")})
+        self.assertTrue(path.exists())
+
+    def test_different_number_does_not_bypass_quality_or_cross_identity_checks(self):
+        for participant, label in (("p002", "swipe_left"), ("p001", "make_fist")):
+            with self.subTest(participant=participant, label=label):
+                data = fixture(sample_id=33)
+                data.update(participant_id=np.array(participant), label=np.array(label))
+                first, _ = self.scan(fixture())
+                second, _ = self.scan(data)
+                self.assertTrue(p.resolve_duplicates([first, second]))
+        first, _ = self.scan(fixture())
+        data = fixture(sample_id=33)
+        data["mirrored"] = np.array(True)
+        second, _ = self.scan(data)
+        self.assertFalse(p.resolve_duplicates([first, second]))
+        self.assertEqual(first["status"], "accepted")
+        self.assertEqual(second["status"], "excluded")
+        self.assertEqual(second["reason"], "mirrored_sample")
+
     def test_conflict_same_arrays_different_identity_blocks_normal(self):
         self.add_complete_dataset()
         data = fixture()
@@ -330,7 +362,7 @@ class PreparationTests(unittest.TestCase):
         mapping = self.root / "aliases.json"
         mapping.write_text('{"old_user":"p001"}', encoding="utf-8")
         report, rows = self.invoke(*self.splits(), "--participant-map", str(mapping))
-        self.assertEqual(report["counts"], {"accepted": 9, "duplicate": 1})
+        self.assertEqual(report["counts"], {"accepted": 12, "duplicate": 1})
         row = next(r for r in rows if r["participant_id"] == "old_user")
         self.assertEqual(row["canonical_participant_id"], "p001")
         report, _ = self.invoke("--train-subjects", "old_user", "--val-subjects", "p001",
