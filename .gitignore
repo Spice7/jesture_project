@@ -7,6 +7,7 @@ video/
 dataset/test/
 dataset/train/
 dataset/valid/
+dataset_before/
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks

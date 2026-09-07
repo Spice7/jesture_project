@@ -1,8 +1,8 @@
 
-start/stop/cancle - v2 2026-09-07 12:05pm
+start/stop/cancle - v3 2026-09-07 1:42pm
 ==============================
 
-This dataset was exported via roboflow.com on September 7, 2026 at 3:06 AM GMT
+This dataset was exported via roboflow.com on September 7, 2026 at 4:42 AM GMT
 
 Roboflow is an end-to-end computer vision platform that helps you
 * collaborate with your team on computer vision projects
@@ -27,6 +27,7 @@ The following pre-processing was applied to each image:
 The following augmentation was applied to create 2 versions of each source image:
 * 50% probability of horizontal flip
 * 50% probability of vertical flip
+* Equal probability of one of the following 90-degree rotations: none, clockwise, counter-clockwise, upside-down
 * Random Gaussian blur of between 0 and 1.2 pixels
 
 
