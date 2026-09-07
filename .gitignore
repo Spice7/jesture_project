@@ -14,7 +14,7 @@ model_make/runs/
 model_make/.venv/
 model_make/weights/
 *.pt
-!model_make/runs/gesture_yolo_real-4/weights/best.pt
+
 
 # slice 관련
 slice/.venv/
@@ -25,3 +25,19 @@ slice/videos/
 # 공통
 __pycache__/
 *.pyc
+
+model_make/dataset/
+model_make/datasets/
+model_make/video/
+model_make/videos/
+model_make/frames/
+model_make/runs/
+model_make/.venv/
+model_make/weights/
+*.pt
+!model_make/models/
+!model_make/models/*.pt
+
+model_make/test/
+model_make/train/
+model_make/valid/
