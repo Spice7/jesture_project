@@ -1,0 +1,30 @@
+# lkh v3 training settings, consumed by the same YOLO entry point.
+paths:
+  model: ../models/static/yolov8n.pt
+  trained_model: ../models/static/v3.pt
+  data: ../datasets/static_gesture_v3/data.yaml
+  project: ../runs/gesture
+train:
+  name: yolov8n_v3_rotation
+  epochs: 40
+  imgsz: 640
+  batch: -1
+  device: null
+  optimizer: auto
+  multi_scale: 0.25
+  patience: 10
+  plots: true
+validation:
+  enabled: false
+  split: test
+  imgsz: 640
+  device: null
+  plots: true
+  name: yolov8n_test
+inference:
+  conf: 0.6
+  imgsz: 960
+  device: null
+  stream: true
+  show: true
+  save: false

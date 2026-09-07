@@ -1,0 +1,49 @@
+{
+  "min_confidence": 0.8,
+  "cooldown_sec": 0.5,
+  "actions": {
+    "swipe_left": {
+      "keys": [
+        "space"
+      ],
+      "label": "Space",
+      "cooldown_sec": 0.5
+    },
+    "make_fist": {
+      "keys": [
+        "ctrl",
+        "alt",
+        "tab"
+      ],
+      "label": "창 목록 열기",
+      "cooldown_sec": 0.5
+    },
+    "finger_snap": {
+      "keys": [
+        "enter"
+      ],
+      "label": "창 선택",
+      "cooldown_sec": 0.5
+    },
+    "no_gesture": null,
+    "cancel": {
+      "keys": [
+        "win",
+        "d"
+      ],
+      "label": "바탕화면 보기",
+      "cooldown_sec": 0.5
+    }
+  },
+  "gate": {
+    "enabled": true,
+    "model": "models/static/v3.pt",
+    "confidence": 0.5,
+    "hold_seconds": 2.0,
+    "miss_tolerance_seconds": 0.3,
+    "imgsz": 640,
+    "iou": 0.5,
+    "max_det": 10,
+    "device": null
+  }
+}

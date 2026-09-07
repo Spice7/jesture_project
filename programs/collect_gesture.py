@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import re
 import time
@@ -17,7 +18,7 @@ import numpy as np
 # =========================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATASET_DIR = PROJECT_ROOT / "dataset"
+DATASET_DIR = PROJECT_ROOT / "data" / "gestures"
 MODEL_PATH = (
     PROJECT_ROOT
     / "models"
@@ -31,7 +32,8 @@ MINIMUM_FRAMES = 20
 MINIMUM_DETECTION_RATE = 0.8
 MAX_CONSECUTIVE_MISSING_FRAMES = 5
 MINIMUM_DURATION_SECONDS = 0.6
-MAXIMUM_DURATION_SECONDS = 5.0
+MAXIMUM_DURATION_SECONDS = 2.5
+MIRROR = False
 
 # 이동량은 사용자마다 다를 수 있으므로 저장을 막지 않고 경고만 표시한다.
 # 손목 이동 거리를 손 크기로 나눈 값이 이 기준보다 작으면 확인을 권장한다.
@@ -853,7 +855,7 @@ def save_sequence(
             dtype=np.bool_,
         ),
         mirrored=np.array(
-            False,
+            MIRROR,
             dtype=np.bool_,
         ),
         collection_schema_version=np.array(
@@ -1106,6 +1108,19 @@ def open_camera(index: int = 0):
 # =========================================================
 
 def main():
+    global CAMERA_INDEX, MAXIMUM_DURATION_SECONDS, MIRROR, DATASET_DIR
+    parser = argparse.ArgumentParser(description="동적 제스처 수집 (기본: 비반전/최대 2.5초)")
+    parser.add_argument("--camera", type=int, default=CAMERA_INDEX)
+    parser.add_argument("--max-duration", type=float, default=MAXIMUM_DURATION_SECONDS)
+    parser.add_argument("--mirror", action="store_true", help="lkh 원래 반전 수집; GRU용 데이터와 분리하세요")
+    parser.add_argument("--dataset", type=Path, default=DATASET_DIR)
+    args = parser.parse_args()
+    if args.max_duration < MINIMUM_DURATION_SECONDS:
+        parser.error("max-duration은 최소 녹화 시간 이상이어야 합니다")
+    CAMERA_INDEX, MAXIMUM_DURATION_SECONDS, MIRROR = args.camera, args.max_duration, args.mirror
+    DATASET_DIR = args.dataset if args.dataset.is_absolute() else PROJECT_ROOT / args.dataset
+    if MIRROR and DATASET_DIR.resolve() == (PROJECT_ROOT / "data" / "gestures").resolve():
+        parser.error("반전 데이터는 --dataset data/legacy_mirrored 등 별도 폴더에 저장하세요")
     """
     MediaPipe Hand Landmark 기반 gesture sequence 수집 프로그램.
     """
@@ -1188,7 +1203,8 @@ def main():
                     "Webcam frame을 읽을 수 없습니다."
                 )
                 break
-            frame = cv2.flip(frame, 1)        
+            if MIRROR:
+                frame = cv2.flip(frame, 1)
             current_time = time.perf_counter()
 
             # -------------------------------------------------

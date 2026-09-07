@@ -19,7 +19,7 @@ import numpy as np
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 VIDEOS_DIR = PROJECT_ROOT / "videos"
-DATASET_DIR = PROJECT_ROOT / "dataset"
+DATASET_DIR = PROJECT_ROOT / "data" / "gestures"
 MODEL_PATH = PROJECT_ROOT / "models" / "hand_landmarker.task"
 
 # 팀에서 합의한 단일 gesture 영상 길이

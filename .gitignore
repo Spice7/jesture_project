@@ -274,13 +274,12 @@ tensorboard/
 
 # Integration: preserve dev exclusions; scope branch-specific runtime outputs.
 /.venv-dev/
-/implementations/hwangsoon/data/
-/implementations/hwangsoon/.codex_doc_review/
-/implementations/hwangsoon/reports/realtime/
-/implementations/hwangsoon/models/*.json
-/implementations/kmj02/frames/
-/implementations/kmj02/video/
-/implementations/kmj02/dataset/train/
-/implementations/kmj02/dataset/valid/
-/implementations/kmj02/dataset/test/
-/implementations/kmj02/dataset_before/
+
+# Unified application runtime outputs
+/.venv-integration/
+/frames/
+/data/legacy_mirrored/
+/reports/realtime/
+/external/
+**/.trash/
+**/.data_preprocessing_passed.json

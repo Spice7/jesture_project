@@ -26,7 +26,9 @@ class GestureDetector:
         hold_seconds: float = 3.0,
         miss_tolerance_seconds: float = 0.3,
         imgsz: int = 640,
-        device: int | str = 0,
+        device: int | str | None = None,
+        iou: float = 0.5,
+        max_det: int = 10,
     ):
         """
         Parameters
@@ -66,7 +68,20 @@ class GestureDetector:
             miss_tolerance_seconds
         )
 
+        model_path = Path(model_path).expanduser()
+        if not model_path.is_absolute():
+            model_path = Path(__file__).resolve().parents[1] / model_path
+        if not model_path.is_file():
+            raise FileNotFoundError(f"정적 제스처 모델을 복사하세요: {model_path}")
         self.model = YOLO(str(model_path))
+        if not VALID_GESTURES.issubset(set(self.model.names.values())):
+            raise ValueError(f"정적 모델에 start/stop/cancel 클래스가 필요합니다: {model_path}")
+        if device is None:
+            import torch
+            device = 0 if torch.cuda.is_available() else "cpu"
+        self.iou = iou
+        self.max_det = max_det
+        self.last_prediction = None
 
         self.confidence_threshold = confidence_threshold
         self.hold_seconds = hold_seconds
@@ -120,8 +135,11 @@ class GestureDetector:
             conf=self.confidence_threshold,
             imgsz=self.imgsz,
             device=self.device,
+            iou=self.iou,
+            max_det=self.max_det,
             verbose=False,
         )[0]
+        self.last_prediction = result
 
         detected_gesture = None
         detected_confidence = 0.0

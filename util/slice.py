@@ -8,8 +8,9 @@ from pathlib import Path
 
 VIDEO_SUBJECT = "null"
 
-VIDEO_DIR = Path("videos")
-SAVE_DIR = Path(f"dataset/{VIDEO_SUBJECT}")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+VIDEO_DIR = PROJECT_ROOT / "videos"
+SAVE_DIR = PROJECT_ROOT / "images" / VIDEO_SUBJECT
 
 VIDEO_DIR.mkdir(parents=True, exist_ok=True)
 SAVE_DIR.mkdir(parents=True, exist_ok=True)
@@ -302,4 +303,5 @@ def record_and_extract():
 # 실행
 # ========================================
 
-record_and_extract()
+if __name__ == "__main__":
+    record_and_extract()
