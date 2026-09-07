@@ -1,5 +1,6 @@
 # All relative paths are resolved from this file's directory (model_yolo/).
 paths:
+  # 시작모델
   model: yolov8n.pt            # yolov8n/s/m/l/x.pt or a local .pt checkpoint
   trained_model: ../runs/yolo/gesture_yolov8n/weights/best.pt
   data: ../dataset/data.yaml

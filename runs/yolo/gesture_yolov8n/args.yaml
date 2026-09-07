@@ -13,7 +13,7 @@ cache: false
 device: ''
 workers: 8
 project: C:\Users\Admin\motion_detect\runs\yolo
-name: gesture_yolov8n
+name: gesture_yolov8n-3
 exist_ok: false
 pretrained: true
 cls_remap: true
@@ -113,4 +113,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: C:\Users\Admin\motion_detect\runs\yolo\gesture_yolov8n
+save_dir: C:\Users\Admin\motion_detect\runs\yolo\gesture_yolov8n-3

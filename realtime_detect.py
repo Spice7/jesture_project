@@ -9,7 +9,7 @@ import torch
 from ultralytics import YOLO
 
 
-DEFAULT_WEIGHTS = Path(__file__).resolve().parent / "ckpoint" / "best.pt"
+DEFAULT_WEIGHTS = Path(__file__).resolve().parent / "ckpoint" / "last_100.pt"
 WINDOW_NAME = "Gesture detection - Q / Esc to quit"
 
 
