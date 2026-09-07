@@ -476,7 +476,7 @@ class App(ctk.CTk):
             inner = ctk.CTkFrame(c, fg_color="transparent"); inner.pack(fill="x", padx=16, pady=(8, 14))
             return inner
 
-        r = card("확신도 문턱", "모델이 이 값보다 확신할 때만 실행합니다. 낮추면 잘 잡히지만 오작동이 늘 수 있습니다. (기본 0.80)")
+        r = card("인식 민감도 (최소 확신도)", "모델의 확신이 이 값 이상일 때만 실행합니다. 낮추면 잘 잡히지만 오작동이 늘 수 있습니다. (기본 0.80)")
         self.conf_var = tk.DoubleVar(value=0.8)
         self.conf_slider = ctk.CTkSlider(r, from_=0.5, to=1.0, number_of_steps=10, variable=self.conf_var,
                                          command=self._on_conf, width=320)
@@ -1027,7 +1027,7 @@ class App(ctk.CTk):
     def _save_conf(self):
         if self.pipeline is not None:
             self.pipeline.mapper.save()
-            self._show_toast(f"확신도 문턱 {self.pipeline.mapper.min_confidence:.2f} 저장", color="#2f5d8a")
+            self._show_toast(f"최소 확신도 {self.pipeline.mapper.min_confidence:.2f} 저장", color="#2f5d8a")
 
     def _on_gate_use(self):
         p = self.pipeline
