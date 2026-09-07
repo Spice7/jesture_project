@@ -2,13 +2,16 @@ from pathlib import Path
 
 from ultralytics import YOLO
 
+GESTURE_VERSION = "static_gesture_v3"
+MODEL_NAME = "yolov8n_v3_rotation"
+
 def main():
     project_root = Path(__file__).resolve().parent.parent
 
     data_yaml = (
         project_root
         / "datasets"
-        / "static_gesture_v1"       # 정적 제스처
+        / GESTURE_VERSION       # 정적 제스처
         / "data.yaml"
     )
 
@@ -17,13 +20,15 @@ def main():
 
     model.train(
         data=str(data_yaml),
-        epochs=50,
+        epochs=40,
         imgsz=640,      # 입력 크기
         batch=-1,       # GPU VRAM에 맞게 batch 자동 설정       # 약 60% 사용
         device=0,       # 첫 번째 GPU
-        patience=15,
+        optimizer="auto",
+        multi_scale=0.25,
+        patience=10,
         project=str(project_root / "runs" / "gesture"),
-        name="yolov8n_baseline",
+        name=MODEL_NAME,
         plots=True,     # 평가 그래프 생성
     )
 
