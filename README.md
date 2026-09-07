@@ -16,7 +16,7 @@
     - trian mode
         - 실행
         ```
-        uv run python model_yolo/yolo.py --mode test
+        uv run python model_yolo/yolo.py --mode train
         ```
 ### yolo_param.yaml
 - 모델 하이퍼파라미터
