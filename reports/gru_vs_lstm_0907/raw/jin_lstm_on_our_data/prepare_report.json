@@ -1,0 +1,206 @@
+{
+  "mode": "normal",
+  "success": true,
+  "training_arrays_written": true,
+  "input_dir": "C:\\Users\\Admin\\Desktop\\jesture_project\\dataset",
+  "output_dir": "C:\\Users\\Admin\\AppData\\Local\\Temp\\claude\\C--Users-Admin-Desktop-jesture-project\\ae314986-5374-480f-a2b5-c9944419e015\\scratchpad\\jin\\data_ours_001",
+  "discovered_files": 1912,
+  "counts": {
+    "accepted": 1885,
+    "excluded": 26,
+    "duplicate": 1
+  },
+  "by_label": {
+    "finger_snap": {
+      "input": 608,
+      "accepted": 608,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "make_fist": {
+      "input": 447,
+      "accepted": 434,
+      "excluded": 12,
+      "duplicate": 1,
+      "conflict": 0
+    },
+    "no_gesture": {
+      "input": 303,
+      "accepted": 294,
+      "excluded": 9,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "swipe_left": {
+      "input": 554,
+      "accepted": 549,
+      "excluded": 5,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_participant": {
+    "p001": {
+      "input": 443,
+      "accepted": 443,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p002": {
+      "input": 181,
+      "accepted": 169,
+      "excluded": 12,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 325,
+      "accepted": 323,
+      "excluded": 2,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 311,
+      "accepted": 298,
+      "excluded": 12,
+      "duplicate": 1,
+      "conflict": 0
+    },
+    "p005": {
+      "input": 278,
+      "accepted": 278,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p006": {
+      "input": 337,
+      "accepted": 337,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "user00": {
+      "input": 37,
+      "accepted": 37,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "by_original_participant": {
+    "p001": {
+      "input": 443,
+      "accepted": 443,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p002": {
+      "input": 181,
+      "accepted": 169,
+      "excluded": 12,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p003": {
+      "input": 325,
+      "accepted": 323,
+      "excluded": 2,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p004": {
+      "input": 311,
+      "accepted": 298,
+      "excluded": 12,
+      "duplicate": 1,
+      "conflict": 0
+    },
+    "p005": {
+      "input": 278,
+      "accepted": 278,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "p006": {
+      "input": 337,
+      "accepted": 337,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    },
+    "user00": {
+      "input": 37,
+      "accepted": 37,
+      "excluded": 0,
+      "duplicate": 0,
+      "conflict": 0
+    }
+  },
+  "schema_counts": {
+    "2": 1900,
+    "1": 12
+  },
+  "duplicates": [
+    {
+      "source_path": "make_fist/p004_make_fist_0033.npz",
+      "reason": "duplicate_of:make_fist/p004_make_fist_0001.npz"
+    }
+  ],
+  "conflicts": [],
+  "split_class_distribution": {
+    "train": {
+      "swipe_left": 349,
+      "make_fist": 271,
+      "no_gesture": 172,
+      "finger_snap": 458
+    },
+    "val": {
+      "swipe_left": 100,
+      "make_fist": 63,
+      "no_gesture": 35,
+      "finger_snap": 100
+    },
+    "test": {
+      "swipe_left": 100,
+      "make_fist": 100,
+      "no_gesture": 87,
+      "finger_snap": 50
+    }
+  },
+  "split_errors": [],
+  "errors": [],
+  "warnings": [
+    "some_sources_not_accepted; inspect manifest reasons"
+  ],
+  "assumptions": {
+    "legacy_v1_missing_mirrored_assumed_false_from_collector": 12
+  },
+  "accepted_ranges": {
+    "original_T": [
+      20,
+      76
+    ],
+    "duration": [
+      0.6224133999785408,
+      2.5
+    ],
+    "valid_detection_ratio": [
+      0.8076923076923077,
+      1.0
+    ],
+    "longest_missing_run": [
+      0,
+      5
+    ],
+    "scale": [
+      0.04996308718419774,
+      0.43833142159763994
+    ]
+  }
+}

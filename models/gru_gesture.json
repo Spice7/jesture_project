@@ -1,0 +1,38 @@
+{
+  "arch": "gru",
+  "framework": "pytorch",
+  "labels": [
+    "swipe_left",
+    "make_fist",
+    "no_gesture",
+    "finger_snap"
+  ],
+  "seq_len": 30,
+  "feature_dim": 63,
+  "use_z": true,
+  "mirror": false,
+  "seed": 1,
+  "n_train": 10960,
+  "reverse_neg": "both",
+  "lower_neg": 0.5,
+  "short_swipe": 0.5,
+  "persons": [
+    "p001",
+    "p002",
+    "p003",
+    "p004",
+    "p005",
+    "p006",
+    "user00"
+  ],
+  "val_persons": [
+    "p001",
+    "p002",
+    "p003",
+    "p004",
+    "p005",
+    "p006",
+    "user00"
+  ],
+  "test_persons": []
+}

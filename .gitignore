@@ -230,3 +230,56 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,windows,jupyternotebooks
+
+# ==================================================
+# Gesture Project
+# ==================================================
+
+# Datasets
+data/raw/
+data/processed/
+datasets/
+
+# Images / Videos collected for training
+captures/
+recordings/
+videos/
+images/
+
+# MediaPipe extracted landmark data
+landmarks/
+
+# Training outputs
+runs/
+checkpoints/
+logs/
+
+# Model weights
+models/
+*.pt
+*.pth
+*.h5
+*.keras
+*.onnx
+*.tflite
+
+# NumPy / ML dataset files
+*.npy
+*.npz
+
+# Experiment outputs
+wandb/
+mlruns/
+tensorboard/
+
+# Integration: preserve dev exclusions; scope branch-specific runtime outputs.
+/.venv-dev/
+
+# Unified application runtime outputs
+/.venv-integration/
+/frames/
+/data/legacy_mirrored/
+/reports/realtime/
+/external/
+**/.trash/
+**/.data_preprocessing_passed.json
