@@ -1,0 +1,27 @@
+{
+  "best_epoch": 12,
+  "best_validation": {
+    "loss": 1.9619568770818803,
+    "accuracy": 0.6285140562248996,
+    "macro_f1": 0.574030653090431
+  },
+  "test": {
+    "loss": 0.881213859659308,
+    "accuracy": 0.8993055555555556,
+    "macro_f1": 0.8117553833020746
+  },
+  "model_config": {
+    "input_size": 66,
+    "hidden_size": 64,
+    "num_layers": 1,
+    "num_classes": 4,
+    "dropout": 0.2
+  },
+  "label_map": {
+    "swipe_left": 0,
+    "make_fist": 1,
+    "no_gesture": 2,
+    "finger_snap": 3
+  },
+  "device": "cpu"
+}

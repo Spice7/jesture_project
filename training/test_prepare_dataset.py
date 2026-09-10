@@ -263,10 +263,10 @@ class PreparationTests(unittest.TestCase):
         for split in p.SPLITS:
             x = np.load(self.output / f"X_{split}.npy", allow_pickle=False)
             y = np.load(self.output / f"y_{split}.npy", allow_pickle=False)
-            self.assertEqual(x.shape, (3, 32, 66))
+            self.assertEqual(x.shape, (len(p.LABEL_MAP), 32, 66))
             self.assertEqual(x.dtype, np.float32)
             self.assertEqual(y.dtype, np.int64)
-            self.assertEqual(set(y), {0, 1, 2})
+            self.assertEqual(set(y), set(p.LABEL_MAP.values()))
             self.assertTrue(np.isfinite(x).all())
             for row in [r for r in rows if r["split"] == split]:
                 index = int(row["output_index"])
@@ -330,7 +330,11 @@ class PreparationTests(unittest.TestCase):
         mapping = self.root / "aliases.json"
         mapping.write_text('{"old_user":"p001"}', encoding="utf-8")
         report, rows = self.invoke(*self.splits(), "--participant-map", str(mapping))
-        self.assertEqual(report["counts"], {"accepted": 9, "duplicate": 1})
+        expected_accepted = len(p.SPLITS) * len(p.LABEL_MAP)
+        self.assertEqual(
+            report["counts"],
+            {"accepted": expected_accepted, "duplicate": 1},
+        )
         row = next(r for r in rows if r["participant_id"] == "old_user")
         self.assertEqual(row["canonical_participant_id"], "p001")
         report, _ = self.invoke("--train-subjects", "old_user", "--val-subjects", "p001",

@@ -38,7 +38,7 @@ import numpy as np
 # 실행한 터미널 위치가 아니라 이 파일 위치를 기준으로 프로젝트 루트를 찾습니다.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # 일부 클래스의 데이터가 없어도 라벨 번호는 바뀌지 않습니다.
-LABEL_MAP = {"swipe_left": 0, "make_fist": 1, "no_gesture": 2}
+LABEL_MAP = {"swipe_left": 0, "make_fist": 1, "no_gesture": 2, "finger_snap": 3}
 SPLITS = ("train", "val", "test")
 VERSION = "1.0.0"
 # manifest.csv의 열 순서. 발견한 원본 파일 하나가 보고서의 한 행에 대응합니다.

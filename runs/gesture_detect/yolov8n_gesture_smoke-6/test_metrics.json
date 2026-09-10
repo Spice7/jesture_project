@@ -1,0 +1,9 @@
+{
+  "metrics/precision(B)": 0.7560991093958377,
+  "metrics/recall(B)": 0.0676328502415459,
+  "metrics/mAP50(B)": 0.0793886542935195,
+  "metrics/mAP50-95(B)": 0.031076676863404984,
+  "fitness": 0.031076676863404984,
+  "best_weights": "C:\\Users\\Admin\\sunub_win\\jesture_project\\runs\\gesture_detect\\yolov8n_gesture_smoke-6\\weights\\best.pt",
+  "device": "cpu"
+}

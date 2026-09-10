@@ -501,8 +501,10 @@ dependencies = [
     { name = "numpy" },
     { name = "opencv-python" },
     { name = "pandas" },
+    { name = "python-dateutil" },
     { name = "tensorflow" },
     { name = "torch" },
+    { name = "torchvision" },
     { name = "ultralytics" },
 ]
 
@@ -514,8 +516,10 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.5.2" },
     { name = "opencv-python", specifier = ">=5.0.0.93" },
     { name = "pandas", specifier = ">=3.0.5" },
+    { name = "python-dateutil", specifier = ">=2.9.0.post0" },
     { name = "tensorflow", specifier = ">=2.21.0" },
     { name = "torch", specifier = ">=2.14.0" },
+    { name = "torchvision", specifier = ">=0.29.0" },
     { name = "ultralytics", specifier = ">=8.4.138" },
 ]
 

@@ -99,3 +99,36 @@ dataset/no_gesture/p001_no_gesture_0001.npz
 긴 연속 영상은 `정지 → 명령 동작 → 원위치 복귀 → 정지 → 다음 명령 동작`을 끊지 않고 담는 자료입니다. 실제 서비스에서 명령을 한 번만 실행하는지, 복귀나 정지 중에는 실행하지 않는지 확인하는 데 사용합니다.
 
 **이번 수집에서는 긴 연속 영상을 녹화하지 않습니다.** 현재 프로그램은 최대 2.5초의 단일 샘플 수집용입니다. 자동 구간 감지 기능을 만들 때 별도 녹화 방법과 명령 구간 표시 방법을 안내한 뒤 수집합니다.
+
+## 학습 모델 연속 인식 화면
+
+프로젝트 루트에서 다음 명령을 실행하면 최근 1.5초 프레임을 계속 갱신하면서
+LSTM 모델이 `swipe_left`, `make_fist`, `no_gesture`를 분류합니다.
+
+```powershell
+uv run python -m programs.realtime_gesture --checkpoint runs/lstm/experiment_001/best.pt
+```
+
+기본 모델이 다른 폴더에 있다면 `--checkpoint`만 바꿉니다. GPU를 명시하려면
+`--device cuda`, 카메라 번호를 바꾸려면 `--camera 1`을 추가합니다.
+
+```powershell
+uv run python -m programs.realtime_gesture `
+  --checkpoint runs/lstm/experiment_003/best.pt `
+  --camera 0 `
+  --window-seconds 1.5 `
+  --confidence-threshold 0.65 `
+  --smoothing 5
+```
+
+화면에는 현재 안정화된 인식 결과, 클래스별 softmax 점수, 오른손 검출률,
+버퍼 길이, FPS, 추론 시간이 표시됩니다. 클래스별 퍼센트는 현재 입력에 대한
+모델 점수이며 실제 정확도가 아닙니다. `OFFLINE HELD-OUT TEST`는 학습 후 저장된
+`test_metrics.json`의 별도 평가 결과입니다.
+
+- 학습 데이터처럼 오른손을 사용하고, 카메라 입력은 좌우 반전하지 않습니다.
+- 화면만 거울처럼 보고 싶으면 `--mirror-display`를 사용합니다. 모델 입력은 반전하지 않습니다.
+- 점수가 임계값보다 낮으면 `UNCERTAIN`, 프레임 품질이 학습 조건을 만족하지 않으면
+  `NO VALID WINDOW`가 표시됩니다.
+- `R`은 누적 프레임과 평활화 결과를 초기화하고, `Q` 또는 `Esc`는 종료합니다.
+- `--window-seconds`는 학습 품질 범위인 0.6~2.5초 안에서 설정해야 합니다.

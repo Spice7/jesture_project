@@ -1,0 +1,30 @@
+{
+  "best_epoch": 19,
+  "best_validation": {
+    "loss": 1.4013579576970085,
+    "accuracy": 0.6566265060240963,
+    "macro_f1": 0.6280106017939096
+  },
+  "test": {
+    "loss": 0.6699368030512585,
+    "accuracy": 0.9097222222222222,
+    "macro_f1": 0.8360876295410614
+  },
+  "model_config": {
+    "input_size": 66,
+    "hidden_size": 64,
+    "num_layers": 1,
+    "num_classes": 4,
+    "dropout": 0.2
+  },
+  "training_config": {
+    "label_smoothing": 0.05
+  },
+  "label_map": {
+    "swipe_left": 0,
+    "make_fist": 1,
+    "no_gesture": 2,
+    "finger_snap": 3
+  },
+  "device": "cpu"
+}
