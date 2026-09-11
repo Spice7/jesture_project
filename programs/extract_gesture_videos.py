@@ -19,7 +19,7 @@ import numpy as np
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 VIDEOS_DIR = PROJECT_ROOT / "videos"
-DATASET_DIR = PROJECT_ROOT / "data" / "gestures"
+DATASET_DIR = PROJECT_ROOT / "data" / "dynamic"
 MODEL_PATH = PROJECT_ROOT / "models" / "hand_landmarker.task"
 
 # 팀에서 합의한 단일 gesture 영상 길이
@@ -423,7 +423,7 @@ def update_index_csv(
     handedness: str,
 ):
     """
-    dataset/index.csv에 저장된 sample 정보를 한 행 추가한다.
+    data/dynamic/index.csv에 저장된 sample 정보를 한 행 추가한다.
     """
     DATASET_DIR.mkdir(
         parents=True,

@@ -3,7 +3,7 @@ paths:
   # 시작모델
   model: ../models/static/yolov8n.pt            # yolov8n/s/m/l/x.pt or a local .pt checkpoint
   trained_model: ../models/static/checkpoints/last_100.pt
-  data: ../dataset/data.yaml
+  data: ../data/static/start_stop_cancel/data.yaml
   project: ../runs/yolo
 
 # Arguments passed directly to YOLO.train().

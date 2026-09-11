@@ -2,7 +2,7 @@
 paths:
   model: ../models/static/yolov8n.pt
   trained_model: ../models/static/v3.pt
-  data: ../datasets/static_gesture_v3/data.yaml
+  data: ../data/static/v3/data.yaml
   project: ../runs/gesture
 train:
   name: yolov8n_v3_rotation

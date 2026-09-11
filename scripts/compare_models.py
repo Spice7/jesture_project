@@ -109,7 +109,7 @@ def main():
     for r in args.dataset:
         samples += dataset.load_dataset(Path(r))
     if not samples:
-        sys.exit("dataset/ 에 npz 가 없습니다.")
+        sys.exit("data/dynamic/ 에 npz 가 없습니다.")
     print(dataset.summarize(samples))
     if len({s.label for s in samples}) < 2:
         sys.exit("라벨이 하나뿐이라 학습할 수 없습니다.")

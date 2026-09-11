@@ -1,3 +1,10 @@
+"""정적 포즈 게이트용 YOLO 검출기 (원본: 팀 lkh, 구 `gesture_model/gesture_detector.py`).
+
+동적 GRU 파이프라인(같은 `gesture/` 패키지의 model·pipeline·segmenter 등)과 역할이 다르다.
+이쪽은 손바닥/주먹/취소 포즈로 인식을 켜고 끄는 정적 게이트(YOLOv8)이며, `gesture/gate.py`가
+이 GestureDetector를 얇게 감싼다. ultralytics(YOLO)는 무거우므로 이 모듈은 게이트가 실제로
+필요할 때만 지연 import 된다 — 그래서 `from gesture import config` 같은 경량 사용은 영향받지 않는다.
+"""
 from dataclasses import dataclass
 from pathlib import Path
 import time

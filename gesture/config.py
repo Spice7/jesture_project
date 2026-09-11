@@ -5,7 +5,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASET_DIR = ROOT / "data" / "gestures"      # 동적 NPZ: YOLO 이미지 데이터와 분리
+DATASET_DIR = ROOT / "data" / "dynamic"      # 동적 NPZ: YOLO 이미지 데이터와 분리
 MODELS_DIR = ROOT / "models"
 REPORTS_DIR = ROOT / "reports"
 HAND_MODEL_PATH = MODELS_DIR / "hand_landmarker.task"   # JIN 에 커밋되어 있음
@@ -36,7 +36,7 @@ RANDOM_SEED = 42
 
 # 추론에는 학습 데이터셋이 필요하지 않다. 외부 모델은 이 경로에 복사한다.
 STATIC_MODEL_PATH = MODELS_DIR / "static" / "v3.pt"
-YOLO_DATASET_DIR = ROOT / "dataset"
+YOLO_DATASET_DIR = ROOT / "data" / "static" / "start_stop_cancel"
 
 
 def project_path(value: str | Path) -> Path:

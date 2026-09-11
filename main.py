@@ -17,18 +17,18 @@ COMMANDS = {
     "validate": "programs/validate_gesture_dataset.py",
     "review": "programs/data_preprocessing.py",
     "frames": "programs/slicing.py",
-    "record": "util/slice.py",
+    "record": "scripts/slice.py",
     "flip": "programs/flip_image.py",
     "train-dynamic": "scripts/train_model.py",
     "eval-dynamic": "scripts/eval_model.py",
     "compare": "scripts/compare_models.py",
     "replay": "scripts/replay_segments.py",
-    "inspect-npz": "util/valid_npz.py",
+    "inspect-npz": "scripts/valid_npz.py",
 }
 INTERACTIVE_COMMANDS = {
     "collect-video": "영상 경로와 라벨을 입력받아 동적 NPZ 수집",
     "extract": "videos/의 라벨별 영상을 일괄 NPZ 추출",
-    "validate": "data/gestures/ NPZ 품질 검사 및 CSV 보고서 작성",
+    "validate": "data/dynamic/ NPZ 품질 검사 및 CSV 보고서 작성",
     "record": "웹캠 녹화와 일정 간격 이미지 추출",
     "flip": "two_fingers/ 이미지를 images/flipped/로 좌우 반전",
     "review": "이미지 PASS/trash 검토 Gradio UI 시작",
@@ -56,7 +56,7 @@ def check(argv: list[str]) -> int:
         with HandTracker():
             pass
         if "static YOLO" in paths:
-            from gesture_model import GestureDetector
+            from gesture.static_detector import GestureDetector
             GestureDetector(paths["static YOLO"], device="cpu")
         print("모델 로드 및 metadata 확인 완료. 실제 카메라/키 입력은 별도 검증하세요.")
     return 0

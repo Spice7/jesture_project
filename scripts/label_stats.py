@@ -1,6 +1,6 @@
 """라벨별 상식검사(sanity) 측정값 분포. 새 제스처의 기준값을 정하거나 기존 기준이 진짜 동작을 막는지 볼 때 쓴다.
 
-  uv run python scripts/label_stats.py                      # dataset/ 전체
+  uv run python scripts/label_stats.py                      # data/dynamic/ 전체
   uv run python scripts/label_stats.py --labels finger_snap no_gesture
   uv run python scripts/label_stats.py --dataset C:\\...\\dataset_p001 --persons p001
 

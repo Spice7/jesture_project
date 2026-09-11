@@ -1,7 +1,7 @@
 """저장된 모델을 임의 데이터 폴더·참가자로 채점한다 (학습 없음). 룰 기반 baseline 도 같은 시험지로.
 
   uv run python scripts/eval_model.py --dataset "C:/.../dataset_p005" --persons p005
-  uv run python scripts/eval_model.py --model models/gru_gesture.pt --dataset dataset --persons p002 p003
+  uv run python scripts/eval_model.py --model models/gru_gesture.pt --dataset data/dynamic --persons p002 p003
 
 용도: 최종 모델(학습에 넣지 않은 사람으로) 정직한 "처음 보는 사람" 점수. 새 팀원 데이터가 오면 학습에 넣기 *전에* 먼저 채점.
 """

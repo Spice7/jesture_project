@@ -56,7 +56,7 @@ browser_forward browser_refresh printscreen`. 방향키·Ins/Del 류는 확장 �
 
 ## YOLO 게이트 (09-07 오후 연결 완료)
 
-팀(lkh 브랜치) 의 `gesture_model/gesture_detector.py` 를 그대로 가져와 `gesture/gate.py` 로 감쌌다. 가중치는
+팀(lkh 브랜치) 의 `gesture/static_detector.py` 를 그대로 가져와 `gesture/gate.py` 로 감쌌다. 가중치는
 `models/static/v3.pt` (= 드라이브 `dataset_yolo/lkh/v2/best.pt`, yolov8n, 클래스 cancel/start/stop). git 에 안 올라가므로
 새 기기에서는 복사해야 한다. GPU 에서 프레임당 6ms, CPU 면 25ms 라 CPU 는 3프레임에 한 번만 돌린다.
 
@@ -85,6 +85,6 @@ browser_forward browser_refresh printscreen`. 방향키·Ins/Del 류는 확장 �
 | `gesture/pipeline.py` | 프레임 → 관절 → 구간 → GRU → 상식검사 → 게이트 → 실행. `Event`/`FrameState` 로 결과 전달 |
 | `gesture/actions.py` | 키 표(`VK`), 표시 이름(`key_display`), 매핑 저장/수정(`ActionMapper.set_action/save/reload`) |
 | `gesture/gate.py` | YOLO 게이트 (팀 GestureDetector 래퍼) + FakeGate |
-| `gesture_model/` | 팀(lkh) YOLO 포즈 검출 모듈, 수정 없음 |
+| `gesture/static_detector.py` | 팀(lkh) YOLO 포즈 검출 모듈(구 gesture_model/), gesture/ 로 병합 |
 | `gesture/presets.py` | 프리셋과 제스처 한글 이름, STATIC_LABELS |
 | `gestures.json` | 사용자가 바꾼 매핑이 저장되는 곳 |

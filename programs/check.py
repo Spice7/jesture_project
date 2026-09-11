@@ -6,7 +6,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 filepath = (
     PROJECT_ROOT
     / "data"
-    / "gestures"
+    / "dynamic"
     / "swipe_left"
     / "user00_swipe_left_0001.npz"
 )

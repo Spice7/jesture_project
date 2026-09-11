@@ -1,4 +1,4 @@
-"""dataset/ 의 수집 데이터로 GRU(기본) 또는 LSTM 학습 + baseline 비교 + 평가 리포트.
+"""data/dynamic/ 의 수집 데이터로 GRU(기본) 또는 LSTM 학습 + baseline 비교 + 평가 리포트.
 저장: models/<arch>_gesture.pt + .json (PyTorch)
 
   uv run python scripts/train_model.py                                   # GRU, 자동 분할
@@ -47,7 +47,7 @@ def main():
     for r in args.dataset:
         samples += dataset.load_dataset(Path(r))
     if not samples:
-        sys.exit("data/gestures/ 에 npz 가 없습니다. python main.py collect로 수집하거나 --dataset으로 실제 데이터를 지정하세요.")
+        sys.exit("data/dynamic/ 에 npz 가 없습니다. python main.py collect로 수집하거나 --dataset으로 실제 데이터를 지정하세요.")
     print(dataset.summarize(samples))
     labels_present = {s.label for s in samples}
     if len(labels_present) < 2:
