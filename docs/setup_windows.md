@@ -72,7 +72,7 @@ git switch -c data/p00X origin/JIN         # p00X = 담당자에게 받은 내 I
 올리기 (자기 파일만, `git add -A` 금지):
 
 ```powershell
-git add -- "dataset/swipe_left/p00X_*.npz" "dataset/make_fist/p00X_*.npz" "dataset/no_gesture/p00X_*.npz"
+git add -- "data/dynamic/swipe_left/p00X_*.npz" "data/dynamic/make_fist/p00X_*.npz" "data/dynamic/no_gesture/p00X_*.npz"
 git commit -m "p00X 제스처 데이터 추가"
 git push -u origin data/p00X
 ```

@@ -14,7 +14,7 @@
 | 동적 수집 | 두 collect_gesture.py의 실제 차이(반전/녹화 길이)를 CLI 옵션으로 흡수. 기본은 모델 규약에 맞는 비반전/2.5초 | programs/collect_gesture.py |
 | 영상 수집·추출·검증 | lkh의 영상별 수집/일괄 추출/NPZ 검증은 고유 기능이므로 유지 | programs/ |
 | 이미지 처리 | lkh 웹캠 녹화·간격 추출·반전, kmj02 전체 프레임 추출·Gradio PASS/trash 검토·EDA 모두 유지 | util/, programs/, EDA.ipynb |
-| 학습 비교 자료 | GRU/LSTM 학습·평가·재생·비교와 기존 결과/샘플/체크포인트 보존 | scripts/, reports/, artifacts/, data/gestures/ |
+| 학습 비교 자료 | GRU/LSTM 학습·평가·재생·비교와 기존 결과/샘플/체크포인트 보존 | scripts/, reports/, artifacts/, data/dynamic/ |
 
 정적 gate 모델 yolo_gate.pt는 원문에서 lkh v2/best.pt의 복사 이름이었다. 별도 독립 모델 파일을 강제하지 않고 설정된 정적 모델을 직접 읽는다. v3/kmj02와 v2의 가중치가 동일하다고 판단하지 않았다. 기본 v3와 명시적 다른 모델 선택은 서로 다른 실제 학습 모델이며 정확도는 각각 평가해야 한다.
 
@@ -49,9 +49,9 @@
 | scripts/gesture_app.py | 공통 모델/device CLI, 사전 파일 검사, YOLO 결과 박스 표시, 오류 상태 UI, 시스템 폰트 위치 환경변수 | 연결/표시만 |
 | scripts/train_model.py | 변경된 동적 데이터 경로에 맞는 안내 | 오류 문구만 |
 | programs/collect_gesture.py | mirror/max-duration/camera/dataset 옵션, 비반전 기본, 정확한 mirrored metadata, 혼합 방지 | 기본 반전/시간은 hwangsoon 규약 선택, lkh 방식은 옵션 유지 |
-| programs/collect_gesture_video.py | data/gestures 출력 | 경로만 |
-| programs/extract_gesture_videos.py | data/gestures 출력 | 경로만 |
-| programs/validate_gesture_dataset.py | data/gestures 검사/보고서 | 경로만 |
+| programs/collect_gesture_video.py | data/dynamic 출력 | 경로만 |
+| programs/extract_gesture_videos.py | data/dynamic 출력 | 경로만 |
+| programs/validate_gesture_dataset.py | data/dynamic 검사/보고서 | 경로만 |
 | programs/check.py | 이전된 예제 NPZ 경로 | 경로만 |
 | programs/flip_image.py | 프로젝트 기준 입출력, main guard | 반전 알고리즘 유지 |
 | programs/slicing.py | videos/frames 경로와 CLI, 영상 확장자 필터, import 부작용 제거 | 프레임 추출 유지 |
@@ -82,7 +82,7 @@
 2. models/gru_gesture.pt — 실제 학습된 GRU weight.
 3. models/gru_gesture.json — 해당 weight의 실제 metadata.
 
-Git 제공 모델: models/hand_landmarker.task, models/static/checkpoints/의 11개 checkpoint, models/static/yolov8n.pt, models/static/yolo26n.pt, artifacts/kmj02/runs/yolo/gesture_yolov8n/weights/의 best/last. 이전된 모델 파일은 원본 SHA-256 동일.
+Git 제공 모델: models/hand_landmarker.task, models/static/checkpoints/의 11개 checkpoint, models/static/yolov8n.pt, models/static/yolo26n.pt, yolo/artifacts/kmj02/runs/yolo/gesture_yolov8n/weights/의 best/last. 이전된 모델 파일은 원본 SHA-256 동일.
 
 별도 yolo_gate.pt 복제는 불필요. pretrained yolov8n/yolo26n은 제스처 분류용 최종 weight가 아니다. 기본 앱은 학습 기록 artifacts를 필요로 하지 않는다. 실제 사용 모델 변경은 --static-model 또는 gestures.json에서 가능하며, GRU/LSTM 변경은 --model과 짝인 metadata로 지정한다.
 
@@ -91,7 +91,7 @@ Git 제공 모델: models/hand_landmarker.task, models/static/checkpoints/의 11
 - 추론용 데이터셋: **없음**. 모델/metadata/실행 설정과 카메라 입력만 필요.
 - 정적 재학습: dataset/{train,valid,test}/{images,labels}, dataset/data.yaml. YAML의 train/val/test가 각 images 디렉터리와 일치한다. labels는 Ultralytics의 images→labels 규약으로 대응하며 회귀 검사로 확인했다.
 - v3 재학습: datasets/static_gesture_v3/data.yaml 및 train/valid/test의 images/labels. YAML 포함 실제 자료는 사용자가 배치한다.
-- 동적 재학습: data/gestures/<label>/*.npz. 예제 user00 37개만 Git 제공. 실제 4클래스/참가자별 데이터를 준비해야 한다.
+- 동적 재학습: data/dynamic/<label>/*.npz. 예제 user00 37개만 Git 제공. 실제 4클래스/참가자별 데이터를 준비해야 한다.
 - 기존 사용자 dataset/의 NPZ와 CSV 238개는 그대로 유지. 신규 YOLO config/빈 디렉터리만 추가했고 사용자 파일은 stage하지 않았다.
 - 코드가 YAML 위치에서 path/split을 해석하고 런타임 임시 YAML에 절대 경로로 전달한다. 이는 이식 가능한 원본 설정을 유지하기 위한 실행 중 정규화이며, PC 경로를 저장소 설정에 기록하지 않는다.
 
@@ -140,6 +140,6 @@ Git 제공 모델: models/hand_landmarker.task, models/static/checkpoints/의 11
 
 ## J. Git와 역사 자료
 
-작업 브랜치는 integration이며 main에 merge하거나 remote에 push하지 않는다. dev와 개인 브랜치 refs는 시작 값 그대로 유지한다. 기존 integration/REPORT.md, source-manifest.json, validation-results.json은 **dev의 보존 통합 당시 상태**를 가리키며 최종 경로에는 적용되지 않는다. 삭제하지 않고 이 문서와 루트 README에서 구분했다.
+작업 브랜치는 integration이며 main에 merge하거나 remote에 push하지 않는다. dev와 개인 브랜치 refs는 시작 값 그대로 유지한다. 기존 integration/REPORT.md 와 source-manifest.json 은 **dev의 보존 통합 당시 상태**를 가리키며 최종 경로에는 적용되지 않는다. (브랜치 차이·소스 인벤토리·검증 로그 원문은 정리 과정에서 제거했고, 필요하면 git 이력에서 볼 수 있다.)
 
 작업 트리 전체( .git/기존 .venv/cache 제외)의 실제 conflict marker 검색 결과 0개. 원본 주석의 장식용 연속 등호는 merge marker가 아니므로 스타일 정리 목적으로 변경하지 않는다. 사용자 기존 untracked dataset/index.csv와 dataset/validation_report.csv는 커밋에 포함하지 않는다. 최종 커밋/status는 완료 응답에도 기록한다.

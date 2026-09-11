@@ -1,4 +1,4 @@
-"""dataset/ 현황: 참가자×라벨 개수, 형식 오류, 품질 기준 미달 샘플.
+"""data/dynamic/ 현황: 참가자×라벨 개수, 형식 오류, 품질 기준 미달 샘플.
 
   uv run python scripts/dataset_summary.py
   uv run python scripts/dataset_summary.py --dataset dataset other/dataset

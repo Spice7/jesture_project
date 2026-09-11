@@ -70,7 +70,7 @@ def load_sample(path: Path) -> Sample:
 
 
 def load_dataset(root: Path = config.DATASET_DIR, labels=config.LABELS, strict: bool = False) -> list[Sample]:
-    """dataset/<label>/*.npz 전부 로딩. 형식 오류 파일은 경고 후 건너뜀 (strict=True 면 예외)."""
+    """data/dynamic/<label>/*.npz 전부 로딩. 형식 오류 파일은 경고 후 건너뜀 (strict=True 면 예외)."""
     root = Path(root)
     samples, bad = [], []
     for p in sorted(root.rglob("*.npz")):
