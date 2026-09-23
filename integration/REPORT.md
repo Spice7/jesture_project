@@ -15,7 +15,7 @@
 | hwangsoon | `23cc75f` | `dbd7016` | 3 / 17 |
 | kmj02 | `ab45fd6` | `1103bab` | 1 / 15 |
 
-전체 출처 SHA는 source-manifest.json, 모든 커밋과 파일 상태는 branch-differences.md에 기록.
+전체 출처 SHA와 파일 상태는 source-manifest.json에 기록.
 
 ## 2. 브랜치 분석
 
@@ -46,7 +46,7 @@
 - 추가 분류: `runs/` 39, `ckpoint/` 11, `dataset/` 3, `model_yolo/` 2, EDA/README/전처리/실시간/slicing 각 1, `weights/yolo26n.pt`, `yolov8n.pt`.
 - gradio/torchvision 추가, 모든 OS에 PyTorch CUDA 12.6 인덱스 설정.
 
-모든 파일의 정확한 추가/수정/삭제 분류는 [branch-differences.md](branch-differences.md), 주요 정의와 import는 [source-inventory.md](source-inventory.md)에 빠짐없이 기록.
+개별 파일의 출처 SHA와 내용 해시는 [source-manifest.json](source-manifest.json)에 기록했다. (브랜치 간 파일 차이·소스 인벤토리·검증 로그 원문은 정리 과정에서 제거했으며, 필요하면 git 이력에서 확인할 수 있다.)
 
 ## 3. 브랜치 간 관계
 
@@ -87,8 +87,7 @@ jesture_project/
       realtime_detect.py  data_preprocessing.py  slicing.py
       EDA.ipynb  yolov8n.pt  README.md
   integration/
-    REPORT.md  branch-differences.md  source-inventory.md
-    source-manifest.json  validation-results.json
+    REPORT.md  FINAL.md  source-manifest.json
   README.md  pyproject.toml  uv.lock  .gitignore  .python-version
 ```
 
@@ -106,14 +105,11 @@ jesture_project/
 - 브랜치에서 가져온 200개 파일: hwangsoon 138개, kmj02 62개. 전체 경로·역할 분류는 2절, 개별 출처는 source-manifest.json. 재작성한 파일이 아님.
 - 루트 README.md: 공통 환경 설치, 각 실행 위치, 외부 모델 준비 안내.
 - integration/REPORT.md: 판단·변경·검증·한계 기록.
-- integration/branch-differences.md: 세 브랜치와 dev 및 모든 쌍의 파일/커밋 비교 기록.
-- integration/source-inventory.md: 원본 Python의 클래스·함수·import 목록.
-- integration/source-manifest.json: 보존한 212개 파일의 출처 SHA 및 내용 SHA-256. 누락/대체 여부 확인용.
-- integration/validation-results.json: 실제 검증 명령·실행 위치·종료 코드·출력 기록.
+- integration/source-manifest.json: 보존한 212개 파일의 출처 SHA 및 내용 SHA-256. 누락/대체 여부 확인용.
 
 ## 8. 검증 결과
 
-상세 명령과 결과는 validation-results.json에 기록. 카메라·실제 키 입력·대규모 학습은 실행하지 않는다. 기존 .venv는 torch 2.9.0+cu128 등으로 선언된 환경과 달라 변경하지 않고 TEMP 아래 별도 Python 3.12 환경에 `uv sync --locked`로 125개 패키지를 설치하여 검증했다.
+카메라·실제 키 입력·대규모 학습은 실행하지 않는다. 기존 .venv는 torch 2.9.0+cu128 등으로 선언된 환경과 달라 변경하지 않고 TEMP 아래 별도 Python 3.12 환경에 `uv sync --locked`로 125개 패키지를 설치하여 검증했다.
 
 - `uv pip check --python <임시 환경>/Scripts/python.exe`: 125개 패키지 모두 호환.
 - `uv lock`: 성공. 기존 hwangsoon 잠금 패키지 버전 변경 없음.

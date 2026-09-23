@@ -2,7 +2,7 @@
 
 통합 UI(scripts/gesture_app.py)가 사용하는 공통 인식 루프.
 
-YOLO 정적 포즈 게이트 (09-07 오후 연결, gesture/gate.py + 팀 코드 gesture_model/):
+YOLO 정적 포즈 게이트 (09-07 오후 연결, gesture/gate.py + 정적 검출기 gesture/static_detector.py):
   손바닥 3초 → 게이트 열림(동적 제스처 실행 시작) / 주먹 3초 → 닫힘 / 세 번째 포즈 3초 → "cancel" 에 매핑된 키.
   게이트가 닫혀 있으면 동적 제스처는 판정·기록만 하고 키는 누르지 않는다.
   gestures.json 의 "gate" 로 켜고 끈다. 모델이 없으면 시작하지 않으며 실행 중 오류가 나면 인식을 중지한다.

@@ -238,7 +238,7 @@ $RECYCLE.BIN/
 # Datasets
 data/raw/
 data/processed/
-datasets/
+# datasets/ 는 data/static/<version>/ 로 통합됨 (실데이터는 images/·*.npz 글로브로 제외)
 
 # Images / Videos collected for training
 captures/

@@ -16,7 +16,7 @@ from gesture.actions import ActionMapper
 from gesture.gate import StaticGate
 from gesture.model import build_model
 from gesture.pipeline import Pipeline
-from gesture_model import GestureDetector
+from gesture.static_detector import GestureDetector
 from yolo.yolo import prepared_dataset, resolve_dataset
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,12 +49,12 @@ class IntegrationTests(unittest.TestCase):
     def test_yolo_yaml_and_ultralytics_agree_from_other_cwd(self):
         from ultralytics.data.utils import check_det_dataset, img2label_paths
         with tempfile.TemporaryDirectory() as directory, cwd(directory):
-            resolved = resolve_dataset(ROOT / "dataset/data.yaml")
-            with prepared_dataset(str(ROOT / "dataset/data.yaml"), ()) as prepared, \
+            resolved = resolve_dataset(ROOT / "data/static/start_stop_cancel/data.yaml")
+            with prepared_dataset(str(ROOT / "data/static/start_stop_cancel/data.yaml"), ()) as prepared, \
                     patch("ultralytics.data.utils.check_font"):
                 actual = check_det_dataset(prepared, autodownload=False)
             for key, folder in (("train", "train"), ("val", "valid"), ("test", "test")):
-                expected = ROOT / "dataset" / folder / "images"
+                expected = ROOT / "data" / "static" / "start_stop_cancel" / folder / "images"
                 self.assertEqual(Path(resolved[key]), expected)
                 self.assertEqual(Path(actual[key]), expected)
                 # 경로 변환만 검사한다. 이미지/라벨 파일을 만들지 않는다.
@@ -65,7 +65,7 @@ class IntegrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as empty, \
                 patch("yolo.yolo.resolve_dataset", return_value={"train": empty, "names": ["start"]}):
             with self.assertRaisesRegex(FileNotFoundError, "학습/평가 이미지"):
-                with prepared_dataset(str(ROOT / "dataset/data.yaml"), ("train",)):
+                with prepared_dataset(str(ROOT / "data/static/start_stop_cancel/data.yaml"), ("train",)):
                     pass
 
     def test_yolo_predict_never_builds_training_arguments(self):
@@ -80,11 +80,11 @@ class IntegrationTests(unittest.TestCase):
             predict.assert_called_once()
 
     def test_hold_miss_tolerance_one_shot_and_rearm(self):
-        with patch("gesture_model.gesture_detector.YOLO") as model:
+        with patch("gesture.static_detector.YOLO") as model:
             model.return_value.names = {0: "start", 1: "stop", 2: "cancel"}
             detector = GestureDetector(WEIGHT, hold_seconds=1, miss_tolerance_seconds=0.3)
         def step(t, pose):
-            with patch("gesture_model.gesture_detector.time.monotonic", return_value=t):
+            with patch("gesture.static_detector.time.monotonic", return_value=t):
                 return detector._update_state(pose, 0.9)
         self.assertFalse(step(0, "start").confirmed)
         self.assertFalse(step(0.8, "start").confirmed)

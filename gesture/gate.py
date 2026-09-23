@@ -1,11 +1,11 @@
-"""YOLO 정적 포즈 게이트: 팀(lkh) 의 gesture_model.GestureDetector 를 우리 파이프라인에 잇는 얇은 층.
+"""YOLO 정적 포즈 게이트: 팀(lkh) 의 static_detector.GestureDetector 를 우리 파이프라인에 잇는 얇은 층.
 
 포즈(클래스) 3개, 전부 "3초 유지" 가 트리거:
   start  (손바닥)  → 게이트 열림  = 동적 제스처 인식 시작
   stop   (주먹)    → 게이트 닫힘  = 인식 끝. 취소 없음
   cancel (세 번째) → 정적 명령 하나 (gestures.json 의 "cancel" 에 매핑된 키). 게이트가 열려 있을 때만
 
-GestureDetector 는 팀 코드 그대로 쓴다(gesture_model/gesture_detector.py, 브랜치 lkh). 여기서는
+GestureDetector 는 팀 코드 그대로 쓴다(gesture/static_detector.py, 원본 브랜치 lkh). 여기서는
   - GPU 없으면 CPU 로, CPU 면 프레임을 솎아 부하를 줄인다
   - 프레임마다 (포즈, 유지 시간, 확정 이벤트) 를 돌려준다
 """
@@ -34,7 +34,7 @@ class StaticGate:
                  imgsz: int = 640, device: int | str | None = None,
                  miss_tolerance_seconds: float = 0.3, iou: float = 0.5, max_det: int = 10):
         import torch  # 무거운 import 는 필요할 때
-        from gesture_model.gesture_detector import GestureDetector
+        from gesture.static_detector import GestureDetector
 
         path = Path(model_path) if model_path else config.STATIC_MODEL_PATH
         if not path.is_absolute():

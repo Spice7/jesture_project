@@ -18,7 +18,7 @@ import numpy as np
 # =========================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATASET_DIR = PROJECT_ROOT / "data" / "gestures"
+DATASET_DIR = PROJECT_ROOT / "data" / "dynamic"
 MODEL_PATH = (
     PROJECT_ROOT
     / "models"
@@ -450,7 +450,7 @@ def update_index_csv(
     handedness: str,
 ):
     """
-    dataset/index.csv에 저장된 sample 정보를 한 행 추가한다.
+    data/dynamic/index.csv에 저장된 sample 정보를 한 행 추가한다.
     """
 
     DATASET_DIR.mkdir(parents=True, exist_ok=True)
@@ -1119,7 +1119,7 @@ def main():
         parser.error("max-duration은 최소 녹화 시간 이상이어야 합니다")
     CAMERA_INDEX, MAXIMUM_DURATION_SECONDS, MIRROR = args.camera, args.max_duration, args.mirror
     DATASET_DIR = args.dataset if args.dataset.is_absolute() else PROJECT_ROOT / args.dataset
-    if MIRROR and DATASET_DIR.resolve() == (PROJECT_ROOT / "data" / "gestures").resolve():
+    if MIRROR and DATASET_DIR.resolve() == (PROJECT_ROOT / "data" / "dynamic").resolve():
         parser.error("반전 데이터는 --dataset data/legacy_mirrored 등 별도 폴더에 저장하세요")
     """
     MediaPipe Hand Landmark 기반 gesture sequence 수집 프로그램.
@@ -1144,7 +1144,7 @@ def main():
         print(error)
         return
 
-    # dataset 폴더 생성
+    # data/dynamic 폴더 생성
     DATASET_DIR.mkdir(
         parents=True,
         exist_ok=True,

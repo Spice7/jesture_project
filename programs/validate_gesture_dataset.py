@@ -14,7 +14,7 @@ import numpy as np
 
 # 이 파일은 프로젝트의 programs 폴더에 두는 것을 기준으로 한다.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATASET_DIR = PROJECT_ROOT / "data" / "gestures"
+DATASET_DIR = PROJECT_ROOT / "data" / "dynamic"
 REPORT_PATH = DATASET_DIR / "validation_report.csv"
 
 MINIMUM_FRAMES = 20

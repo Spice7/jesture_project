@@ -1,4 +1,4 @@
-> integration: 기본 저장 위치는 data/gestures/이며 python main.py collect로 실행합니다. 기본 비반전/최대 2.5초. 이전 브랜치 작업 절차 대신 루트 README.md를 따르세요.
+> integration: 기본 저장 위치는 data/dynamic/이며 python main.py collect로 실행합니다. 기본 비반전/최대 2.5초. 이전 브랜치 작업 절차 대신 루트 README.md를 따르세요.
 
 # 오른손 제스처 수집 안내
 

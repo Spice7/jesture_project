@@ -16,7 +16,7 @@ import numpy as np
 # =========================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATASET_DIR = PROJECT_ROOT / "data" / "gestures"
+DATASET_DIR = PROJECT_ROOT / "data" / "dynamic"
 MODEL_PATH = (
     PROJECT_ROOT
     / "models"
@@ -446,7 +446,7 @@ def update_index_csv(
     handedness: str,
 ):
     """
-    dataset/index.csv에 저장된 sample 정보를 한 행 추가한다.
+    data/dynamic/index.csv에 저장된 sample 정보를 한 행 추가한다.
     """
 
     DATASET_DIR.mkdir(parents=True, exist_ok=True)
@@ -1126,7 +1126,7 @@ def main():
         print(error)
         return
 
-    # dataset 폴더 생성
+    # data/dynamic 폴더 생성
     DATASET_DIR.mkdir(
         parents=True,
         exist_ok=True,

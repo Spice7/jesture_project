@@ -1,0 +1,11 @@
+# v3 정적 포즈 데이터셋 (lkh v3, 회전 증강). 런타임 게이트 모델 models/static/v3.pt 학습용.
+# 경로는 이 파일 위치(data/static/v3/) 기준으로 해석된다.
+# 실제 학습 이미지·라벨(train/valid/test의 images·labels)은 용량 때문에 Git에 포함하지 않으므로
+# v3 재학습 시(python main.py yolo --config yolo/v3.yaml) 각 폴더에 직접 배치한다.
+path: .
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 3
+names: ['cancel', 'start', 'stop']

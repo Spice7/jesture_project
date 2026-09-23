@@ -1,8 +1,10 @@
+> 원본 다중브랜치(hwangsoon) 시절 기록입니다. 현 통합 저장소에서 **동적 수집 데이터 경로는 `dataset/` → `data/dynamic/`** 로 바뀌었습니다(정적 YOLO는 `data/static/`). 설치·실행은 루트 `README.md`가 우선합니다. 경로 대응표는 [docs/README.md](README.md) 참고.
+
 # 학습 파이프라인 안내 (hwangsoon 브랜치)
 
 이 브랜치는 **JIN 브랜치(팀 데이터 창고 + 수집기)를 그대로 물려받고, 그 위에 학습·평가 코드를 얹은 것**이다.
 데이터 수집 방법은 이 저장소의 `README.md` 와 `programs/README.md`(JIN 담당자 작성)를 따른다.
-이 문서는 수집된 `dataset/` 을 어떻게 모델로 만드는지만 다룬다.
+이 문서는 수집된 `dataset/`(현 `data/dynamic/`) 을 어떻게 모델로 만드는지만 다룬다.
 
 ## 1. 폴더 구조
 
